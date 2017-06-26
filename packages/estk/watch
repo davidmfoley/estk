@@ -1,0 +1,72 @@
+#! /usr/bin/env node
+/* eslint-disable no-console */
+'use strict';
+
+const child_process = require('child_process');
+// const fs = require('fs');
+// const path = require('path');
+const watchr = require('watchr');
+
+let currentTask;
+let queue = [];
+
+watch('test', './test', 'npm', ['run', '-s', 'test:mocha']);
+watch('test', './src', 'npm', ['run', '-s', 'test:mocha']);
+watch('build', './src', 'npm', ['run', '-s', 'build',  'test']);
+
+function watch(name, path, cmd, args) {
+  watchr.open(
+    path,
+    () => {
+      if (!taskIsQueued(name)) {
+        enqueue(name, path, cmd, args);
+      }
+    },
+    (err) => {
+      if (err) return console.error('Error:', err);
+      console.log(`Watching ${path} - ${name}`);
+    }
+  );
+}
+
+function taskIsQueued(name) {
+  return !! queue.filter(t => t.name === name).length;
+}
+
+function enqueue(name, path, cmd, args) {
+  queue.push({name, path, cmd, args});
+  spawnNext();
+}
+
+function spawnNext() {
+  if (!queue.length) return;
+  if (currentTask) return;
+
+  currentTask = queue.shift();
+  const { name, cmd, args } = currentTask;
+
+  console.log('** ' + name);
+  spawn(cmd, args);
+}
+
+function spawn(cmd, args) {
+  const opts = {
+    cwd: __dirname,
+    env: process.env,
+    stdio: 'inherit'
+  };
+
+  console.log('> ' + cmd + ' ' +  args.join(' '));
+  return child_process.spawn(cmd, args, opts).on('close', (code) => {
+    if (code === 0 ) {
+      console.log('SUCCESS');
+    }
+    else {
+      console.log('FAILURE ', code);
+    }
+
+    currentTask = undefined;
+    spawnNext();
+  });
+}
+
