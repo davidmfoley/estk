@@ -1,0 +1,48 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = init;
+function init(settings) {
+  var publishHandlers = [];
+  var storage = settings.storage;
+
+
+  return Promise.resolve({
+    publish: publish,
+    onPublished: onPublished,
+    getEventStream: storage.getEventStream,
+    close: close
+  });
+
+  function publish(event, targetId, action, data, meta) {
+    if (typeof event === 'string') {
+      event = {
+        targetType: event,
+        targetId: targetId || '',
+        action: action || '',
+        data: data || {},
+        meta: meta || {}
+      };
+    }
+
+    return storage.publish(event);
+  }
+
+  function onPublished(handler) {
+    publishHandlers.push(handler);
+  }
+
+  function close() {
+    return settings.storage.close();
+  }
+}
+module.exports = exports['default'];on) {
+    publishHandlers.push(handler);
+  }
+
+  function close() : Promise<void> {
+    return settings.storage.close();
+  }
+}
