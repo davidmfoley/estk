@@ -2,29 +2,30 @@
 /* eslint-disable no-console */
 'use strict';
 
+const path = require('path');
 const child_process = require('child_process');
 // const fs = require('fs');
-// const path = require('path');
 const watchr = require('watchr');
 
 let currentTask;
 let queue = [];
 
-watch('test', './test', 'npm', ['run', '-s', 'test:mocha']);
-watch('test', './src', 'npm', ['run', '-s', 'test:mocha']);
-watch('build', './src', 'npm', ['run', '-s', 'build',  'test']);
+watch('packages/estk', 'test', './test', 'npm', ['run', '-s', 'test:mocha']);
+watch('packages/estk', 'test', './src', 'npm', ['run', '-s', 'test:mocha']);
+watch('packages/estk', 'build', './src', 'npm', ['run', '-s', 'build',  'test']);
 
-function watch(name, path, cmd, args) {
+function watch(cwd, name, relativePath, cmd, args) {
+  const fullPath = path.normalize(path.join(__dirname, cwd, relativePath));
   watchr.open(
-    path,
+    fullPath,
     () => {
       if (!taskIsQueued(name)) {
-        enqueue(name, path, cmd, args);
+        enqueue(cwd, name, relativePath, cmd, args);
       }
     },
     (err) => {
       if (err) return console.error('Error:', err);
-      console.log(`Watching ${path} - ${name}`);
+      console.log(`Watching ${fullPath} - ${name}`);
     }
   );
 }
@@ -33,8 +34,8 @@ function taskIsQueued(name) {
   return !! queue.filter(t => t.name === name).length;
 }
 
-function enqueue(name, path, cmd, args) {
-  queue.push({name, path, cmd, args});
+function enqueue(cwd, name, path, cmd, args) {
+  queue.push({cwd, name, path, cmd, args});
   spawnNext();
 }
 
@@ -43,15 +44,15 @@ function spawnNext() {
   if (currentTask) return;
 
   currentTask = queue.shift();
-  const { name, cmd, args } = currentTask;
+  const { cwd, name, cmd, args } = currentTask;
 
   console.log('** ' + name);
-  spawn(cmd, args);
+  spawn(cwd, cmd, args);
 }
 
-function spawn(cmd, args) {
+function spawn(cwd, cmd, args) {
   const opts = {
-    cwd: __dirname,
+    cwd,
     env: process.env,
     stdio: 'inherit'
   };

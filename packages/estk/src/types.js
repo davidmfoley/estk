@@ -2,8 +2,8 @@
 //
 
 export type EventStreamBookmark = {
-  id: any,
-  timestamp: string, // microsecond precise id: any // impl-dependent type
+  id: any, // impl-dependent
+  timestamp: string, // microsecond precise
 }
 
 export type EventStream = {

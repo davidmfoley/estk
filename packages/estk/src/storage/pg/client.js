@@ -8,7 +8,6 @@ import PostgresTransaction from './transaction';
 const debug = Debug('Postgres');
 const Pool = pg.Pool;
 
-
 type PostgresConfig = {
   url: string,
   poolSize: ?number,
