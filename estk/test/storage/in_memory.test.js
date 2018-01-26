@@ -1,4 +1,5 @@
 // @flow weak
+import { describe } from 'mocha';
 
 import EventStore from '../../src/event_store';
 import InMemoryStorage from '../../src/storage/in_memory';

@@ -1,4 +1,5 @@
 // @flow
+import { describe } from 'mocha';
 
 import EventStore from '../../src/event_store';
 import PostgresClient from '../../src/storage/pg/client';

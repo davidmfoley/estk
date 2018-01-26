@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm run -s test:lint && npm run -s test:flow && npm run -s test:mocha",
-    "test:flow": "flow",
+    "test:flow": "../node_modules/.bin/flow",
     "test:mocha": "mocha --recursive --compilers js:babel-register test",
     "test:lint": "eslint src/",
     "build": "npm run -s build:clean && npm run -s build:lib && npm run build:flow",
@@ -24,8 +24,10 @@
     "pg-pool": "^1.7.1"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.1",
     "chai": "^3.5.0",
     "eslint": "^3.12.2",
+    "eslint-plugin-flowtype": "^2.42.0",
     "mocha": "^3.2.0",
     "rimraf": "^2.5.4"
   },

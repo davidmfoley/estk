@@ -3,7 +3,7 @@
 <PROJECT_ROOT>/node_modules/watchr/.*
 
 [include]
-<PROJECT_ROOT>/src/.*
+<PROJECT_ROOT>/*/src/.*
 
 [libs]
 <PROJECT_ROOT>/flow-typed/.*

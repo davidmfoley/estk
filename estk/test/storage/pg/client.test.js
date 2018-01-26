@@ -1,8 +1,11 @@
+//@flow
+import { describe, beforeEach, it } from 'mocha';
+import type { DatabaseClient } from '../../../src/storage/types';
 import PostgresClient from '../../../src/storage/pg/client';
 import { expect } from 'chai';
 
 describe('postgres client', () => {
-  let client;
+  let client: DatabaseClient;
 
   async function getClient() {
     const config = {
