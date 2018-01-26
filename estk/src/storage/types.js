@@ -12,6 +12,6 @@ export type DatabaseTransaction = {
 }
 
 export type DatabaseClient = {
-  query: QueryAction
+  query: QueryAction,
+  transaction: () => Promise<DatabaseTransaction>
 }
-

@@ -19,7 +19,6 @@ type Connection = {
   done: Function
 }
 
-
 let txPool;
 let nontxPool;
 
@@ -47,7 +46,8 @@ function wrap(client: any): DatabaseClient {
           resolve(result);
         });
       });
-    }
+    },
+    transaction: () => new PostgresTransaction(txPool)
   };
 }
 

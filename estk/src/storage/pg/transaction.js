@@ -6,7 +6,7 @@ module.exports = PostgresTransaction;
 
 function PostgresTransaction(txPool: any): Promise<DatabaseTransaction> {
   return new Promise((resolve, reject) => {
-    txPool.connect(function(err: ?Error, client: any, done: () => void) {
+    txPool.connect(function(err: ?Error, client: any, done: (err?: any) => void) {
       if (err) { return reject(err); }
 
       function commit(): Promise<void> {

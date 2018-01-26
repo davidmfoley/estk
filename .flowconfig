@@ -1,5 +1,6 @@
 [ignore]
 <PROJECT_ROOT>/node_modules/typechecker/.*
+<PROJECT_ROOT>/node_modules/conventional-changelog-core/.*
 <PROJECT_ROOT>/node_modules/watchr/.*
 
 [include]

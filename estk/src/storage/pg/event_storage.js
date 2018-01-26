@@ -1,20 +1,26 @@
 // @flow
 import type { DatabaseClient } from '../types'
-import type { Event, EventPublishRequest, EventLookup, EventStream } from '../../types'
+import type { Event, EventPublishRequest, EventLookup, EventStorage } from '../../types'
 import PostgresEventStream from './event_stream';
 import timestamps from  '../timestamps';
 import rowToEvent from './row_to_event';
 
 const debug = require('debug')('PostgresEventStorage');
 
-export default function PostgresEventStorage(client: DatabaseClient) {
-  const storage = {
+type PostgresStorage = {
+  createSchema: Function,
+  deleteAll: Function,
+} & EventStorage
+
+export default function PostgresEventStorage(client: DatabaseClient): Promise<PostgresStorage> {
+
+  return Promise.resolve({
+    publish,
+    getEventStream: (lookup: EventLookup) => Promise.resolve(PostgresEventStream(client, lookup)),
+    close: () => Promise.resolve(),
     createSchema,
     deleteAll,
-    publish,
-    getEventStream,
-    close: () => Promise.resolve()
-  };
+  });
 
   function deleteAll(): Promise<void> {
     debug('delete all events');
@@ -64,12 +70,5 @@ export default function PostgresEventStorage(client: DatabaseClient) {
       return rowToEvent(rows[0]);
     });
   }
-
-
-  function getEventStream(lookup: EventLookup): Promise<EventStream> {
-    return Promise.resolve(PostgresEventStream(client, lookup));
-  }
-
-  return Promise.resolve(storage);
 }
 
