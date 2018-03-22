@@ -15,6 +15,7 @@
     "build:clean": "rimraf lib",
     "build:lib": "babel -d lib --ignore '**/*.test.js' src",
     "build:flow": "flow-copy-source -v -i '**/*.test.js' src lib",
+    "build-and-test": "npm run -s build && npm run -s test:mocha",
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {

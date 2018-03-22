@@ -10,24 +10,29 @@ const watchr = require('watchr');
 let currentTask;
 let queue = [];
 
-watch('packages/estk', 'test', './test', 'npm', ['run', '-s', 'test:mocha']);
-watch('packages/estk', 'test', './src', 'npm', ['run', '-s', 'test:mocha']);
-watch('packages/estk', 'build', './src', 'npm', ['run', '-s', 'build',  'test']);
+watch('estk', 'test', './test', 'yarn', ['test:mocha']);
+watch('estk', 'build-src', './src', 'yarn', ['build-and-test']);
+//watch('estk', 'test-src', './src', 'yarn', ['test:mocha']);
 
 function watch(cwd, name, relativePath, cmd, args) {
   const fullPath = path.normalize(path.join(__dirname, cwd, relativePath));
+
   watchr.open(
     fullPath,
-    () => {
+    (a, b, c) => {
+    console.log(name, b);
       if (!taskIsQueued(name)) {
         enqueue(cwd, name, relativePath, cmd, args);
       }
     },
     (err) => {
       if (err) return console.error('Error:', err);
-      console.log(`Watching ${fullPath} - ${name}`);
+      console.log(`watching ${fullPath} - ${name} (${cmd} ${args.join(' ')})`);
     }
-  );
+  ).setConfig({
+    interval: 1000,
+    catchupDelay: 1000,
+  });
 }
 
 function taskIsQueued(name) {
