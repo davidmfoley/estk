@@ -1,7 +1,7 @@
 //@flow
 import { describe, beforeEach, it } from 'mocha';
-import type { DatabaseClient } from '../../../src/storage/types';
-import PostgresClient from '../../../src/storage/pg/client';
+import type { DatabaseClient } from '../src/types';
+import PostgresClient from '../src/client';
 import { expect } from 'chai';
 
 describe('postgres client', () => {

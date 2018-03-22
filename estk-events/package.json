@@ -1,17 +1,16 @@
 {
-  "name": "estk",
+  "name": "estk-events",
   "version": "0.0.1",
   "description": "",
-  "main": "lib/index.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "npm run -s test:lint && npm run -s test:flow && npm run -s test:mocha",
-    "test:flow": "../node_modules/.bin/flow",
     "test:mocha": "mocha --recursive --compilers js:babel-register test",
     "test:lint": "eslint src/",
-    "build": "npm run -s build:clean && npm run -s build:lib && npm run build:flow",
+    "build": "npm run -s build:clean && npm run -s build:lib",
     "build:clean": "rimraf lib",
     "build:lib": "babel -d lib --ignore '**/*.test.js' src",
     "build:flow": "flow-copy-source -v -i '**/*.test.js' src lib",
@@ -22,7 +21,8 @@
     "debug": "^2.6.4",
     "microtime": "^2.1.5",
     "pg": "^6.1.4",
-    "pg-pool": "^1.7.1"
+    "pg-pool": "^1.7.1",
+    "estk-events": "0.0.1"
   },
   "devDependencies": {
     "babel-eslint": "7",

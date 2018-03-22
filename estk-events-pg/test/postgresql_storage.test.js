@@ -1,10 +1,10 @@
 // @flow
 import { describe } from 'mocha';
 
-import EventStore from '../../src/event_store';
-import PostgresClient from '../../src/storage/pg/client';
-import PostgresEventStorage from '../../src/storage/pg/event_storage';
-import storageTests from './storage_tests.js';
+import {EventStore} from 'estk-events';
+import PostgresClient from '../src/client';
+import PostgresEventStorage from '../src/event_storage';
+import storageTests from 'estk-events/test-suites/storage';
 
 describe('with postgresql storage', () => {
   const config = {

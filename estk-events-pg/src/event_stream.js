@@ -1,6 +1,6 @@
-import type { DatabaseClient } from '../types'
+import type { DatabaseClient } from './types'
 import type { Event, EventLookup, EventStreamBookmark, EventStream } from '../../types'
-import beforeAllEvent from '../before_all_event';
+import { BeforeAllEvent } from 'estk-events';
 import rowToEvent from './row_to_event';
 import buildEventQuery from './build_event_query';
 
@@ -14,7 +14,7 @@ export default function PostgresEventStream(client: DatabaseClient, lookup: Even
   let localBuffer = [];
 
   if (!bookmark) {
-    localBuffer.push(beforeAllEvent);
+    localBuffer.push(BeforeAllEvent);
   }
 
   return {

@@ -2,9 +2,10 @@
 <PROJECT_ROOT>/node_modules/typechecker/.*
 <PROJECT_ROOT>/node_modules/conventional-changelog-core/.*
 <PROJECT_ROOT>/node_modules/watchr/.*
+<PROJECT_ROOT>/.*/lib/.*
 
 [include]
-<PROJECT_ROOT>/*/src/.*
+<PROJECT_ROOT>/.*/src/.*
 
 [libs]
 <PROJECT_ROOT>/flow-typed/.*

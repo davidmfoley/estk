@@ -1,6 +1,6 @@
 // @flow
 
-import type { DatabaseTransaction, ResultSet } from '../types'
+import type { DatabaseTransaction, ResultSet } from './types'
 
 module.exports = PostgresTransaction;
 

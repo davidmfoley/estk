@@ -1,5 +1,5 @@
 import { describe, it } from 'mocha';
-import buildEventQuery from '../../../src/storage/pg/build_event_query';
+import buildEventQuery from '../src/build_event_query';
 import { expect } from 'chai';
 
 describe('buildEventQuery', () => {

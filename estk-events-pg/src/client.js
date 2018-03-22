@@ -4,7 +4,7 @@ import pg from 'pg';
 import url from 'url';
 import Debug from 'debug';
 import PostgresTransaction from './transaction';
-import type { ResultSet, DatabaseClient } from '../types'
+import type { ResultSet, DatabaseClient } from './types'
 
 const debug = Debug('Postgres');
 const Pool = pg.Pool;
@@ -47,7 +47,7 @@ function wrap(client: any): DatabaseClient {
         });
       });
     },
-    transaction: () => new PostgresTransaction(txPool)
+    transaction: () => PostgresTransaction(txPool)
   };
 }
 

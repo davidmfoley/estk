@@ -1,8 +1,8 @@
 // @flow
-import type { DatabaseClient } from '../types'
-import type { Event, EventPublishRequest, EventLookup, EventStorage } from '../../types'
+import { Timestamps } from 'estk-events';
+import type { DatabaseClient } from './types'
+import type { Event, EventPublishRequest, EventLookup, EventStorage } from 'estk-events/types'
 import PostgresEventStream from './event_stream';
-import timestamps from  '../timestamps';
 import rowToEvent from './row_to_event';
 
 const debug = require('debug')('PostgresEventStorage');
@@ -50,7 +50,7 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
       event.action,
       event.meta,
       event.data,
-      timestamps.now()
+      Timestamps.now()
     ];
 
     const sql = `
