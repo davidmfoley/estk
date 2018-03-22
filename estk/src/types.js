@@ -54,10 +54,12 @@ export type EventLookup = {
   filter?: EventFilter
 }
 
+export type EventsPublishedHandler = (event: Event[]) => Promise<void> | void
 
 export type EventStore = {
   publish: (event: EventPublishRequest) => Promise<Event>,
-  onPublished: (handler: (event: Event) => void) => void,
+  onPublished: (handler: EventsPublishedHandler) => void,
   getEventStream: (lookup: EventLookup) => Promise<EventStream>,
   close: () => Promise<void>
 }
+

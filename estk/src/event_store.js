@@ -3,6 +3,7 @@ import type {
   Event,
   EventStore,
   EventStoreSettings,
+  EventsPublishedHandler,
   EventPublishRequest
 } from './types'
 
@@ -37,7 +38,7 @@ export default function init(settings: EventStoreSettings): Promise<EventStore> 
     return storage.publish(event);
   }
 
-  function onPublished(handler: Function) {
+  function onPublished(handler: EventsPublishedHandler) {
     publishHandlers.push(handler);
   }
 
