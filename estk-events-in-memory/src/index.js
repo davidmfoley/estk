@@ -1,5 +1,5 @@
 // @flow
-const timestamps = require('../timestamps');
+import { Timestamps } from 'estk-events';
 
 import type {
   Event,
@@ -8,21 +8,21 @@ import type {
   EventStream,
   EventStreamBookmark,
   EventPublishRequest
-} from '../../types'
+} from 'estk-events/types'
 
-import beforeAllEvent from '../before_all_event';
+import {BeforeAllEvent} from 'estk-events';
 
 let nextId = 0;
 
 module.exports = function() : EventStorage  {
-  let events = [beforeAllEvent];
+  let events = [BeforeAllEvent];
 
   function publish({ data, meta, targetId, targetType, action }: EventPublishRequest): Promise<Event> {
     nextId++;
 
     const event: Event = {
       id: nextId,
-      timestamp: timestamps.now(),
+      timestamp: Timestamps.now(),
       action,
       data,
       meta: meta || {},
@@ -39,7 +39,7 @@ module.exports = function() : EventStorage  {
     const lookupFilter = filterEvents.bind(null, lookup || {});
     let index = 0;
 
-    function next(): Promise<Event> {
+    function next(): Promise<?Event> {
       while (index < events.length && !lookupFilter(events[index])) {
         index++;
       }
@@ -73,7 +73,7 @@ module.exports = function() : EventStorage  {
     const timestamp = bookmark ? bookmark.timestamp : null;
     if (bookmark && isBeforeBookmark(bookmark, event)) return true;
 
-    if (event.action === beforeAllEvent.action) {
+    if (event.action === BeforeAllEvent.action) {
       return !timestamp;
     }
 

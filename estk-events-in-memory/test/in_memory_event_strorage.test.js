@@ -1,9 +1,9 @@
 // @flow weak
 import { describe } from 'mocha';
 
-import EventStore from '../../src/event_store';
-import InMemoryStorage from '../../src/storage/in_memory';
-import storageTests from '../../test-suites/storage.js';
+import { EventStore } from 'estk-events';
+import InMemoryStorage from '../src';
+import storageTests from 'estk-events/test-suites/storage';
 
 describe('with in-memory storage', () => {
   const startStore = () => {

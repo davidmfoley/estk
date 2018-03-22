@@ -1,5 +1,5 @@
 {
-  "name": "estk-events-pg",
+  "name": "estk-events-in-memory",
   "version": "0.0.1",
   "description": "",
   "main": "lib/index.js",
@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run -s test:lint && npm run -s test:mocha",
+    "test": "npm run -s test:lint && npm run -s test:flow && npm run -s test:mocha",
+    "test:flow": "flow",
     "test:mocha": "mocha --recursive --compilers js:babel-register test",
     "test:lint": "eslint src/",
     "build": "npm run -s build:clean && npm run -s build:lib && npm run build:flow",
@@ -18,9 +19,7 @@
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {
-    "debug": "^2.6.4",
-    "pg": "^7.4.1",
-    "pg-pool": "^2.0.3"
+    "debug": "^2.6.4"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

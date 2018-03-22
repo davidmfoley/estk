@@ -1,11 +1,13 @@
 [ignore]
 <PROJECT_ROOT>/node_modules/typechecker/.*
 <PROJECT_ROOT>/node_modules/conventional-changelog-core/.*
-<PROJECT_ROOT>/node_modules/watchr/.*
+.*/node_modules/watchr/.*
 <PROJECT_ROOT>/.*/lib/.*
 
 [include]
-<PROJECT_ROOT>/.*/src/.*
+<PROJECT_ROOT>/estk-events/src/.*
+<PROJECT_ROOT>/estk-events-pg/src/.*
+<PROJECT_ROOT>/estk-events-in-memory/src/.*
 
 [libs]
-<PROJECT_ROOT>/flow-typed/.*
+<PROJECT_ROOT>/node_modules/.*

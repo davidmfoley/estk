@@ -1,8 +1,8 @@
 // @flow
 
-import pg from 'pg';
 import url from 'url';
 import Debug from 'debug';
+import pg from 'pg';
 import PostgresTransaction from './transaction';
 import type { ResultSet, DatabaseClient } from './types'
 

@@ -3,5 +3,7 @@ export type {
   Event,
   EventPublishRequest,
   EventLookup,
-  EventStorage
+  EventStorage,
+  EventStream,
+  EventStreamBookmark,
 } from './src/types';

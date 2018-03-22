@@ -1,10 +1,10 @@
 {
+  "name": "estk",
   "private": true,
   "scripts": {
     "flow": "! flow check 2>/dev/null | grep -v 'Found 0 errors' 1>&2"
   },
   "workspaces": [
-    "estk",
     "estk-*"
   ],
   "devDependencies": {

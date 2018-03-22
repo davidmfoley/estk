@@ -10,8 +10,10 @@ const watchr = require('watchr');
 let currentTask;
 let queue = [];
 
-watch('estk', 'test', './test', 'yarn', ['test:mocha']);
-watch('estk', 'build-src', './src', 'yarn', ['build-and-test']);
+watch('estk-events', 'events-test', './test', 'yarn', ['test:mocha']);
+watch('estk-events', 'events-build-src', './src', 'yarn', ['build-and-test']);
+watch('estk-events-pg', 'estk-events-pg-test', './src', 'yarn', ['test:mocha']);
+watch('estk-events-pg', 'estk-events-pg-build-src', './src', 'yarn', ['build-and-test']);
 //watch('estk', 'test-src', './src', 'yarn', ['test:mocha']);
 
 function watch(cwd, name, relativePath, cmd, args) {
