@@ -1,0 +1,17 @@
+#! /bin/bash
+DIR=$( cd "$( dirname "$0" )" && pwd )
+DB_URL=${1:-$DATABASE_URL_TEST}
+
+DB=`echo "$DB_URL" | sed 's/^.*\///'`
+HOST=`echo "$DB_URL" | sed 's/\/[^\/]*$//' | sed 's/^.*\/\///'`
+
+echo "dropping $DB"
+dropdb -h $HOST $DB
+
+set -e
+
+echo "recreating $DB"
+createdb -h $HOST $DB
+
+psql $DB_URL -c 'drop schema public cascade;'
+psql $DB_URL -c 'create schema public;'
