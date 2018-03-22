@@ -1,5 +1,8 @@
 {
   "private": true,
+  "scripts": {
+    "flow": "! flow check 2>/dev/null | grep -v 'Found 0 errors' 1>&2"
+  },
   "workspaces": [
     "estk",
     "estk-*"
@@ -16,8 +19,7 @@
     "flow-bin": "^0.64.0",
     "flow-copy-source": "^1.1.0",
     "flow-typed": "^2.2.3",
-    "lerna": "^2.0.0-rc.5",
-    "watchr": "^3.0.1"
+    "watchr": "^4.0.1"
   },
   "dependencies": {}
 }
