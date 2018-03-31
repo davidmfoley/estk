@@ -3,3 +3,4 @@ lib
 .tern-port
 .envrc
 yarn-error.log
+.nyc_output
