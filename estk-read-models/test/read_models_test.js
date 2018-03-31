@@ -47,8 +47,10 @@ describe('on-demand read models', () => {
   it('reduces state from events', async () => {
     const store = exampleEventStore([
       { targetType: 'sandwich', action: 'make', data: {meat:'roast beast', bread: 'rye'}},
+      { targetType: 'sandwich', action: 'sell', data: {}},
       { targetType: 'sandwich', action: 'bite' },
     ]);
+
     const sandwich = await Sandwich(store).get('42');
 
     expect(sandwich.meat).to.eq('roast beast');
