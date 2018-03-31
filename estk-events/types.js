@@ -1,6 +1,7 @@
 // @flow
 export type {
   Event,
+  EventFilter,
   EventPublishRequest,
   EventLookup,
   EventStorage,
