@@ -53,18 +53,26 @@ function buildTargetTypeClause(targetType, spec, offset) {
       params: [targetType]
     }
   }
+  if (spec.action) {
+    let actions = Array.isArray(spec.action) ? spec.action : [spec.action];
+    const actionParams = actions.map((a, i) => `$${offset + i + 2}`).join(', ');
+    let sql = `target_type = $${offset + 1} AND action IN (${actionParams})`;
+    let params = [targetType].concat(actions);
+
+    if (spec.id) {
+      sql += ` AND target_id = $${params.length + 1}`;
+      params.push(spec.id);
+    }
+
+    return {
+      sql: `(${sql})`,
+      params
+    };
+  }
   if (spec.id) {
     return {
       sql: `(target_type = $${offset + 1} AND target_id = $${offset + 2})`,
       params: [targetType, spec.id]
-    }
-  }
-  if (spec.action) {
-    let actions = Array.isArray(spec.action) ? spec.action : [spec.action];
-    const actionParams = actions.map((a, i) => `$${offset + i + 2}`).join(', ');
-    return {
-      sql: `(target_type = $${offset + 1} AND action IN (${actionParams}))`,
-      params: [targetType].concat(actions)
     }
   }
 }

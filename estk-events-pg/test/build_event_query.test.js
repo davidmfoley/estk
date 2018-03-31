@@ -36,6 +36,15 @@ describe('buildEventQuery', () => {
     expect(query.params).to.eql(['robot', 'create', 'update', 10]);
   });
 
+  it('handles lookup of target, type and id', () => {
+    let query = buildEventQuery({
+      robot: {action: ['create', 'update'], id: '42'}
+    }, null, 10)
+
+    expect(query.sql).to.eq('SELECT * FROM events WHERE (target_type = $1 AND action IN ($2, $3) AND target_id = $4) ORDER BY timestamp, id LIMIT $5');
+    expect(query.params).to.eql(['robot', 'create', 'update', '42', 10]);
+  });
+
   it('handles lookup of multiple target types', () => {
     let query = buildEventQuery({
       robot: {action: ['create', 'update']},
