@@ -10,13 +10,16 @@ const watchr = require('watchr');
 let currentTask;
 let queue = [];
 
-watch('estk-events', 'events-test', './test', 'yarn', ['test:mocha']);
-watch('estk-events', 'events-build-src', './src', 'yarn', ['build-and-test']);
-watch('estk-events-pg', 'estk-events-pg-test', './test', 'yarn', ['test:mocha']);
-watch('estk-events-pg', 'estk-events-pg-build-src', './src', 'yarn', ['build-and-test']);
-watch('estk-events-in-memory', 'estk-events-in-memory-test', './test', 'yarn', ['test:mocha']);
-watch('estk-events-in-memory', 'estk-events-in-memory-build-src', './src', 'yarn', ['build-and-test']);
-//watch('estk', 'test-src', './src', 'yarn', ['test:mocha']);
+
+watchProject('estk-events-in-memory');
+watchProject('estk-events-pg');
+watchProject('estk-read-models');
+watchProject('estk-events');
+
+function watchProject(cwd) {
+  watch(cwd, `${cwd}-test`, './test', 'yarn', ['test']);
+  watch(cwd, `${cwd}-build-and-test`, './src', 'yarn', ['build-and-test']);
+}
 
 function watch(cwd, name, relativePath, cmd, args) {
   const fullPath = path.normalize(path.join(__dirname, cwd, relativePath));
