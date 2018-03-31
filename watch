@@ -12,8 +12,10 @@ let queue = [];
 
 watch('estk-events', 'events-test', './test', 'yarn', ['test:mocha']);
 watch('estk-events', 'events-build-src', './src', 'yarn', ['build-and-test']);
-watch('estk-events-pg', 'estk-events-pg-test', './src', 'yarn', ['test:mocha']);
+watch('estk-events-pg', 'estk-events-pg-test', './test', 'yarn', ['test:mocha']);
 watch('estk-events-pg', 'estk-events-pg-build-src', './src', 'yarn', ['build-and-test']);
+watch('estk-events-in-memory', 'estk-events-in-memory-test', './test', 'yarn', ['test:mocha']);
+watch('estk-events-in-memory', 'estk-events-in-memory-build-src', './src', 'yarn', ['build-and-test']);
 //watch('estk', 'test-src', './src', 'yarn', ['test:mocha']);
 
 function watch(cwd, name, relativePath, cmd, args) {
