@@ -29,6 +29,19 @@ module.exports = (startStore) => {
       expect(events.length).to.eq(4);
     });
 
+    it('can get a stream of events filtered by type and action and id', async () => {
+      const stream = await store.getEventStream({
+        filter: {
+          android: { id: 'B', action: 'delete' }
+        }
+      });
+
+      const events = await readAll(stream);
+      expect(events.length).to.eq(2);
+      expect(events[0].action).to.eq('$before');
+      expect(events[2].action).to.eq('delete');
+    });
+
     it('can get a stream of events filtered by type and id', async () => {
       const stream = await store.getEventStream({
         filter: {
