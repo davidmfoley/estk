@@ -8,7 +8,7 @@ import type {
   EventStream,
   EventStreamBookmark,
   EventPublishRequest
-} from 'estk-events/types'
+} from 'estk-events/types';
 
 import {BeforeAllEvent} from 'estk-events';
 

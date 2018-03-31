@@ -28,7 +28,7 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
   }
 
   function createSchema(): Promise<void> {
-    debug('create event schema');
+    debug('create event table');
 
     return client.query(`
       CREATE TABLE IF NOT EXISTS events (
