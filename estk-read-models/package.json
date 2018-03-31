@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run -s test:lint && npm run -s test:mocha",
+    "test": "npm run -s test:mocha && npm run -s test:lint",
     "test:mocha": "mocha --recursive --compilers js:babel-register test",
     "test:lint": "eslint src/",
     "build": "npm run -s build:clean && npm run -s build:lib",
@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "debug": "^2.6.4",
+    "estk-events": "0.0.1",
     "microtime": "^2.1.5"
   },
   "devDependencies": {
