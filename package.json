@@ -2,7 +2,8 @@
   "name": "estk",
   "private": true,
   "scripts": {
-    "flow": "! flow check 2>/dev/null | grep -v 'Found 0 errors' 1>&2"
+    "flow": "! flow check 2>/dev/null | grep -v 'Found 0 errors' 1>&2",
+    "test": "ls -d estk-* | xargs -I{} sh -c 'echo; echo \"**** {}\"; echo; cd {}; yarn test'"
   },
   "workspaces": [
     "estk-*"
