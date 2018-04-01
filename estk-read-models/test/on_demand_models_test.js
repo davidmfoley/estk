@@ -32,7 +32,7 @@ describe('on-demand read models', () => {
     const store = exampleEventStore([ ]);
     await Sandwich(store).get('42');
 
-    expect(store.lastFilter()).to.eql({
+    expect(store.lastLookup().filter).to.eql({
       sandwich: { id: '42' }
     });
   });
@@ -57,19 +57,43 @@ describe('on-demand read models', () => {
     expect(sandwich.bread).to.eq('rye');
     expect(sandwich.hit_points).to.eq(3);
   });
+
+  it('can update an existing model state with new events', async () => {
+    const existing = {
+      id: '42',
+      meat: ' chicken',
+      bread: ' wheat',
+      hit_points: 2
+    };
+
+    const store = exampleEventStore([
+      { targetType: 'sandwich', action: 'bite' },
+    ]);
+
+    const exampleBookmark = '12345';
+
+    const sandwich = await Sandwich(store).update({
+      id: '42',
+      state: existing,
+      bookmark: exampleBookmark
+    });
+
+    expect(sandwich.hit_points).to.eq(1);
+    expect(store.lastLookup().bookmark).to.eq(exampleBookmark);
+  });
 });
 
 function exampleEventStore(events) {
-  let lastFilter;
+  let lastLookup;
 
   return {
     getEventStream,
-    lastFilter: () => lastFilter
+    lastLookup: () => lastLookup,
   };
 
-  function getEventStream(filter): any {
+  function getEventStream({filter, bookmark}: EventLookup): any {
     let e = events.slice();
-    lastFilter = filter;
+    lastLookup = { filter, bookmark};
 
     return {
       next: () => Promise.resolve(e.shift()),
