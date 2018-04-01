@@ -6,6 +6,7 @@ import type {
   EventLookup,
   EventStorage,
   EventStream,
+  EventStreamItem,
   EventStreamBookmark,
   EventPublishRequest
 } from 'estk-events/types';
@@ -38,20 +39,34 @@ module.exports = function() : EventStorage  {
   function getEventStream(lookup: EventLookup): Promise<EventStream> {
     const lookupFilter = filterEvents.bind(null, lookup || {});
     let index = 0;
+    let soughtBookmark;
 
-    function next(): Promise<?Event> {
+    function next(): Promise<EventStreamItem> {
       while (index < events.length && !lookupFilter(events[index])) {
         index++;
       }
-      const resolved = Promise.resolve(events[index] || null);
+      const resolved = Promise.resolve(events[index] || { ended: true, bookmark: getBookmark() });
       index++;
       return resolved;
     }
 
     function seek(bookmark: EventStreamBookmark) {
+      soughtBookmark = bookmark;
       while(isBeforeBookmark(bookmark, events[0])) {
         index++;
       }
+    }
+
+    function getBookmark() {
+      if (events.length > 0) {
+        const last = events[events.length - 1];
+        return {
+          id: last.id,
+          timestamp: last.timestamp
+        };
+      }
+
+      return soughtBookmark ||  lookup.bookmark || { id: '', timestamp: '' };
     }
 
     return Promise.resolve({

@@ -61,9 +61,9 @@ module.exports = (startStore) => {
     const events = [];
     let event = 1;
 
-    while(event) {
+    while(!event.ended) {
       event = await stream.next();
-      if (event) events.push(event);
+      if (!event.ended) events.push(event);
     }
 
     return events;

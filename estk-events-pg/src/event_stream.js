@@ -1,5 +1,5 @@
 import type { DatabaseClient } from './types'
-import type { Event, EventLookup, EventStreamBookmark, EventStream } from '../../types'
+import type { Event, EventLookup, EventStreamBookmark, EventStream, EventStreamItem } from '../../types'
 import { BeforeAllEvent } from 'estk-events';
 import rowToEvent from './row_to_event';
 import buildEventQuery from './build_event_query';
@@ -36,12 +36,12 @@ export default function PostgresEventStream(client: DatabaseClient, lookup: Even
     }
   }
 
-  function next(): Promise<?Event> {
+  function next(): Promise<EventStreamItem> {
     if (drained) return Promise.resolve(null);
 
     if (localBufferEmpty()) {
       return refillLocalBuffer().then(() => {
-        return popEvent() || null;
+        return popEvent() || { ended: true, bookmark };
       });
     }
     else {

@@ -46,7 +46,8 @@ module.exports = (startStore) => {
       }
 
       const eof = await stream.next();
-      expect(eof).to.eq(null);
+      expect(eof.ended).to.eq(true);
+      expect(eof.bookmark).to.be.ok;
     });
   });
 };

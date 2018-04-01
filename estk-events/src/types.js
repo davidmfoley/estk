@@ -6,11 +6,6 @@ export type EventStreamBookmark = {
   timestamp: string, // microsecond precise
 }
 
-export type EventStream = {
-  next: () => Promise<?Event>, // null means done
-  seek: (bookmark: EventStreamBookmark) => void
-};
-
 export type EventStorage = {
   publish: (request: EventPublishRequest) => Promise<Event>,
   getEventStream: (lookup: EventLookup) => Promise<EventStream>,
@@ -35,6 +30,19 @@ export type Event = {
   meta: Object,
   timestamp: string
 }
+
+export type EventStreamEnd = {
+  ended: true,
+  bookmark: EventStreamBookmark,
+}
+
+export type EventStreamItem = Event | EventStreamEnd;
+
+export type EventStream = {
+  next: () => Promise<EventStreamItem>,
+  seek: (bookmark: EventStreamBookmark) => void
+};
+
 
 export type EventStoreSettings = {
   storage: EventStorage,

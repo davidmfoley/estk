@@ -42,8 +42,10 @@ module.exports = (startStore) => {
       expect(event.targetId).to.eq('42');
       expect(event.data).to.eql({name: 'foo'});
 
-      event = await stream.next();
-      expect(event).not.to.be.ok;
+      let eof = await stream.next();
+      expect(eof.ended).to.eq(true);
+      expect(eof.bookmark.id).to.eq(event.id);
+      expect(eof.bookmark.timestamp).to.eq(event.timestamp);
     });
   });
 };
