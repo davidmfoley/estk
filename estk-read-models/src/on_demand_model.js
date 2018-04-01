@@ -4,6 +4,7 @@ import type {
   EventFilter,
   EventStore,
   EventStream,
+  EventStreamBookmark,
 } from 'estk-events';
 
 type EventHandler = (state: any, event: Event) => any;
