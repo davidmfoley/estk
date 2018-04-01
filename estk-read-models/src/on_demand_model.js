@@ -25,7 +25,9 @@ type UpdateModelRequest = {
   bookmark: EventStreamBookmark
 }
 
-export default (config: OnDemandReadModelConfig) => (store: EventStore) => {
+import type OnDemandModel from './types';
+
+export default (config: OnDemandReadModelConfig) => (store: EventStore): OnDemandModel => {
   return { get, update };
 
   async function get(id: any) {
