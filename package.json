@@ -5,7 +5,8 @@
     "flow": "! flow check 2>/dev/null | grep -v 'Found 0 errors' 1>&2",
     "test": "ls -d estk-* | xargs -I{} sh -c 'echo; echo \"**** {}\"; echo; cd {}; yarn test'",
     "cover": "ls -d estk-* | xargs -I{} sh -c 'echo; echo \"**** {}\"; echo; cd {}; ../node_modules/.bin/nyc yarn test'",
-    "ci": "npm run -s test && npm run -s flow"
+    "build": "ls -d estk-* | xargs -I{} sh -c 'echo; echo \"**** {}\"; echo; cd {}; yarn build'",
+    "ci": "npm run -s build && npm run -s test && npm run -s flow"
   },
   "workspaces": [
     "estk-*"
