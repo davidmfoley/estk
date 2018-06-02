@@ -6,6 +6,7 @@
     "test": "ls -d estk-* | xargs -I{} sh -c 'echo; echo \"**** {}\"; echo; cd {}; yarn test'",
     "cover": "ls -d estk-* | xargs -I{} sh -c 'echo; echo \"**** {}\"; echo; cd {}; ../node_modules/.bin/nyc yarn test'",
     "build": "ls -d estk-* | xargs -I{} sh -c 'echo; echo \"**** {}\"; echo; cd {}; yarn build'",
+    "link-all": "ls -d estk-* | xargs -I{} sh -c 'echo; echo \"**** {}\"; echo; cd {}; yarn link'",
     "ci": "npm run -s build && npm run -s test && npm run -s flow"
   },
   "workspaces": [
