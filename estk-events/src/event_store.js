@@ -18,7 +18,7 @@ export default function init(settings: EventStoreSettings): Promise<EventStore> 
     close
   });
 
-  function publish(
+  async function publish(
     event: EventPublishRequest | string,
     targetId?: string,
     action?: string,
@@ -35,7 +35,12 @@ export default function init(settings: EventStoreSettings): Promise<EventStore> 
       };
     }
 
-    return storage.publish(event);
+    const published = await storage.publish(event);
+    for (let handler of publishHandlers) {
+      handler([published]);
+    }
+
+    return published;
   }
 
   function onPublished(handler: EventsPublishedHandler) {
