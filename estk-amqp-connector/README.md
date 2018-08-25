@@ -8,7 +8,7 @@ NB: Does not handle bookmarking and is not durable.
 
 ### AmqpMessageBus
 
-```
+```javascript
   const { InMemoryEventStorage } = require('estk-events-in-memory');
   const { EventStore } = require('estk-events');
   const { AmqpMessageBus } = require('estk-amqp-connector');

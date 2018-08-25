@@ -3,7 +3,7 @@
 postgresql storage for estk events
 
 setup: 
-```
+```javascript
   const { EventStore } = require('estk-events');
   const { PostgresClient, PostgresqlEventStorage } = require('estk-events-pg');
 
