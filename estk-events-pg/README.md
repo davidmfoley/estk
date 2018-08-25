@@ -2,12 +2,24 @@
 
 postgresql storage for estk events
 
-setup: 
+### PostgresqlClient
+
+### PostgresqlEventStorage
+
+usage: 
+
 ```javascript
+
   const { EventStore } = require('estk-events');
   const { PostgresClient, PostgresqlEventStorage } = require('estk-events-pg');
 
-  const client = await PostgresClient(config);
+  // client config
+  const client = await PostgresClient({
+    url: 'postgres://localhost/estk',
+    // optional: number of connections
+    poolSize: 10
+  };
+
   const storage: any = await PostgresEventStorage(client);
   const store = await EventStore({ storage });
 ```
