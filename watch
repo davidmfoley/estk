@@ -15,6 +15,7 @@ watchProject('estk-events-in-memory');
 watchProject('estk-events-pg');
 watchProject('estk-read-models');
 watchProject('estk-events');
+watchProject('estk-amqp-connector');
 
 function watchProject(cwd) {
   watch(cwd, `${cwd}-test`, './test', 'yarn', ['test']);
