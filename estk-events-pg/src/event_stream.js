@@ -95,7 +95,6 @@ export default function PostgresEventStream(client: DatabaseClient, lookup: Even
     };
     const CHUNK_SIZE = Math.floor((Math.random() * (config.eventCountMax - config.eventCountMin)) + config.eventCountMin);
 
-
     debug('refilling local event stream buffer', count, 'processed so far... from event', bookmark);
     let query = buildEventQuery(lookup.filter, bookmark, CHUNK_SIZE);
 

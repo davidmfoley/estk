@@ -43,7 +43,6 @@ export type EventStream = {
   seek: (bookmark: EventStreamBookmark) => void
 };
 
-
 export type EventStoreSettings = {
   storage: EventStorage,
 }
