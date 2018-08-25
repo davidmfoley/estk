@@ -4,7 +4,8 @@ import amqplib from 'amqplib';
 import events from 'events';
 
 type AmqpConfig = {
-  url?: string
+  url?: string,
+  exchange?: string
 };
 
 export default async (store: EventStore, config: AmqpConfig = {}) => {
