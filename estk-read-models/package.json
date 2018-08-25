@@ -8,12 +8,12 @@
   },
   "scripts": {
     "test": "npm run -s test:mocha && npm run -s test:lint",
-    "test:mocha": "mocha --recursive --compilers js:babel-register test",
-    "test:lint": "eslint src/",
+    "test:mocha": "../node_modules/.bin/mocha --recursive --compilers js:babel-register test",
+    "test:lint": "../node_modules/.bin/eslint src/",
     "build": "npm run -s build:clean && npm run -s build:lib",
-    "build:clean": "rimraf lib",
-    "build:lib": "babel -d lib --ignore '**/*.test.js' src",
-    "build:flow": "flow-copy-source -v -i '**/*.test.js' src lib",
+    "build:clean": "../node_modules/.bin/rimraf lib",
+    "build:lib": "../node_modules/.bin/babel -d lib --ignore '**/*.test.js' src",
+    "build:flow": "../node_modules/.bin/flow-copy-source -v -i '**/*.test.js' src lib",
     "build-and-test": "npm run -s test:mocha && npm run -s build",
     "prepublishOnly": "npm run -s build"
   },
@@ -23,14 +23,6 @@
     "microtime": "^2.1.5"
   },
   "devDependencies": {
-    "babel-eslint": "7",
-    "chai": "^3.5.0",
-    "eslint": "^3.12.2",
-    "eslint-plugin-flowtype": "^2.42.0",
-    "mocha": "^3.2.0",
-    "rimraf": "^2.5.4",
-    "sinon": "^4.5.0",
-    "sinon-chai": "^3.0.0"
   },
   "author": "Dave Foley",
   "license": "MIT"
