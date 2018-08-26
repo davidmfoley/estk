@@ -1,10 +1,13 @@
 import type { DatabaseClient } from './types'
-import type { Event, EventLookup, EventStreamBookmark, EventStream, EventStreamItem } from '../../types'
+import type { Event, EventLookup, EventStreamBookmark, StorageEventStream, EventStreamItem } from '../../types'
 import { BeforeAllEvent } from 'estk-events';
 import rowToEvent from './row_to_event';
 import buildEventQuery from './build_event_query';
 
-export default function PostgresEventStream(client: DatabaseClient, lookup: EventLookup = {}): EventStream {
+export default function PostgresEventStream(
+  client: DatabaseClient,
+  lookup: EventLookup = {}
+): StorageEventStream {
   const debug = require('debug')('PostgresEventStream');
   debug('created event stream', lookup);
 

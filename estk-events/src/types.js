@@ -8,7 +8,7 @@ export type EventStreamBookmark = {
 
 export type EventStorage = {
   publish: (request: EventPublishRequest) => Promise<Event>,
-  getEventStream: (lookup: EventLookup) => Promise<EventStream>,
+  getEventStream: (lookup: EventLookup) => Promise<StorageEventStream>,
   close: () => Promise<void>,
 }
 
@@ -38,9 +38,13 @@ export type EventStreamEnd = {
 
 export type EventStreamItem = Event | EventStreamEnd;
 
-export type EventStream = {
+export type StorageEventStream = {
   next: () => Promise<EventStreamItem>,
   seek: (bookmark: EventStreamBookmark) => void
+};
+
+export type EventStream = StorageEventStream & {
+  reduce: (reducer: Function, initialState?: any) => Promise<any>
 };
 
 export type EventStoreSettings = {

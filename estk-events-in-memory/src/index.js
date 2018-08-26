@@ -5,7 +5,7 @@ import type {
   Event,
   EventLookup,
   EventStorage,
-  EventStream,
+  StorageEventStream,
   EventStreamItem,
   EventStreamBookmark,
   EventPublishRequest
@@ -36,7 +36,7 @@ module.exports = function() : EventStorage  {
     return Promise.resolve(event);
   }
 
-  function getEventStream(lookup: EventLookup): Promise<EventStream> {
+  function getEventStream(lookup: EventLookup): Promise<StorageEventStream> {
     const lookupFilter = filterEvents.bind(null, lookup || {});
     let index = 0;
     let soughtBookmark;

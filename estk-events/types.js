@@ -7,6 +7,7 @@ export type {
   EventStorage,
   EventStore,
   EventStream,
+  StorageEventStream,
   EventStreamItem,
   EventStreamBookmark,
 } from './src/types';
