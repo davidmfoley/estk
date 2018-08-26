@@ -2,7 +2,7 @@
 import { describe } from 'mocha';
 
 import {EventStore} from 'estk-events';
-import PostgresClient from '../src/client';
+import { PostgresClient } from 'estk-pg';
 import PostgresEventStorage from '../src/event_storage';
 import storageTests from 'estk-events/test-suites/storage';
 

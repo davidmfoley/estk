@@ -1,6 +1,6 @@
 // @flow
 import { Timestamps } from 'estk-events';
-import type { DatabaseClient } from './types'
+import type { DatabaseClient } from 'estk-pg/types'
 import type { Event, EventPublishRequest, EventLookup, EventStorage } from 'estk-events/types'
 import PostgresEventStream from './event_stream';
 import rowToEvent from './row_to_event';
