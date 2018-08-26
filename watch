@@ -27,7 +27,7 @@ function watch(cwd, name, relativePath, cmd, args) {
 
   watchr.open(
     fullPath,
-    (a, b, c) => {
+    (a, b) => {
     console.log(name, b);
       if (!taskIsQueued(name)) {
         enqueue(cwd, name, relativePath, cmd, args);
