@@ -1,24 +1,6 @@
 // @flow
 import type { EventStreamBookmark } from 'estk-events';
-import type { OnDemandModel } from './types';
-
-type Snapshot = {
-  state: any,
-  bookmark: EventStreamBookmark
-};
-
-type NoSnapshot = {
-  state: any,
-  bookmark: any,
-  notFound: true
-};
-
-type SnapshotState = Snapshot | NoSnapshot;
-
-type SnapshotStorage = {
-  get: (id: any) => Promise<SnapshotState>,
-  put: (id: any, snapshot: Snapshot) => Promise<void>,
-};
+import type { OnDemandModel, SnapshotStorage } from './types';
 
 type SnapshotModelConfig = {
   storage: SnapshotStorage,
