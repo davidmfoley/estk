@@ -30,10 +30,6 @@ export default async (store: EventStore, config: AmqpConfig = {}) => {
     close
   };
 
-  async function connect(config: AmqpConfig) {
-    channel;
-  }
-
   function onAmqpMessage(message) {
     const events = JSON.parse(message.content.toString('utf-8'));
     notifyListeners(events);
