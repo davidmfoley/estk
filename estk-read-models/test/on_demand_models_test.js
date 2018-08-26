@@ -1,12 +1,19 @@
 import { describe, it } from 'mocha';
 import OnDemandModel from '../src/on_demand_model';
 import { expect } from 'chai';
+import { EventStore } from 'estk-events';
+import { InMemoryEventStorage } from 'estk-events-in-memory';
 
 describe('on-demand read models', () => {
   const Sandwich = OnDemandModel({
     eventFilter: id => ({
       sandwich: { id }
     }),
+
+    initialState: {
+      meat: 'none',
+      bread: 'none',
+    },
 
     reducer: {
       sandwich: {
@@ -28,27 +35,18 @@ describe('on-demand read models', () => {
     }
   });
 
-  it('builds the event query', async () => {
-    const store = exampleEventStore([ ]);
-    await Sandwich(store).get('42');
-
-    expect(store.lastLookup().filter).to.eql({
-      sandwich: { id: '42' }
-    });
-  });
-
-  it('returns null if no events and no initial state', async () => {
-    const store = exampleEventStore([ ]);
+  it('returns initialState if no events', async () => {
+    const store = await exampleEventStore([ ]);
     const sandwich = await Sandwich(store).get('42');
 
-    expect(sandwich).to.eq(null);
+    expect(sandwich.bread).to.eq('none');
   });
 
   it('reduces state from events', async () => {
-    const store = exampleEventStore([
-      { targetType: 'sandwich', action: 'make', data: {meat:'roast beast', bread: 'rye'}},
-      { targetType: 'sandwich', action: 'sell', data: {}},
-      { targetType: 'sandwich', action: 'bite' },
+    const store = await exampleEventStore([
+      { targetType: 'sandwich', targetId: '42', action: 'make', data: {meat:'roast beast', bread: 'rye'}},
+      { targetType: 'sandwich', targetId: '42', action: 'sell', data: {}},
+      { targetType: 'sandwich', targetId: '42', action: 'bite' },
     ]);
 
     const sandwich = await Sandwich(store).get('42');
@@ -66,8 +64,9 @@ describe('on-demand read models', () => {
       hit_points: 2
     };
 
-    const store = exampleEventStore([
-      { targetType: 'sandwich', action: 'bite' },
+    const store = await exampleEventStore([
+      { targetType: 'sandwich', targetId: '42', action: 'bite' },
+      { targetType: 'sandwich', targetId: '43', action: 'bite' },
     ]);
 
     const exampleBookmark = '12345';
@@ -79,24 +78,13 @@ describe('on-demand read models', () => {
     });
 
     expect(sandwich.hit_points).to.eq(1);
-    expect(store.lastLookup().bookmark).to.eq(exampleBookmark);
   });
 });
 
-function exampleEventStore(events) {
-  let lastLookup;
-
-  return {
-    getEventStream,
-    lastLookup: () => lastLookup,
-  };
-
-  function getEventStream({filter, bookmark}: EventLookup): any {
-    let e = events.slice();
-    lastLookup = { filter, bookmark};
-
-    return {
-      next: () => Promise.resolve(e.shift()),
-    }
+async function exampleEventStore(events) {
+  const store = await EventStore({ storage: InMemoryEventStorage()});
+  for (let event of events) {
+    await store.publish(event);
   }
+  return store;
 }
