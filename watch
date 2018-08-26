@@ -13,7 +13,9 @@ let queue = [];
 
 watchProject('estk-events-in-memory');
 watchProject('estk-events-pg');
-watchProject('estk-read-models');
+watchProject('estk-snapshots');
+watchProject('estk-snapshots-pg');
+watchProject('estk-pg');
 watchProject('estk-events');
 watchProject('estk-amqp-connector');
 
