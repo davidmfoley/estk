@@ -25,9 +25,7 @@ type SnapshotModelConfig = {
   model: OnDemandModel
 };
 
-type SnapshotModel = {
-  get: (id: any) => Promise<any>
-};
+import type { SnapshotModel } from './types';
 
 export default ({ storage, model }: SnapshotModelConfig): SnapshotModel => {
   return { get };
