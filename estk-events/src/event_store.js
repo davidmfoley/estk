@@ -1,4 +1,7 @@
 // @flow
+import type { EventLookup } from "estk-events/src/types";
+import EventStream from './event_stream';
+
 import type {
   Event,
   EventStore,
@@ -7,16 +10,20 @@ import type {
   EventPublishRequest
 } from './types'
 
-export default function init(settings: EventStoreSettings): Promise<EventStore> {
+export default function init({storage}: EventStoreSettings): Promise<EventStore> {
   let publishHandlers = [];
-  const { storage } = settings;
 
   return Promise.resolve({
     publish,
     onPublished,
-    getEventStream: storage.getEventStream,
+    getEventStream,
     close
   });
+
+  async function getEventStream(lookup: EventLookup): EventStream {
+    const storageEventStream = await storage.getEventStream(lookup);
+    return EventStream(storageEventStream);
+  }
 
   async function publish(
     event: EventPublishRequest | string,
@@ -48,6 +55,6 @@ export default function init(settings: EventStoreSettings): Promise<EventStore> 
   }
 
   function close() : Promise<void> {
-    return settings.storage.close();
+    return storage.close();
   }
 }
