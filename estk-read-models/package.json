@@ -23,6 +23,7 @@
     "microtime": "^2.1.5"
   },
   "devDependencies": {
+    "estk-events-in-memory": "0.0.1"
   },
   "author": "Dave Foley",
   "license": "MIT"
