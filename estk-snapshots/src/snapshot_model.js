@@ -1,5 +1,4 @@
 // @flow
-import type { EventStreamBookmark } from 'estk-events';
 import type { OnDemandModel, SnapshotStorage } from './types';
 
 type SnapshotModelConfig = {
