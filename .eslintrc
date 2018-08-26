@@ -3,11 +3,11 @@
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
-    "allowImportExportEverywhere": true,
+    "allowImportExportEverywhere": true
   },
   "rules": {
     "flowtype/define-flow-type": 1,
-    "flowtype/use-flow-type": 1,
+    "flowtype/use-flow-type": 1
   },
   "env": {
     "es6": true,
@@ -15,5 +15,5 @@
     "mocha": true
   },
   "plugins": ["flowtype"],
-  "extends": "eslint:recommended",
+  "extends": "eslint:recommended"
 }
