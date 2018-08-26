@@ -3,7 +3,6 @@ import type {
   Event,
   EventFilter,
   EventStore,
-  EventStream,
   EventStreamBookmark,
 } from 'estk-events';
 
@@ -14,6 +13,7 @@ type EventHandlerMap = {
 
 type OnDemandReadModelConfig = {
   eventFilter: (id: any) => EventFilter,
+  initialState?: any,
   reducer: EventHandler | {
     [targetType: string]: EventHandler | EventHandlerMap
   }
@@ -34,27 +34,18 @@ export default (config: OnDemandReadModelConfig) => (store: EventStore): OnDeman
     const filter = config.eventFilter(id);
 
     const stream = await store.getEventStream({filter});
-    let state = null;
-    return await applyStreamToState(stream, state);
+    return await stream.reduce(reducer, config.initialState || null);
   }
 
   async function update({id, state, bookmark}: UpdateModelRequest): Promise<any> {
     const filter = config.eventFilter(id);
     const stream = await store.getEventStream({filter, bookmark});
-    return await applyStreamToState(stream, state);
+    return await stream.reduce(reducer, state);
   }
 
-  async function applyStreamToState(stream: EventStream, state: any) {
-    let nextEvent = await stream.next();
-
-    while (nextEvent) {
-      const reducer = getHandler(nextEvent, config.reducer);
-      if (reducer) state = reducer(state, nextEvent);
-      nextEvent = await stream.next();
-    }
-
-    return state;
-
+  function reducer(state = null, nextEvent) {
+    const handler = getHandler(nextEvent, config.reducer);
+    return handler ? handler(state, nextEvent) : state;
   }
 }
 
