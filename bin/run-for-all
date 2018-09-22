@@ -6,7 +6,7 @@ for dir in `ls -d estk-*`
 do
   echo
   echo "**** $dir"
-  echo
+  echo "$@"
 
   cd $dir
   [ -f ./package.json ] && sh -c "$@"

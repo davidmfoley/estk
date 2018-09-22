@@ -5,9 +5,9 @@
     "flow": "! flow check 2>/dev/null | grep -v 'Found 0 errors' 1>&2",
     "test": "bin/run-for-all 'yarn test'",
     "cover": "bin/run-for-all '../node_modules/.bin/nyc yarn test'",
-    "build": "bin/run-for-all yarn build",
-    "publish": "npm run -s build && bin/run-for-all publish",
-    "link-all": "bin/run-for-all yarn link",
+    "build": "bin/run-for-all 'yarn run build'",
+    "publish": "npm run -s build && bin/run-for-all npm publish",
+    "link-all": "bin/run-for-all 'yarn run link'",
     "ci": "npm run -s build && npm run -s test && npm run -s flow"
   },
   "workspaces": [
@@ -35,5 +35,5 @@
     "watchr": "^4.0.1"
   },
   "dependencies": {},
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
