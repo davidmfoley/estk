@@ -1,0 +1,27 @@
+{
+  "name": "estk-read-models",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run -s test:lint && npm run -s test:mocha",
+    "test:mocha": "../node_modules/.bin/mocha --recursive --compilers js:babel-register test",
+    "test:lint": "../node_modules/.bin/eslint src/",
+    "build": "npm run -s build:clean && npm run -s build:lib && npm run build:flow",
+    "build:clean": "../node_modules/.bin/rimraf lib",
+    "build:lib": "../node_modules/.bin/babel -d lib --ignore '**/*.test.js' src",
+    "build:flow": "../node_modules/.bin/flow-copy-source -v -i '**/*.test.js' src lib",
+    "build-and-test": "npm run -s build && npm run -s test:mocha",
+    "prepublishOnly": "npm run -s build"
+  },
+  "dependencies": {
+    "estk-events": "0.0.1"
+  },
+  "devDependencies": {
+  },
+  "author": "Dave Foley",
+  "license": "MIT"
+}

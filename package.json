@@ -6,7 +6,7 @@
     "test": "bin/run-for-all 'yarn test'",
     "cover": "bin/run-for-all '../node_modules/.bin/nyc yarn test'",
     "build": "bin/run-for-all 'yarn run build'",
-    "publish": "npm run -s build && bin/run-for-all npm publish",
+    "publish-all": "bin/run-for-public 'npm publish'",
     "link-all": "bin/run-for-all 'yarn run link'",
     "ci": "npm run -s build && npm run -s test && npm run -s flow"
   },
@@ -35,5 +35,5 @@
     "watchr": "^4.0.1"
   },
   "dependencies": {},
-  "version": "0.0.2"
+  "version": "0.0.3"
 }
