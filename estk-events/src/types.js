@@ -59,7 +59,6 @@ export type EventFilter = {
   [targetType: string]: EventFilterSpec
 }
 
-
 export type EventLookup = {
   bookmark?: { id: any, timestamp: string },
   filter?: EventFilter
@@ -73,4 +72,3 @@ export type EventStore = {
   getEventStream: (lookup: EventLookup) => Promise<EventStream>,
   close: () => Promise<void>
 }
-
