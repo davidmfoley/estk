@@ -27,29 +27,31 @@ type UpdateModelRequest = {
 
 import type OnDemandModel from './types';
 
-export default (config: OnDemandReadModelConfig) => (store: EventStore): OnDemandModel => {
+export default ({ eventFilter, initialState, reducer }: OnDemandReadModelConfig) => (store: EventStore): OnDemandModel => {
   return { get, update };
 
   async function get(id: any) {
-    const filter = config.eventFilter(id);
+    const filter = eventFilter(id);
 
     const stream = await store.getEventStream({filter});
-    return await stream.reduce(reducer, config.initialState || null);
+    return await stream.reduce(streamReducer, initialState);
   }
 
   async function update({id, state, bookmark}: UpdateModelRequest): Promise<any> {
-    const filter = config.eventFilter(id);
+    const filter = eventFilter(id);
     const stream = await store.getEventStream({filter, bookmark});
-    return await stream.reduce(reducer, state);
+    return await stream.reduce(streamReducer, state);
   }
 
-  function reducer(state = null, nextEvent) {
-    const handler = getHandler(nextEvent, config.reducer);
+  function streamReducer(state = null, nextEvent) {
+    const handler = getHandler(nextEvent, reducer);
     return handler ? handler(state, nextEvent) : state;
   }
 }
 
 function getHandler({targetType, action}: Event, handlers: any): ?EventHandler {
+  if (typeof handlers === 'function') return handlers;
+
   const handler = handlers[targetType];
   if (!handler) return;
   if (typeof handler == 'function') return handler;

@@ -81,6 +81,37 @@ describe('on-demand read models', () => {
   });
 });
 
+describe('reducer as function', () => {
+  const Counter = OnDemandModel({
+    eventFilter: id => ({
+      sandwich: { id }
+    }),
+
+    initialState: 0,
+
+    reducer: count => count + 1
+  });
+
+  it('returns initialState if no events', async () => {
+    const store = await exampleEventStore([ ]);
+    const count = await Counter(store).get('42');
+
+    expect(count).to.eq(0);
+  });
+
+  it('reduces state from events', async () => {
+    const store = await exampleEventStore([
+      { targetType: 'sandwich', targetId: '42', action: 'make', data: {meat:'roast beast', bread: 'rye'}},
+      { targetType: 'sandwich', targetId: '42', action: 'sell', data: {}},
+      { targetType: 'sandwich', targetId: '42', action: 'bite' },
+    ]);
+
+    const count = await Counter(store).get('42');
+
+    expect(count).to.eq(3);
+  });
+});
+
 async function exampleEventStore(events) {
   const store = await EventStore({ storage: InMemoryEventStorage()});
   for (let event of events) {
