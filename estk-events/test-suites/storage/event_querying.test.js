@@ -59,7 +59,7 @@ module.exports = (startStore) => {
 
   async function readAll(stream) {
     const events = [];
-    let event = 1;
+    let event: any = {};
 
     while(!event.ended) {
       event = await stream.next();

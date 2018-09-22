@@ -39,7 +39,7 @@ export default async (store: EventStore, config: AmqpConfig = {}) => {
     events.forEach(emitter.emit.bind(emitter, 'publish'));
   }
 
-  function onPublished(fn) {
+  function onPublished(fn: Function) {
     emitter.on('publish', fn);
   }
 
