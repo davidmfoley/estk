@@ -6,8 +6,10 @@ export type EventStreamBookmark = {
   timestamp: string, // microsecond precise
 }
 
+type PublishedHandler = (events: Event[], context: Object) => Promise<void>
+
 export type EventStorage = {
-  publish: (request: EventPublishRequest) => Promise<Event>,
+  publish: (request: EventPublishRequest[], onPublished: PublishedHandler) => Promise<Event[]>,
   getEventStream: (lookup: EventLookup) => Promise<StorageEventStream>,
   close: () => Promise<void>,
 }
@@ -20,6 +22,8 @@ export type EventPublishRequest = {
   meta?: Object,
   timestamp?: string,
 }
+
+export type EventsPublishRequest = EventPublishRequest | EventPublishRequest[];
 
 export type Event = {
   id: any,
@@ -67,7 +71,7 @@ export type EventLookup = {
 export type EventsPublishedHandler = (event: Event[]) => Promise<void> | void
 
 export type EventStore = {
-  publish: (event: EventPublishRequest) => Promise<Event>,
+  publish: (event: EventPublishRequest) => Promise<Event[]>,
   onPublished: (handler: EventsPublishedHandler) => void,
   getEventStream: (lookup: EventLookup) => Promise<EventStream>,
   close: () => Promise<void>

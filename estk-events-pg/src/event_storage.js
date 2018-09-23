@@ -43,17 +43,42 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
     `).then(() => undefined);
   }
 
-  function publish(event: EventPublishRequest): Promise<Event> {
-    const params = [
+  async function publish(events: EventPublishRequest[], onPublished: Function): Promise<Event[]> {
+    const transaction = await client.transaction();
+
+    try {
+      const published = [];
+      for (let event of events) {
+        const { sql, params } = buildQuery(event);
+        const rows = await transaction.query(sql, params);
+        const { id, timestamp, target_type, target_id, action, data, meta } = rows[0];
+        debug(`inserted ${id} ${timestamp} ${target_type} ${target_id} ${action} ${data} ${meta}`);
+        published.push(rowToEvent(rows[0]));
+      }
+
+      onPublished(published, { transaction });
+
+      await transaction.commit();
+      return published;
+    }
+    catch (e) {
+      await transaction.rollback();
+      throw e;
+    }
+  }
+}
+
+function buildQuery(event) {
+  return {
+    params: [
       event.targetType,
       event.targetId,
       event.action,
       event.meta,
       event.data,
       Timestamps.now()
-    ];
-
-    const sql = `
+    ],
+    sql: `
       INSERT INTO events (
         target_type,
         target_id,
@@ -62,13 +87,7 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
         data,
         timestamp
       ) values ( $1, $2, $3, $4, $5, $6 ) 
-      RETURNING *;`;
-
-    return client.query(sql, params).then(rows => {
-      const { id, timestamp, target_type, target_id, action, data, meta} = rows[0];
-      debug(`inserted ${id} ${timestamp} ${target_type} ${target_id} ${action} ${data} ${meta}`);
-      return rowToEvent(rows[0]);
-    });
-  }
+      RETURNING *;`
+  };
 }
 

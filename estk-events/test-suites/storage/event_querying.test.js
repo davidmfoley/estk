@@ -9,13 +9,14 @@ module.exports = (startStore) => {
   describe('querying for events', () => {
     beforeEach(async () => {
       store = await startStore();
-      await store.publish('cyborg', 'A', 'create', {name: 'Sy'});
-      await store.publish('cyborg', 'B', 'create', {name: 'Borg'});
-      await store.publish('cyborg', 'A', 'update', {name: 'Cy'});
-
-      await store.publish('android', 'A', 'create', {name: 'Andy'});
-      await store.publish('android', 'B', 'create', {name: 'Roid'});
-      await store.publish('android', 'B', 'delete', {});
+      await store.publish([
+        { targetType: 'cyborg', targetId: 'A', action: 'create', data: { name: 'Sy' } },
+        { targetType: 'cyborg', targetId: 'B', action: 'create', data: { name: 'Borg' } },
+        { targetType: 'cyborg', targetId: 'A', action: 'update', data: { name: 'Cy' } },
+        { targetType: 'android', targetId: 'A', action: 'create', data: { name: 'Andy' } },
+        { targetType: 'android', targetId: 'B', action: 'create', data: { name: 'Roid' } },
+        { targetType: 'android', targetId: 'B', action: 'delete', data: {} },
+      ]);
     });
 
     it('can get a stream of events filtered by type and action', async () => {

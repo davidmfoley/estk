@@ -7,7 +7,7 @@ import type {
   EventStore,
   EventStoreSettings,
   EventsPublishedHandler,
-  EventPublishRequest
+  EventsPublishRequest
 } from './types'
 
 export default function init({storage}: EventStoreSettings): Promise<EventStore> {
@@ -25,27 +25,17 @@ export default function init({storage}: EventStoreSettings): Promise<EventStore>
     return EventStream(storageEventStream);
   }
 
-  async function publish(
-    event: EventPublishRequest | string,
-    targetId?: string,
-    action?: string,
-    data?: Object,
-    meta?: Object,
-  ): Promise<Event> {
-    if (typeof event === 'string') {
-      event = {
-        targetType: event,
-        targetId: targetId || '',
-        action: action || '',
-        data: data || {},
-        meta: meta || {},
-      };
+  async function publish( event: EventsPublishRequest ): Promise<Event[]> {
+    const onEventPublished = async (published, context = {}) => {
+      for (let handler of publishHandlers) {
+        const result = handler([published], context);
+        if (result && result.then) await result;
+      }
     }
 
-    const published = await storage.publish(event);
-    for (let handler of publishHandlers) {
-      handler([published]);
-    }
+    if (!Array.isArray(event)) event = [event];
+
+    const published = await storage.publish(event, onEventPublished);
 
     return published;
   }

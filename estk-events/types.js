@@ -3,6 +3,7 @@ export type {
   Event,
   EventFilter,
   EventPublishRequest,
+  EventsPublishRequest,
   EventLookup,
   EventStorage,
   EventStore,

@@ -18,22 +18,35 @@ let nextId = 0;
 module.exports = function() : EventStorage  {
   let events = [BeforeAllEvent];
 
-  function publish({ data, meta, targetId, targetType, action }: EventPublishRequest): Promise<Event> {
-    nextId++;
+  function publish(request: EventPublishRequest[], onPublished: Function): Promise<Event[]> {
+    const published = request.map(toPublish => {
+      const { data, meta, targetId, targetType, action } = toPublish;
+      nextId++;
 
-    const event: Event = {
-      id: nextId,
-      timestamp: Timestamps.now(),
-      action,
-      data,
-      meta: meta || {},
-      targetId,
-      targetType
-    };
+      const event: Event = {
+        id: nextId,
+        timestamp: Timestamps.now(),
+        action,
+        data,
+        meta: meta || {},
+        targetId,
+        targetType
+      };
 
-    events.push(event);
+      events.push(event);
+      return event;
+    });
 
-    return Promise.resolve(event);
+    try {
+      onPublished(published);
+    }
+    catch(e) {
+      const badIds = new Set(...published.map(e => e.id));
+      events = events.filter(e => !badIds.has(e.id));
+      return Promise.reject(e);
+    }
+
+    return Promise.resolve(published);
   }
 
   function getEventStream(lookup: EventLookup): Promise<StorageEventStream> {

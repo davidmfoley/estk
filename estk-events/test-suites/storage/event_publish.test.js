@@ -7,7 +7,7 @@ module.exports = (startStore) => {
   let store;
 
   describe('publishing an event', () => {
-    let event;
+    let published;
 
     beforeEach(async () => {
       const publishRequest = {
@@ -19,10 +19,11 @@ module.exports = (startStore) => {
 
       store = await startStore();
 
-      event = await store.publish(publishRequest);
+      published = await store.publish(publishRequest);
     });
 
-    it('yields the event', () => {
+    it('yields the events', () => {
+      const [event] = published;
       expect(event.targetType).to.eq('book');
       expect(event.action).to.eq('create');
       expect(event.targetId).to.eq('42');

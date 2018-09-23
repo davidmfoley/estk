@@ -8,7 +8,11 @@ describe('publishing an event', () => {
   beforeEach(async () => {
     store = await EventStore({
       storage: {
-        publish: e => Promise.resolve(e),
+        publish: (e, onPublished) => {
+          onPublished(e);
+
+          Promise.resolve(e);
+        },
         close: () => Promise.resolve(),
         getEventStream: () => Promise.resolve(({}: any))
       }
