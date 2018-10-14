@@ -10,7 +10,6 @@ describe('publishing an event', () => {
       storage: {
         publish: (e, onPublished) => {
           onPublished(e);
-
           Promise.resolve(e);
         },
         close: () => Promise.resolve(),

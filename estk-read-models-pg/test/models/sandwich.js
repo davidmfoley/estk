@@ -1,10 +1,10 @@
+// @flow
 import type { Event } from 'estk-events/types';
-import type { PostgresReadModelConfig } from '../../src/types';
+import type { PostgresReadModelConfig, ReadModelActions } from '../../src/types';
 
 const Sandwich: PostgresReadModelConfig = {
   name: 'sandwich',
   version: 0,
-  updateStrategy: 'on-publish',
   fields: {
     meat: { type: 'text' },
     bread: { type: 'text' },

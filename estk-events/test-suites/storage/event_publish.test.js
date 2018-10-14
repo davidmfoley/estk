@@ -24,6 +24,7 @@ module.exports = (startStore) => {
 
     it('yields the events', () => {
       const [event] = published;
+
       expect(event.targetType).to.eq('book');
       expect(event.action).to.eq('create');
       expect(event.targetId).to.eq('42');
