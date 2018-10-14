@@ -56,7 +56,7 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
         published.push(rowToEvent(rows[0]));
       }
 
-      onPublished(published, { transaction });
+      onPublished(published, { client, transaction });
 
       await transaction.commit();
       return published;
