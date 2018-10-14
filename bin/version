@@ -2,7 +2,7 @@
 DIR=$( cd "$( dirname "$0" )" &&  pwd )
 cd $DIR/..
 
-yarn version $@
+yarn version
 CURRENT_VERSION=`cat package.json | grep '"version":' | cut -d':' -f 2 | cut -d "\"" -f 2`
 echo $CURRENT_VERSION
 bin/run-for-all "yarn version --no-git-tag-version --new-version $CURRENT_VERSION"

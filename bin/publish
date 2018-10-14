@@ -1,2 +1,16 @@
 #! /bin/bash
-bin/run-for-all "yarn build; npm publish"
+DIR=$( cd "$( dirname "$0" )" &&  pwd )
+cd $DIR/..
+
+for dir in `ls -d estk-*`
+do
+  echo
+  echo "**** $dir"
+  echo "$@"
+
+  cd $dir
+  echo $dir
+
+  [ -f ./package.json ] && grep -vFq '"private": true' ./package.json  && npm publish
+  cd ..
+done
