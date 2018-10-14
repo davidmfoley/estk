@@ -28,7 +28,7 @@ export default function init({storage}: EventStoreSettings): Promise<EventStore>
   async function publish( event: EventsPublishRequest ): Promise<Event[]> {
     const onEventPublished = async (published, context = {}) => {
       for (let handler of publishHandlers) {
-        const result = handler([published], context);
+        const result = handler(published, context);
         if (result && result.then) await result;
       }
     }

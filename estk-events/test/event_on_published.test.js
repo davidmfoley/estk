@@ -1,5 +1,6 @@
 // @flow weak
 import { describe, beforeEach, it } from 'mocha';
+import { expect } from 'chai';
 import EventStore from '../src/event_store';
 
 describe('publishing an event', () => {
@@ -27,7 +28,11 @@ describe('publishing an event', () => {
     };
 
     return new Promise(resolve => {
-      store.onPublished(() => resolve());
+      store.onPublished((events) => {
+        expect(events.length).to.eq(1);
+        expect(events[0].action).to.eq('create');
+        resolve()
+      });
 
       store.publish(publishRequest);
     });
