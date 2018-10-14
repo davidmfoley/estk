@@ -1,6 +1,6 @@
 {
   "name": "estk-events-pg",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -24,8 +24,7 @@
     "pg": "^7.4.1",
     "pg-pool": "^2.0.3"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "author": "Dave Foley",
   "license": "MIT"
 }

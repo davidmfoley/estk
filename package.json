@@ -6,7 +6,6 @@
     "test": "bin/run-for-all 'yarn test'",
     "cover": "bin/run-for-all '../node_modules/.bin/nyc yarn test'",
     "build": "bin/run-for-all 'yarn run build'",
-    "publish-all": "bin/run-for-public 'npm publish'",
     "link-all": "bin/run-for-all 'yarn run link'",
     "ci": "npm run -s build && npm run -s test && npm run -s flow"
   },

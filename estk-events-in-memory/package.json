@@ -1,6 +1,6 @@
 {
   "name": "estk-events-in-memory",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -18,11 +18,10 @@
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {
-    "estk-events": "0.0.1",
-    "debug": "^2.6.4"
+    "debug": "^2.6.4",
+    "estk-events": "0.0.1"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "author": "Dave Foley",
   "license": "MIT"
 }

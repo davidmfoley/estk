@@ -1,6 +1,7 @@
 {
   "name": "estk-read-models",
-  "version": "0.0.1",
+  "version": "0.0.3",
+  "private": true,
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -20,8 +21,7 @@
   "dependencies": {
     "estk-events": "0.0.1"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "author": "Dave Foley",
   "license": "MIT"
 }
