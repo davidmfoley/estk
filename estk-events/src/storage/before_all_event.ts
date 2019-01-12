@@ -1,6 +1,5 @@
 //@flow
-import type { Event } from '../types';
-
+import { Event } from '../types';
 const beforeAll: Event = {
   id: 0,
   targetType: '$global',
@@ -9,6 +8,6 @@ const beforeAll: Event = {
   data: {},
   meta: {},
   timestamp: '1970-01-01'
-}
+};
 
-module.exports = beforeAll;
+export default beforeAll;

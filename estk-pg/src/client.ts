@@ -1,33 +1,29 @@
 // @flow
-
 import url from 'url';
 import Debug from 'debug';
-import pg from 'pg';
+import pg, { Pool, QueryResult } from 'pg';
 import PostgresTransaction from './transaction';
-import type { ResultSet, DatabaseClient, DatabaseQuery } from './types'
-
+import { ResultSet, DatabaseClient, DatabaseQuery } from './types';
 const debug = Debug('Postgres');
-const Pool = pg.Pool;
 
 type PostgresConfig = {
-  url: string,
-  poolSize: ?number,
-}
-
+  url: string;
+  poolSize: number | undefined | null;
+};
 type Connection = {
-  client: any,
-  done: Function
-}
+  client: any;
+  done: Function;
+};
 
-let txPool;
-let nontxPool;
+let txPool: Pool;
+let nontxPool: Pool;
 
 export default function init(dbConfig: PostgresConfig): Promise<DatabaseClient> {
   pg.defaults.poolSize = dbConfig.poolSize || 10;
+
   if (dbConfig.url) {
     return db(dbConfig);
-  }
-  else {
+  } else {
     debug('configuration error! Could not connect to database! no URL specfied!');
     return Promise.reject(new Error('Configuration error - could not connect to db'));
   }
@@ -35,24 +31,26 @@ export default function init(dbConfig: PostgresConfig): Promise<DatabaseClient> 
 
 function wrap(client: any): DatabaseClient {
   return {
-    query: ({ sql, params = []}: DatabaseQuery): Promise<ResultSet> => {
-      return new Promise((resolve, reject) => {
-        params = params || [];
-        let start = new Date();
-        client.query(sql, params, function(err, result) {
-          var elapsed = new Date() - start;
-          debug(sql, elapsed +'ms', err || 'success', result && result.rowCount);
-          if (err) return reject(err)
-          resolve(result);
+    query: ({ sql, params = [] }: DatabaseQuery): Promise<ResultSet> => {
+      params = params || [];
+      let start = Date.now()
+      return client.query(sql, params).then(
+        (result: QueryResult) => {
+          const elapsed = Date.now() - start;
+          debug(sql, elapsed + 'ms', 'success', result.rowCount, 'rows');
+          return result.rows;
+        }, (err: Error) => {
+          var elapsed = Date.now() - start;
+          debug(sql, elapsed + 'ms', 'error', err.message);
+          throw err;
         });
-      });
     },
     transaction: () => PostgresTransaction(txPool)
   };
 }
 
 function parseUrl(databaseUrl: string) {
-  var settings = {};
+  var settings: any = {};
   var dbUrl = url.parse(databaseUrl);
 
   if (dbUrl.auth) {
@@ -64,11 +62,10 @@ function parseUrl(databaseUrl: string) {
   settings.host = dbUrl.hostname;
   settings.port = dbUrl.port;
   settings.database = (dbUrl.pathname || '').substring(1);
-
   return settings;
 }
 
-function createPool(name, url) {
+function createPool(name: string, url: string) {
   var settings = parseUrl(url);
   return new Pool(settings);
 }
@@ -76,23 +73,22 @@ function createPool(name, url) {
 function db(dbConfig: PostgresConfig): Promise<DatabaseClient> {
   txPool = txPool || createPool('tx', dbConfig.url);
   nontxPool = nontxPool || createPool('nontx', dbConfig.url);
-
   pg.types.setTypeParser(1184, stringValue => stringValue);
   pg.types.setTypeParser(1114, stringValue => stringValue);
+  pg.types.setTypeParser(1700, parseFloat); // convert bigints to JS int (needed because COUNT returns a bigint)
 
-  pg.types.setTypeParser(1700, parseFloat);
-
-  // convert bigints to JS int (needed because COUNT returns a bigint)
-  pg.types.setTypeParser(20, function(val) {
+  pg.types.setTypeParser(20, function (val) {
     return parseInt(val, 10);
   });
 
   function connect(): Promise<Connection> {
     return new Promise((resolve, reject) => {
-      nontxPool.connect(function(err, client, done) {
+      nontxPool.connect(function (err, client, done) {
         if (err) return reject(err);
-
-        resolve({ client: wrap(client), done });
+        resolve({
+          client: wrap(client),
+          done
+        });
       });
     });
   }
@@ -103,16 +99,26 @@ function db(dbConfig: PostgresConfig): Promise<DatabaseClient> {
     query
   };
 
+  return query({
+    sql: 'select 1'
+  }).then(() => database);
 
-  return query({ sql: 'select 1'}).then(() => database);
-
-  function query({sql, params}: DatabaseQuery): Promise<ResultSet> {
-    return connect().then(({client, done}) => {
+  function query({
+    sql,
+    params
+  }: DatabaseQuery): Promise<ResultSet> {
+    return connect().then(({
+      client,
+      done
+    }) => {
       debug(sql, params);
-      return client.query({sql, params}).then(result => {
+      return client.query({
+        sql,
+        params
+      }).then((result: ResultSet) => {
         done();
-        return result && result.rows || [];
-      }, err => {
+        return result;
+      }, (err: Error) => {
         debug("SQL Error: " + err.message, sql);
         done();
         throw err;
@@ -120,5 +126,3 @@ function db(dbConfig: PostgresConfig): Promise<DatabaseClient> {
     });
   }
 }
-
-

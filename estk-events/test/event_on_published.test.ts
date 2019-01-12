@@ -1,22 +1,24 @@
 // @flow weak
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import EventStore from '../src/event_store';
+import { EventStore, Event }  from '../src/types';
+
+import createEventStore from '../src/event_store';
 
 describe('publishing an event', () => {
-  let store;
+  let store: EventStore;
 
   beforeEach(async () => {
-    store = await EventStore({
+    store = await createEventStore({
       storage: {
-        publish: (e, onPublished) => {
+        publish: (e: Event[], onPublished: any) => {
           onPublished(e);
           Promise.resolve(e);
         },
         close: () => Promise.resolve(),
-        getEventStream: () => Promise.resolve(({}: any))
-      }
-    })
+        getEventStream: () => Promise.resolve(({} as any))
+      } as any
+    });
   });
 
   it('invokes onPublished handlers', () => {
@@ -24,18 +26,17 @@ describe('publishing an event', () => {
       targetType: 'book',
       action: 'create',
       targetId: '42',
-      data: {name: 'foo'}
+      data: {
+        name: 'foo'
+      }
     };
-
     return new Promise(resolve => {
-      store.onPublished((events) => {
+      store.onPublished(events => {
         expect(events.length).to.eq(1);
         expect(events[0].action).to.eq('create');
-        resolve()
+        resolve();
       });
-
       store.publish(publishRequest);
     });
   });
 });
-

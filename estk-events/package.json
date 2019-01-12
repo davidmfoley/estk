@@ -2,18 +2,14 @@
   "name": "estk-events",
   "version": "0.0.3",
   "description": "",
-  "main": "index.js",
+  "main": "./lib",
+  "types": "./lib/types.d.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "npm run -s test:mocha && npm  run -s test:lint",
-    "test:mocha": "../node_modules/.bin/mocha --recursive --compilers js:babel-register test",
-    "test:lint": "../node_modules/.bin/eslint src/",
-    "build": "npm run -s build:clean && npm run -s build:lib",
-    "build:clean": "../node_modules/.bin/rimraf lib",
-    "build:lib": "../node_modules/.bin/babel -d lib --ignore '**/*.test.js' src",
-    "build:flow": "../node_modules/.bin/flow-copy-source -v -i '**/*.test.js' src lib",
+    "test": "../bin/ts-mocha test/**/*.ts",
+    "build": "../bin/ts-build",
     "build-and-test": "npm run -s build && npm run -s test",
     "prepublishOnly": "npm run -s build"
   },
@@ -21,7 +17,9 @@
     "debug": "^2.6.4",
     "microtime": "^2.1.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/microtime": "^2.1.0"
+  },
   "author": "Dave Foley",
   "license": "MIT"
 }

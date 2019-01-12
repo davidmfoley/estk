@@ -1,0 +1,5 @@
+#! /bin/bash
+DIR=$( cd "$( dirname "$0" )/.." &&  pwd )
+
+$DIR/node_modules/.bin/rimraf lib
+$DIR/node_modules/.bin/tsc
