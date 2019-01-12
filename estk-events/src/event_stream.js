@@ -16,9 +16,21 @@ export default (storageEventStream: StorageEventStream): EventStream => {
       return state;
     }
 
+    async function forEach(onEvent: (event: Object) => Promise<*>): Promise<void> {
+      let event;
+      do {
+        event = await storageEventStream.next();
+        if (!event.ended) {
+          const result = onEvent(event);
+          if (result && result.then) await result();
+        }
+      } while (!event.ended);
+    }
+
     return {
       next: storageEventStream.next,
       seek: storageEventStream.seek,
+      forEach,
       reduce
     };
   }
