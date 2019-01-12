@@ -4,7 +4,7 @@ import url from 'url';
 import Debug from 'debug';
 import pg from 'pg';
 import PostgresTransaction from './transaction';
-import type { ResultSet, DatabaseClient } from './types'
+import type { ResultSet, DatabaseClient, DatabaseQuery } from './types'
 
 const debug = Debug('Postgres');
 const Pool = pg.Pool;
@@ -35,7 +35,7 @@ export default function init(dbConfig: PostgresConfig): Promise<DatabaseClient> 
 
 function wrap(client: any): DatabaseClient {
   return {
-    query: function(sql: string, params?: any[]): Promise<ResultSet> {
+    query: ({ sql, params = []}: DatabaseQuery): Promise<ResultSet> => {
       return new Promise((resolve, reject) => {
         params = params || [];
         let start = new Date();
@@ -104,12 +104,12 @@ function db(dbConfig: PostgresConfig): Promise<DatabaseClient> {
   };
 
 
-  return query('select 1').then(() => database);
+  return query({ sql: 'select 1'}).then(() => database);
 
-  function query(sql: string, params?: Array<any>): Promise<ResultSet> {
+  function query({sql, params}: DatabaseQuery): Promise<ResultSet> {
     return connect().then(({client, done}) => {
       debug(sql, params);
-      return client.query(sql, params).then(result => {
+      return client.query({sql, params}).then(result => {
         done();
         return result && result.rows || [];
       }, err => {

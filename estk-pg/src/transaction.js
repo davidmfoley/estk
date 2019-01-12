@@ -1,6 +1,6 @@
 // @flow
 
-import type { DatabaseTransaction, ResultSet } from './types'
+import type { DatabaseTransaction, DatabaseQuery, ResultSet } from './types'
 
 module.exports = PostgresTransaction;
 
@@ -17,7 +17,7 @@ function PostgresTransaction(txPool: any): Promise<DatabaseTransaction> {
         return client.query('ROLLBACK;');
       }
 
-      function query(sql: string, params?: any[]): Promise<ResultSet> {
+      function query({sql, params = []}: DatabaseQuery): Promise<ResultSet> {
         return client.query(sql, params).then(
           result => result && result.rows || undefined,
           err => {

@@ -101,7 +101,7 @@ export default function PostgresEventStream(
     debug('refilling local event stream buffer', count, 'processed so far... from event', bookmark);
     let query = buildEventQuery(lookup.filter, bookmark, CHUNK_SIZE);
 
-    return client.query(query.sql, query.params).then(rows => {
+    return client.query(query).then(rows => {
       localBuffer = rows.map(rowToEvent);
       if (localBuffer.length === 0) {
         debug('event stream has been drained - total count was ', count, 'events');

@@ -24,13 +24,14 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
 
   function deleteAll(): Promise<void> {
     debug('delete all events');
-    return client.query('delete from events;').then(() => undefined);
+    return client.query({ sql: 'delete from events;'}).then(() => undefined);
   }
 
   function createSchema(): Promise<void> {
     debug('create event table');
 
-    return client.query(`
+    return client.query({ 
+      sql: `
       CREATE TABLE IF NOT EXISTS events (
         id serial primary key,
         target_type character varying NOT NULL,
@@ -39,8 +40,8 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
         data jsonb,
         meta jsonb,
         "timestamp" timestamp without time zone default (now() at time zone 'utc')
-      );
-    `).then(() => undefined);
+      );`
+    }).then(() => undefined);
   }
 
   async function publish(events: EventPublishRequest[], onPublished: Function): Promise<Event[]> {
@@ -50,7 +51,7 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
       const published = [];
       for (let event of events) {
         const { sql, params } = buildQuery(event);
-        const rows = await transaction.query(sql, params);
+        const rows = await transaction.query({sql, params});
         const { id, timestamp, target_type, target_id, action, data, meta } = rows[0];
         debug(`inserted ${id} ${timestamp} ${target_type} ${target_id} ${action} ${data} ${meta}`);
         published.push(rowToEvent(rows[0]));

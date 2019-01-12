@@ -3,7 +3,16 @@
 export type ResultRow = Object
 export type ResultSet = Array<ResultRow>
 
-type QueryAction = (sql: string, params?: Array<any>) => Promise<ResultSet>
+export type DatabaseQuery = {
+  sql: string,
+  params?: Array<any>
+};
+
+type QueryAction = (query: Query) => Promise<ResultSet>
+
+export type QueryContext  = {
+  query: QueryAction
+};
 
 export type DatabaseTransaction = {
   query: QueryAction,
