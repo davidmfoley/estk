@@ -20,7 +20,13 @@ export type ReadModelActions = {
   delete: (lookup: ReadModelLookup) => Promise<void>,
 };
 
-type ReadModelsConfig = {
+export type ReadModelsConfig = {
   client: DatabaseClient,
   eventStore: EventStore,
+  models: {
+    [key: string]: ReadModelConfig
+  }
 }
+
+export type ReadModelConfig = {
+};
