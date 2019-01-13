@@ -1,10 +1,9 @@
 // @flow
 import { describe } from 'mocha';
-
-import {EventStore} from 'estk-events';
+import { createEventStore } from 'estk-events';
 import { PostgresClient } from 'estk-pg';
 import PostgresEventStorage from '../src/event_storage';
-import storageTests from 'estk-events/test-suites/storage';
+import { TestSuites } from 'estk-events';
 
 describe('with postgresql storage', () => {
   const config = {
@@ -17,8 +16,10 @@ describe('with postgresql storage', () => {
     const storage: any = await PostgresEventStorage(client);
     await storage.createSchema();
     await storage.deleteAll();
-    return EventStore({ storage });
+    return createEventStore({
+      storage
+    });
   };
 
-  storageTests(startStore);
+  TestSuites.storage(startStore);
 });

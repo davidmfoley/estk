@@ -32,7 +32,6 @@ usage:
 
 ```javascript
 
-  const { EventStore } = require('estk-events');
   const { PostgresClient } = require('estk-pg');
   const client = PostgresClient('postgres://localhost/db-name');
   const [result] = await client.query('select 42 as answer');

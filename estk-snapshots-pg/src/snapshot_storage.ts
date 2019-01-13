@@ -1,13 +1,16 @@
 // @flow
-import type { DatabaseClient } from 'estk-pg/types';
-import type { SnapshotStorage, SnapshotState } from 'estk-snapshots/types';
+import { DatabaseClient } from 'estk-pg';
+import { SnapshotStorage, SnapshotState } from 'estk-snapshots';
 
-type PostgresqlSnapshotConfig  = {
-  client: DatabaseClient,
-  tableName: string,
-}
+type PostgresqlSnapshotConfig = {
+  client: DatabaseClient;
+  tableName: string;
+};
 
-export default ({ client, tableName }: PostgresqlSnapshotConfig ): SnapshotStorage => {
+export default (({
+  client,
+  tableName
+}: PostgresqlSnapshotConfig): SnapshotStorage => {
   return {
     get,
     put
@@ -28,14 +31,17 @@ export default ({ client, tableName }: PostgresqlSnapshotConfig ): SnapshotStora
     }
 
     return {
-      notFound: true
-    }
+      notFound: true,
+      state: {},
+      bookmark: {}
+    };
   }
 
-
-  async function put(id: any, { state, bookmark}: SnapshotState): Promise<void> {
+  async function put(id: any, {
+    state,
+    bookmark
+  }: SnapshotState): Promise<void> {
     await ensureTableExists();
-
     await client.query({
       sql: `
         insert into "${tableName}" (id, state, bookmark)
@@ -54,4 +60,4 @@ export default ({ client, tableName }: PostgresqlSnapshotConfig ): SnapshotStora
       )`
     });
   }
-} 
+});

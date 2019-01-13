@@ -11,7 +11,7 @@ usage:
 
 ```javascript
 
-  const { EventStore } = require('estk-events');
+  const { createEventStore } = require('estk-events');
   const { PostgresClient } = require('estk-pg');
   const { PostgresEventStorage } = require('estk-events-pg');
 
@@ -23,7 +23,7 @@ usage:
   };
 
   const storage: any = await PostgresEventStorage(client);
-  const store = await EventStore({ storage });
+  const store = await createEventStore({ storage });
 
   store.publish({
     targetType: 'sandwich',

@@ -8,7 +8,7 @@ const debug = Debug('Postgres');
 
 type PostgresConfig = {
   url: string;
-  poolSize: number | undefined | null;
+  poolSize?: number
 };
 type Connection = {
   client: any;
