@@ -2,8 +2,7 @@
   "name": "estk-events",
   "version": "0.0.3",
   "description": "",
-  "main": "./lib",
-  "types": "./lib/types.d.ts",
+  "main": "lib",
   "directories": {
     "test": "test"
   },

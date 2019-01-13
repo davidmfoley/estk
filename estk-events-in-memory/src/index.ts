@@ -1,7 +1,6 @@
-// @flow
 import { Timestamps } from 'estk-events';
 
-import type {
+import {
   Event,
   EventLookup,
   EventStorage,
@@ -9,20 +8,28 @@ import type {
   EventStreamItem,
   EventStreamBookmark,
   EventPublishRequest
-} from 'estk-events/types';
+} from 'estk-events';
 
-import {BeforeAllEvent} from 'estk-events';
+import { BeforeAllEvent } from 'estk-events';
 
 let nextId = 0;
 
-module.exports = function() : EventStorage  {
+function InMemoryStorage(): EventStorage {
   let events = [BeforeAllEvent];
 
-  function publish(request: EventPublishRequest[], onPublished: Function): Promise<Event[]> {
+  function publish(
+    request: EventPublishRequest[],
+     onPublished: Function
+  ): Promise<Event[]> {
     const published = request.map(toPublish => {
-      const { data, meta, targetId, targetType, action } = toPublish;
+      const {
+        data,
+        meta,
+        targetId,
+        targetType,
+        action
+      } = toPublish;
       nextId++;
-
       const event: Event = {
         id: nextId,
         timestamp: Timestamps.now(),
@@ -32,15 +39,13 @@ module.exports = function() : EventStorage  {
         targetId,
         targetType
       };
-
       events.push(event);
       return event;
     });
 
     try {
       onPublished(published);
-    }
-    catch(e) {
+    } catch (e) {
       const badIds = new Set(...published.map(e => e.id));
       events = events.filter(e => !badIds.has(e.id));
       return Promise.reject(e);
@@ -52,20 +57,25 @@ module.exports = function() : EventStorage  {
   function getEventStream(lookup: EventLookup): Promise<StorageEventStream> {
     const lookupFilter = filterEvents.bind(null, lookup || {});
     let index = 0;
-    let soughtBookmark;
+    let soughtBookmark: EventStreamBookmark;
 
     function next(): Promise<EventStreamItem> {
       while (index < events.length && !lookupFilter(events[index])) {
         index++;
       }
-      const resolved = Promise.resolve(events[index] || { ended: true, bookmark: getBookmark() });
+
+      const resolved = Promise.resolve(events[index] || {
+        ended: true,
+        bookmark: getBookmark()
+      });
       index++;
       return resolved;
     }
 
     function seek(bookmark: EventStreamBookmark) {
       soughtBookmark = bookmark;
-      while(isBeforeBookmark(bookmark, events[0])) {
+
+      while (isBeforeBookmark(bookmark, events[0])) {
         index++;
       }
     }
@@ -79,7 +89,10 @@ module.exports = function() : EventStorage  {
         };
       }
 
-      return soughtBookmark ||  lookup.bookmark || { id: '', timestamp: '' };
+      return soughtBookmark || lookup.bookmark || {
+        id: '',
+        timestamp: ''
+      };
     }
 
     return Promise.resolve({
@@ -88,16 +101,16 @@ module.exports = function() : EventStorage  {
     });
   }
 
-  function isBeforeBookmark(bookmark, event) {
-    return bookmark.timestamp > event.timestamp ||
-      (bookmark.id && bookmark.timestamp === event.timestamp && bookmark.id <= event.id);
+  function isBeforeBookmark(bookmark: EventStreamBookmark, event: Event) {
+    return bookmark.timestamp > event.timestamp || bookmark.id && bookmark.timestamp === event.timestamp && bookmark.id <= event.id;
   }
 
   function filterEvents(lookup: EventLookup, event: Event) {
-    const {filter, bookmark} = lookup;
-
+    const {
+      filter,
+      bookmark
+    } = lookup;
     if (!filter) return true;
-
     const timestamp = bookmark ? bookmark.timestamp : null;
     if (bookmark && isBeforeBookmark(bookmark, event)) return true;
 
@@ -105,17 +118,18 @@ module.exports = function() : EventStorage  {
       return !timestamp;
     }
 
-    const spec = filter[event.targetType];
+    const spec: any = filter[event.targetType];
     if (!spec) return false;
-
     let action: any = spec.action || '';
 
     if (spec.id) {
       if (!isMatch(spec.id, event.targetId)) return false;
     }
+
     if (action) {
       if (!isMatch(action, event.action)) return false;
     }
+
     return true;
   }
 
@@ -129,6 +143,10 @@ module.exports = function() : EventStorage  {
   }
 
   return {
-    publish, getEventStream, close
+    publish,
+    getEventStream,
+    close
   };
-}
+};
+
+export default InMemoryStorage;

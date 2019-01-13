@@ -1,15 +1,14 @@
-// @flow weak
 import { describe, beforeEach, it } from 'mocha';
 
 const expect: any = require('chai').expect;
 const COUNT = 5;
 
-module.exports = (startStore) => {
-  let store;
+export default (startStore: any) => {
+   let store: any;
 
   describe(`reading back ${COUNT} events`, () => {
     beforeEach(() => {
-      return startStore().then(store_ => {
+      return startStore().then((store_: any)=> {
         store = store_;
         let promise = Promise.resolve();
         for (let i = 0; i < COUNT; i++) {

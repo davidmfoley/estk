@@ -3,11 +3,11 @@ import { describe, beforeEach, it } from 'mocha';
 
 const expect: any = require('chai').expect;
 
-module.exports = (startStore) => {
-  let store;
+export default (startStore: any) => {
+  let store: any;
 
   describe('publishing an event', () => {
-    let published;
+    let published: any;
 
     beforeEach(async () => {
       const publishRequest = {

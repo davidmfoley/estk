@@ -1,5 +1,4 @@
-import { EventStream, StorageEventStream } from "./types";
-import { Event } from './types';
+import { EventStream, StorageEventStream, Event } from "./types";
 
 export default ((storageEventStream: StorageEventStream): EventStream => {
   async function reduce(reducer: Function, initialState?: any): Promise<any> {
@@ -16,16 +15,16 @@ export default ((storageEventStream: StorageEventStream): EventStream => {
       }
     } while (!event.ended);
 
-    return state;
+    return { bookmark: storageEventStream.getBookmark(), state };
   }
 
-  async function forEach(onEvent: (event: Event) => Promise<void>): Promise<void> {
+  async function forEach(onEvent: (event: Event) => undefined | Promise<void>): Promise<void> {
     let event: any;
 
     do {
       event = await storageEventStream.next();
 
-      if (!event.ended) {
+      if (event.ended) {
         const result: any = onEvent(event);
         if (result && result.then) await result();
       }
@@ -33,6 +32,7 @@ export default ((storageEventStream: StorageEventStream): EventStream => {
   }
 
   return {
+    getBookmark: storageEventStream.getBookmark,
     next: storageEventStream.next,
     seek: storageEventStream.seek,
     forEach,

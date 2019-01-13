@@ -1,9 +1,6 @@
-import EventStore from './event_store';
-import BeforeAllEvent from './storage/before_all_event';
-import Timestamps from './storage/timestamps'
+export { default as createEventStore } from './event_store';
+export { default as BeforeAllEvent } from './storage/before_all_event';
+export { default as Timestamps } from './storage/timestamps'
+export { default as TestSuites } from './test-suites';
 
-export default {
-  EventStore,
-  BeforeAllEvent,
-  Timestamps,
-};
+export * from './types';

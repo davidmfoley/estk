@@ -3,8 +3,8 @@ import { describe, beforeEach, it } from 'mocha';
 
 const expect: any = require('chai').expect;
 
-module.exports = (startStore) => {
-  let store;
+export default (startStore: any) => {
+  let store: any;
 
   describe('querying for events', () => {
     beforeEach(async () => {
@@ -58,7 +58,7 @@ module.exports = (startStore) => {
     });
   });
 
-  async function readAll(stream) {
+  async function readAll(stream: any) {
     const events = [];
     let event: any = {};
 

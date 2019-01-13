@@ -1,7 +1,7 @@
-// @flow
 import { EventLookup } from "estk-events/src/types";
 import createEventStream from './event_stream';
 import { Event, EventStream, EventStore, EventStoreSettings, EventsPublishedHandler, EventsPublishRequest } from './types';
+
 export default function init({
   storage
 }: EventStoreSettings): Promise<EventStore> {

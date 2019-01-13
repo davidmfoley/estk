@@ -9,9 +9,9 @@ usage:
 
 ```javascript
   const { InMemoryEventStorage } = require('estk-events-in-memory');
-  const { EventStore } = require('estk-events');
+  const { createEventStore } = require('estk-events');
 
-  const store = await EventStore(InMemoryStorage());
+  const store = await createEventStore(InMemoryStorage());
 
   await store.publish({
     targetType: 'example-type',

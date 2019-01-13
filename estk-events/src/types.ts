@@ -1,15 +1,16 @@
-// @flow
-//
 export type EventStreamBookmark = {
   id: any;
   timestamp: string;
 };
+
 type PublishedHandler = (events: Event[], context: Object) => Promise<void>;
+
 export type EventStorage = {
   publish: (request: EventPublishRequest[], onPublished: PublishedHandler) => Promise<Event[]>;
   getEventStream: (lookup: EventLookup) => Promise<StorageEventStream>;
   close: () => Promise<void>;
 };
+
 export type EventPublishRequest = {
   targetType: string;
   targetId: string;
@@ -26,8 +27,8 @@ export type Event = {
   targetType: string;
   targetId: string;
   action: string;
-  data: Object;
-  meta: Object;
+  data: any;
+  meta: any;
   timestamp: string;
 };
 
@@ -41,10 +42,20 @@ export type EventStreamItem = Event | EventStreamEnd;
 export type StorageEventStream = {
   next: () => Promise<EventStreamItem>;
   seek: (bookmark: EventStreamBookmark) => void;
+  getBookmark: () => EventStreamBookmark;
+};
+
+type EventStreamReduceResult = {
+  state: any,
+  bookmark: EventStreamBookmark
 };
 
 export type EventStream = StorageEventStream & {
-  reduce: (reducer: (e: Event) => Promise<any>, initialState: any) => Promise<any>;
+  reduce: (
+    reducer: (soFar: any, e: Event) => any,
+    initialState: any
+  ) => Promise<EventStreamReduceResult>;
+
   forEach: (onEvent: (e: Event) => Promise<void>) => Promise<void>;
 };
 
