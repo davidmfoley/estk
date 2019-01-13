@@ -13,6 +13,7 @@
     "estk-*"
   ],
   "devDependencies": {
+    "@types/sinon-chai": "^3.2.2",
     "babel-eslint": "7",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-flow-strip-types": "^6.21.0",

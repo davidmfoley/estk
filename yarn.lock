@@ -668,7 +668,7 @@
     array-from "^2.1.1"
     lodash.get "^4.4.2"
 
-"@types/chai@^4.1.7":
+"@types/chai@*", "@types/chai@^4.1.7":
   version "4.1.7"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.7.tgz#1b8e33b61a8c09cbe1f85133071baa0dbf9fa71a"
   integrity sha512-2Y8uPt0/jwjhQ6EiluT0XCri1Dbplr0ZxfFXUz+ye13gaqE8u5gL5ppao1JrUYr9cIip5S6MvQzBS7Kke7U9VA==
@@ -677,6 +677,11 @@
   version "0.0.31"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.31.tgz#bac8d8aab6a823e91deb7f79083b2a35fa638f33"
   integrity sha512-LS1MCPaQKqspg7FvexuhmDbWUhE2yIJ+4AgVIyObfc06/UKZ8REgxGNjZc82wPLWmbeOm7S+gSsLgo75TanG4A==
+
+"@types/microtime@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/microtime/-/microtime-2.1.0.tgz#adbd99f501a85c88695eb1efd3515810f2563932"
+  integrity sha1-rb2Z9QGoXIhpXrHv01FYEPJWOTI=
 
 "@types/mocha@^5.2.5":
   version "5.2.5"
@@ -702,6 +707,19 @@
   dependencies:
     "@types/node" "*"
     "@types/pg-types" "*"
+
+"@types/sinon-chai@^3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-3.2.2.tgz#5cfdbda70bae30f79a9423334af9e490e4cce793"
+  integrity sha512-5zSs2AslzyPZdOsbm2NRtuSNAI2aTWzNKOHa/GRecKo7a5efYD7qGcPxMZXQDayVXT2Vnd5waXxBvV31eCZqiA==
+  dependencies:
+    "@types/chai" "*"
+    "@types/sinon" "*"
+
+"@types/sinon@*":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-7.0.3.tgz#f8647e883d873962130f906a6114a4e187755696"
+  integrity sha512-cjmJQLx2B5Hp9SzO7rdSivipo3kBqRqeYkTW17nLST1tn5YLWBjTdnzdmeTJXA1+KrrBLsEuvKQ0fUPGrfazQg==
 
 abbrev@1:
   version "1.1.1"
@@ -1935,46 +1953,6 @@ esrecurse@^4.1.0:
   integrity sha512-64RBB++fIOAXPw3P9cy89qfMlvZEXZkqqJkjqqXIvzP5ezRZjW+lPWjw35UX/3EhUPFYbg5ER4JYgDw4007/DQ==
   dependencies:
     estraverse "^4.1.0"
-
-estk-events-in-memory@0.0.1:
-  version "0.0.3"
-  dependencies:
-    debug "^2.6.4"
-    estk-events "0.0.1"
-
-estk-events-pg@0.0.1:
-  version "0.0.3"
-  dependencies:
-    debug "^2.6.4"
-    estk-events "0.0.1"
-    estk-pg "0.0.1"
-    pg "^7.4.1"
-    pg-pool "^2.0.3"
-
-estk-events@0.0.1:
-  version "0.0.3"
-  dependencies:
-    debug "^2.6.4"
-    microtime "^2.1.5"
-
-estk-pg@0.0.1:
-  version "0.0.3"
-  dependencies:
-    "@types/chai" "^4.1.7"
-    "@types/debug" "^0.0.31"
-    "@types/mocha" "^5.2.5"
-    "@types/node" "^10.12.18"
-    "@types/pg" "^7.4.11"
-    debug "^2.6.4"
-    pg "^7.4.1"
-    pg-pool "^2.0.3"
-
-estk-snapshots@0.0.1:
-  version "0.0.3"
-  dependencies:
-    debug "^2.6.4"
-    estk-events "0.0.1"
-    microtime "^2.1.5"
 
 estraverse@^4.0.0, estraverse@^4.1.0, estraverse@^4.1.1, estraverse@^4.2.0:
   version "4.2.0"
@@ -3258,9 +3236,9 @@ map-visit@^1.0.0:
     object-visit "^1.0.0"
 
 math-random@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/math-random/-/math-random-1.0.1.tgz#8b3aac588b8a66e4975e3cdea67f7bb329601fac"
-  integrity sha1-izqsWIuKZuSXXjzepn97sylgH6w=
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/math-random/-/math-random-1.0.2.tgz#8ab7f026363816c1e00b774d87dee67f61e37ad6"
+  integrity sha512-Bp2Bx2wFaUymE7pWi0bbldiheIXMvyzC3hRkT5YAv2qiqqJO5VB8KafgYgZmGCxkTmloLuAx3Jv2OmJ66990mg==
 
 md5-hex@^1.2.0:
   version "1.3.0"
