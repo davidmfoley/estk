@@ -1,23 +1,32 @@
 // @flow
-import type { EventStore, Event } from 'estk-events/types';
+import { EventStore, Event } from 'estk-events';
 import amqplib from 'amqplib';
 import events from 'events';
 
 type AmqpConfig = {
-  url?: string,
-  exchange?: string
+  url?: string;
+  exchange?: string;
 };
 
-export default async (store: EventStore, config: AmqpConfig = {}) => {
+export default async (
+  store: EventStore,
+  config: AmqpConfig = {}
+): Promise<any> => {
   const emitter = new events.EventEmitter();
-  const connection = await amqplib.connect(config.url);
-
+  const connection = await amqplib.connect(config.url as string);
   const channel = await connection.createChannel();
   const exchange = config.exchange || 'estk-events';
+
   await channel.assertExchange(exchange, 'topic');
-  const opts = {autoDelete: true, durable: false};
+
+  const opts = {
+    autoDelete: true,
+    durable: false
+  };
   const queue = await channel.assertQueue('', opts);
-  await channel.bindQueue(queue.queue, exchange, 'estk-event'); 
+
+  await channel.bindQueue(queue.queue, exchange, 'estk-event');
+
   channel.consume(queue.queue, onAmqpMessage);
 
   store.onPublished((events: Event[]) => {
@@ -30,7 +39,7 @@ export default async (store: EventStore, config: AmqpConfig = {}) => {
     close
   };
 
-  function onAmqpMessage(message) {
+  function onAmqpMessage(message: any) {
     const events = JSON.parse(message.content.toString('utf-8'));
     notifyListeners(events);
   }
@@ -39,7 +48,7 @@ export default async (store: EventStore, config: AmqpConfig = {}) => {
     events.forEach(emitter.emit.bind(emitter, 'publish'));
   }
 
-  function onPublished(fn: Function) {
+  function onPublished(fn: (...argsA: any) => void) {
     emitter.on('publish', fn);
   }
 

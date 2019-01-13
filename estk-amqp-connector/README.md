@@ -10,7 +10,7 @@ NB: Does not handle bookmarking and is not durable.
 
 ```javascript
   const { InMemoryEventStorage } = require('estk-events-in-memory');
-  const { EventStore } = require('estk-events');
+  const { createEventStore } = require('estk-events');
   const { AmqpMessageBus } = require('estk-amqp-connector');
 
   const amqpConfig = {
@@ -21,11 +21,11 @@ NB: Does not handle bookmarking and is not durable.
     exchange: 'estk-amqp-example'
   };
 
-  const storeA = await EventStore(InMemoryStorage());
+  const storeA = await createEventStore(InMemoryStorage());
   const listenerA = await AmqpMessageBus(eventStore, amqpConfig);
   listenerA.onPublished(events => console.log('A was notified', events));
 
-  const storeB = await EventStore(InMemoryStorage());
+  const storeB = await createEventStore(InMemoryStorage());
   const listenerB = await AmqpMessageBus(eventStore, amqpConfig);
   listenerB.onPublished(events => console.log('B was notified', events));
 

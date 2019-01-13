@@ -1,12 +1,11 @@
 // @flow
 import { afterEach, beforeEach, describe, it } from 'mocha';
-import { InMemoryEventStorage } from 'estk-events-in-memory';
-import { EventStore } from 'estk-events';
+import InMemoryEventStorage from 'estk-events-in-memory';
+import { createEventStore } from 'estk-events';
 import AmqpMessageBus from '../src/amqp_message_bus';
 
 describe('amqp connector', () => {
-  let first, second;
-
+  let first: any, second: any;
   const exampleEvent = {
     targetType: 'test-type',
     targetId: 'test-id',
@@ -39,10 +38,10 @@ describe('amqp connector', () => {
 
   async function connect() {
     const storage = InMemoryEventStorage();
-
-    const eventStore = await EventStore({ storage });
+    const eventStore = await createEventStore({
+      storage
+    });
     const bus = await AmqpMessageBus(eventStore);
-
     return {
       close: bus.close,
       publish: eventStore.publish,
