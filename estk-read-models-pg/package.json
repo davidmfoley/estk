@@ -8,24 +8,19 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run -s test:mocha && npm run -s test:lint",
-    "test:mocha": "../node_modules/.bin/mocha --recursive --compilers js:babel-register test",
-    "test:lint": "../node_modules/.bin/eslint src/",
-    "build": "npm run -s build:clean && npm run -s build:lib && npm run build:flow",
-    "build:clean": "../node_modules/.bin/rimraf lib",
-    "build:lib": "../node_modules/.bin/babel -d lib --ignore '**/*.test.js' src",
-    "build:flow": "../node_modules/.bin/flow-copy-source -v -i '**/*.test.js' src lib",
-    "build-and-test": "npm run -s build && npm run -s test:mocha",
+    "test": "../bin/ts-mocha test/**/*.ts",
+    "build": "../bin/ts-build",
+    "build-and-test": "npm run -s build && npm run -s test",
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {
     "debug": "^2.6.4",
-    "estk-events": "0.0.1",
-    "estk-pg": "0.0.1"
+    "estk-events": "0.0.3",
+    "estk-pg": "0.0.3"
   },
   "devDependencies": {
-    "estk-events-in-memory": "0.0.1",
-    "estk-events-pg": "0.0.1"
+    "estk-events-in-memory": "0.0.3",
+    "estk-events-pg": "0.0.3"
   },
   "author": "Dave Foley",
   "license": "MIT"
