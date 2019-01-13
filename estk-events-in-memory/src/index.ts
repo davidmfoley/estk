@@ -14,7 +14,7 @@ import { BeforeAllEvent } from 'estk-events';
 
 let nextId = 0;
 
-function InMemoryStorage(): EventStorage {
+export function InMemoryStorage(): EventStorage {
   let events = [BeforeAllEvent];
 
   function publish(
@@ -96,6 +96,7 @@ function InMemoryStorage(): EventStorage {
     }
 
     return Promise.resolve({
+      getBookmark,
       next,
       seek
     });

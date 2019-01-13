@@ -41,10 +41,13 @@ describe('with in-memory storage', () => {
         value: 3
       }
     });
+
     const stream = await store.getEventStream({});
+
     const sum = await stream.reduce((sum: any, {
       data
     }: any) => data.value + sum, 0);
-    expect(sum).to.eq(13);
+
+    expect(sum.state).to.eq(13);
   });
 });
