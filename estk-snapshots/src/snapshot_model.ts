@@ -1,4 +1,3 @@
-// @flow
 import { OnDemandModel, SnapshotStorage } from './types';
 
 type SnapshotModelConfig = {

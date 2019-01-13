@@ -1,4 +1,3 @@
-// @flow
 import url from 'url';
 import Debug from 'debug';
 import pg, { Pool, QueryResult } from 'pg';

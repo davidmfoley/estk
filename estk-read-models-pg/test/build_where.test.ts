@@ -1,4 +1,3 @@
-// @flow
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import buildWhere from "../src/queries/build_where";

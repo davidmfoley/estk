@@ -1,4 +1,3 @@
-// @flow
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import { createEventStore } from 'estk-events';

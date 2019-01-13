@@ -1,4 +1,3 @@
-// @flow
 import { Event } from 'estk-events/types';
 import { PostgresReadModelConfig, ReadModelActions } from '../../src/types';
 const Sandwich: PostgresReadModelConfig = {

@@ -1,4 +1,3 @@
-// @flow
 import { ReadModel, ReadModels, ReadModelsConfig, ReadModelConfig } from './types';
 import readModel from './read_model';
 import { buildCreateTables } from './queries';

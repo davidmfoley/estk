@@ -1,4 +1,3 @@
-// @flow
 import { afterEach, beforeEach, describe, it } from 'mocha';
 import InMemoryEventStorage from 'estk-events-in-memory';
 import { createEventStore } from 'estk-events';

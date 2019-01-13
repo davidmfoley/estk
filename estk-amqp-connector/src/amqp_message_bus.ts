@@ -1,4 +1,3 @@
-// @flow
 import { EventStore, Event } from 'estk-events';
 import amqplib from 'amqplib';
 import events from 'events';

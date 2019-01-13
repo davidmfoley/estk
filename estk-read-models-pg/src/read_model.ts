@@ -1,4 +1,3 @@
-// @flow
 import { ReadModelConfig, ReadModelLookup } from './types';
 import { Event } from 'estk-events';
 import { DatabaseContext } from './types';

@@ -1,4 +1,3 @@
-// @flow
 import { ReadModelConfig } from '../types';
 import { tableName } from './names';
 import { DatabaseQuery } from 'estk-pg/lib';

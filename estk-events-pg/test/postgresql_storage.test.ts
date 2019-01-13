@@ -1,4 +1,3 @@
-// @flow
 import { describe } from 'mocha';
 import { createEventStore } from 'estk-events';
 import { PostgresClient } from 'estk-pg';

@@ -1,4 +1,3 @@
-// @flow
 export const tableName = ({
   name,
   version = 0

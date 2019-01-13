@@ -1,4 +1,3 @@
-// @flow weak
 import { describe, beforeEach, it } from 'mocha';
 
 const expect: any = require('chai').expect;

@@ -1,4 +1,3 @@
-// @flow
 import { DatabaseClient } from 'estk-pg';
 import { SnapshotStorage, SnapshotState } from 'estk-snapshots';
 

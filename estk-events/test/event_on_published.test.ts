@@ -1,4 +1,3 @@
-// @flow weak
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
 import { EventStore, Event }  from '../src/types';

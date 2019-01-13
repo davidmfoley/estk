@@ -1,4 +1,3 @@
-//@flow
 import { Event } from 'estk-events';
 
 export default ({handlers}: any, event: Event): Function | undefined => {

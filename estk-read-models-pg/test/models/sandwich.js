@@ -1,4 +1,3 @@
-// @flow
 import type { Event } from 'estk-events/types';
 import type { PostgresReadModelConfig, ReadModelActions } from '../../src/types';
 

@@ -1,4 +1,3 @@
-//@flow
 import { describe, beforeEach, it } from 'mocha';
 import { DatabaseClient } from '../src/types';
 import PostgresClient from '../src/client';

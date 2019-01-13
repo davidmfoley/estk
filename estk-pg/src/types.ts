@@ -1,4 +1,3 @@
-// @flow
 export type ResultRow = any;
 export type ResultSet = Array<ResultRow>;
 

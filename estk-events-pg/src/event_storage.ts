@@ -1,4 +1,3 @@
-// @flow
 import { Timestamps } from 'estk-events';
 import { DatabaseClient, DatabaseQuery } from 'estk-pg';
 import { Event, EventPublishRequest, EventLookup, EventStorage } from 'estk-events';

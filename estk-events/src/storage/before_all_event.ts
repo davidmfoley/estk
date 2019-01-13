@@ -1,4 +1,3 @@
-//@flow
 import { Event } from '../types';
 const beforeAll: Event = {
   id: 0,

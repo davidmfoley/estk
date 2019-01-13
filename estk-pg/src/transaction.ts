@@ -1,4 +1,3 @@
-// @flow
 import { DatabaseTransaction, DatabaseQuery, ResultSet } from './types';
 import { Pool, PoolClient, QueryResult, QueryArrayResult } from 'pg';
 

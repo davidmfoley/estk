@@ -1,4 +1,3 @@
-// @flow
 import { ReadModelConfig, ReadModelActions, ReadModelLookup } from '../types';
 import { QueryContext, DatabaseQuery } from 'estk-pg';
 

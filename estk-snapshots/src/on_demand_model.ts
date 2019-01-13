@@ -1,4 +1,3 @@
-//@flow
 import { Event, EventFilter, EventStore, EventStreamBookmark } from 'estk-events';
 
 type EventHandler = (state: any, event: Event) => any;
