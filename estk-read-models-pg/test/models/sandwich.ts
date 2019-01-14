@@ -1,6 +1,10 @@
-import { Event } from 'estk-events/types';
-import { PostgresReadModelConfig, ReadModelActions } from '../../src/types';
-const Sandwich: PostgresReadModelConfig = {
+import { Event } from 'estk-events';
+import {
+  ReadModelConfig,
+  ReadModelActions
+} from '../../src/types';
+
+const Sandwich: ReadModelConfig = {
   name: 'sandwich',
   version: 0,
   fields: {
@@ -30,6 +34,8 @@ const Sandwich: PostgresReadModelConfig = {
       'bite': async (event: Event, actions: ReadModelActions) => {
         const sandwich = await actions.get(event.targetId);
 
+        if (!sandwich) return;
+
         if (sandwich.hitPoints === 1) {
           await actions.delete(event.targetId);
         } else {
@@ -41,4 +47,5 @@ const Sandwich: PostgresReadModelConfig = {
     }
   }
 };
+
 export default Sandwich;

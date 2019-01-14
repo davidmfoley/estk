@@ -1,30 +1,38 @@
 import { describe, beforeEach, it } from 'mocha';
 import { expect } from 'chai';
-import { createEventStore } from 'estk-events';
-import { PostgresClient } from 'estk-pg';
+import { createEventStore, EventStore } from 'estk-events';
+import { PostgresClient, DatabaseClient } from 'estk-pg';
 import ReadModels from '../src/read_models';
 import sandwich from './models/sandwich';
 import PostgresEventStorage from 'estk-events-pg/src/event_storage';
+
 describe('PG read models with PG event store', () => {
-  let client, readModels, eventStore;
+
+  let client: DatabaseClient, readModels: any, eventStore: EventStore;
+
   beforeEach(async () => {
     client = await PostgresClient({
       url: process.env.DATABASE_URL_TEST || ''
     });
   });
+
   describe('transactional', () => {
     let eventStorage;
     beforeEach(async () => {
-      eventStorage = PostgresEventStorage(client);
+      eventStorage = await PostgresEventStorage(client);
+
       eventStore = await createEventStore({
         storage: eventStorage
       });
+
       readModels = await ReadModels({
+        eventStore,
         client,
         models: {
           sandwich
         }
       });
+
       eventStore.onPublished(readModels.applyEvents);
     });
     describe('when empty', () => {
