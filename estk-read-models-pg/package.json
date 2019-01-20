@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "../bin/ts-mocha test/**/*.ts",
+    "test": "../bin/ts-mocha test/**/*.test.ts",
     "build": "../bin/ts-build",
     "build-and-test": "npm run -s build && npm run -s test",
     "prepublishOnly": "npm run -s build"

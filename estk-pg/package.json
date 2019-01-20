@@ -7,12 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run -s test:lint && npm run -s test:mocha",
-    "test:mocha": "../bin/ts-mocha test/**/*.ts",
-    "test:lint": "../node_modules/.bin/eslint src/",
-    "build": "npm run -s build:clean && npm run -s build:lib",
-    "build:clean": "../node_modules/.bin/rimraf lib",
-    "build:lib": "../node_modules/.bin/tsc",
+    "test": "../bin/ts-mocha test/*.ts",
+    "build": "../bin/ts-build",
     "build-and-test": "npm run -s build && npm run -s test:mocha",
     "prepublishOnly": "npm run -s build"
   },

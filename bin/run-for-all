@@ -9,6 +9,6 @@ do
   echo "$@"
 
   cd $dir
-  [ -f ./package.json ] && sh -c "$@"
+  [ -f ./package.json ] && bash -c "$@"
   cd ..
 done

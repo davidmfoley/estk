@@ -2,4 +2,5 @@
 DIR=$( cd "$( dirname "$0" )/.." &&  pwd )
 
 $DIR/node_modules/.bin/rimraf lib
-$DIR/node_modules/.bin/tsc
+cd src
+$DIR/node_modules/.bin/tsc --outDir ../lib
