@@ -9,7 +9,7 @@
   "scripts": {
     "test": "../bin/ts-mocha test/*.ts",
     "build": "../bin/ts-build",
-    "build-and-test": "npm run -s build && npm run -s test:mocha",
+    "build-and-test": "npm run -s test && npm run -s build",
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {
