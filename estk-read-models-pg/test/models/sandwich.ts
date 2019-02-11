@@ -8,6 +8,10 @@ const Sandwich: ReadModelConfig = {
   name: 'sandwich',
   version: 0,
   fields: {
+    id : {
+      type: 'text',
+      primaryKey: true
+    },
     meat: {
       type: 'text'
     },
@@ -25,7 +29,8 @@ const Sandwich: ReadModelConfig = {
           meat,
           bread
         } = event.data;
-        await actions.create(event.targetId, {
+        await actions.create({
+          id: '42',
           meat,
           bread,
           hitPoints: 4

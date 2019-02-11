@@ -14,24 +14,27 @@ async function PostgresReadModels(config: ReadModelsConfig): Promise<ReadModels>
     [name: string]: any;
   } = {};
 
+  const allModels = () => Object.keys(models).map(k => models[k]);
   await setupModels();
 
   return {
     applyEvents,
     get: getModel,
     update,
-    query
+    query,
+    rebuildAll
   };
 
   function getModel(name: string): ReadModel {
     return models[name](client);
   }
 
+
   async function applyEvents(events: Event[], context: Context): Promise<void> {
     const asArray: any[] = Object.keys(models).map(k => models[k]);
 
     for (let model of asArray) {
-      await model(context.transaction || client).applyEvents(events);
+      await model(context.transaction || client).applyEvents(events, context);
     }
   }
 
@@ -39,27 +42,30 @@ async function PostgresReadModels(config: ReadModelsConfig): Promise<ReadModels>
     return Promise.resolve();
   }
 
+  async function rebuildAll(): Promise<void> {
+    for (let model of allModels()) {
+      await model(client).rebuild(config.eventStore);
+    }
+  }
+
   function query(q: DatabaseQuery): Promise<ResultSet> {
     return client.query(q);
   }
 
   async function setupModels() {
-    await Promise.all(Object.keys(config.models).map(key => setupModel(key, config.models[key])));
+    const keys = Object.keys(config.models);
+    await Promise.all(keys.map(setupModel));
   }
 
-  async function setupModel(key: string, modelConfig: ReadModelConfig) {
+  async function setupModel(key: string) {
+    const modelConfig = config.models[key];
     await ensureSchema(modelConfig);
     models[key] = readModel(modelConfig);
     return;
   }
 
   async function ensureSchema(modelConfig: ReadModelConfig) {
-    const {
-      sql
-    } = buildCreateTables(modelConfig);
-    await client.query({
-      sql
-    });
+    await client.query(buildCreateTables(modelConfig));
   }
 }
 

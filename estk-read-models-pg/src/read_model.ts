@@ -1,22 +1,38 @@
 import { ReadModelConfig, ReadModelLookup } from './types';
-import { Event } from 'estk-events';
+import { Event, EventStore } from 'estk-events';
 import { DatabaseContext } from './types';
 import recordPosition from './record_position';
 import EventApplier from './event_applier';
+import { DatabaseClient } from 'estk-pg';
+import rebuild from './rebuild';
+import { buildSelect, buildSelectOne, buildSelectCount } from './queries';
 
-export default ((config: ReadModelConfig) => (client: any) => {
-  const get = (query: ReadModelLookup): Promise<any> => Promise.resolve(config.defaultValue);
+export default ((config: ReadModelConfig) => (client: DatabaseClient) => {
+  const get = async (lookup?: ReadModelLookup): Promise<any> => {
+    const query = buildSelectOne(config, lookup || {});
+    const results = await client.query(query);
+    return results[0];
+  };
 
-  const getAll = (): Promise<any> => Promise.resolve([]);
+  const getAll = async (lookup?: ReadModelLookup): Promise<any> => {
+    const query = buildSelect(config, lookup || {});
+    const results = await client.query(query);
+    return results;
+  };
 
-  const count = (): Promise<number> => Promise.resolve(0);
+  const count = async (lookup?: ReadModelLookup): Promise<number> => {
+    const query = buildSelectCount(config, lookup || {});
+    const results = await client.query(query);
+    return results[0].count;
+  };
 
-  const applyEvents = async (context: DatabaseContext, events: Event[]): Promise<void> => {
+  const applyEvents = async (events: Event[], context: DatabaseContext): Promise<void> => {
     let lastEvent: Event | undefined | null;
-    const applier = EventApplier(config, context);
+    const applier = EventApplier(config, client);
 
     for (let event of events) {
-      lastEvent = lastEvent || (await applier(event));
+      lastEvent = event;
+      await applier(event);
     }
 
     if (lastEvent) {
@@ -28,6 +44,7 @@ export default ((config: ReadModelConfig) => (client: any) => {
     applyEvents,
     get,
     getAll,
-    count
+    count,
+    rebuild: (eventStore: EventStore) => rebuild(config, client, eventStore)
   };
 });

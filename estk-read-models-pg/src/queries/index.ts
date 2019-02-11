@@ -31,6 +31,25 @@ export const buildCreateTables = ({
     `
 });
 
+export const buildCreateTempTable = ({
+  fields
+}: ReadModelConfig, name: string): {
+  sql: string;
+} => ({
+  sql: `
+      create table if not exists "${name}" (${buildFields(fields)});
+    `
+});
+
+export const buildSelectCount = (config: ReadModelConfig, lookup: ReadModelLookup): DatabaseQuery => {
+  const where = buildWhere(config, lookup);
+  const sql = `select count(*) from ${tableName(config)} ${where.sql}`;
+  return {
+    sql,
+    params: where.params
+  };
+};
+
 export const buildSelect = (config: ReadModelConfig, lookup: ReadModelLookup): DatabaseQuery => {
   const where = buildWhere(config, lookup);
   const sql = `select * from ${tableName(config)} ${where.sql}`;
@@ -63,10 +82,31 @@ export const buildUpdate = (
   };
 };
 
-export const buildInsert = (config: ReadModelConfig, lookup: ReadModelLookup): DatabaseQuery => {
+type NameAndValue = { name: string, value: string };
+
+const columnNames = (fieldValues: NameAndValue[]): string => fieldValues.map(({name}) => `"${name}"`).join(', ');
+const tokens = (fieldValues: NameAndValue[], offset: number = 0): string => fieldValues.map((x, i) => `$${i + offset + 1}`).join(', ');
+const queryParams = (fieldValues: NameAndValue[]): any[] => fieldValues.map(({value}: NameAndValue) => value);
+
+export const buildInsert = (config: ReadModelConfig, fields: any): DatabaseQuery => {
+  let fieldValues: NameAndValue[] = [];
+
+  for (let name of Object.keys(fields)) {
+    const field = config.fields[name];
+    if (field) {
+      const value = fields[name];
+      fieldValues.push({
+        name,
+        value
+      });
+    }
+  }
+
+  const params = queryParams(fieldValues);
+
   return {
-    sql: `this will intentionally fail`,
-    params: []
+    sql: `insert into ${tableName(config)} (${columnNames(fieldValues)}) values (${tokens(fieldValues)})`,
+    params
   };
 };
 

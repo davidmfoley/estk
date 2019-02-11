@@ -8,11 +8,8 @@ export type ReadModelLookup = string | string[] | Object;
 export type ReadModelActions = {
   get: (lookup: ReadModelLookup) => Promise<any>;
   getAll: (lookup: ReadModelLookup) => Promise<any[]>;
-  create: (id: string, data: Object) => Promise<void>;
+  create: (data: Object) => Promise<void>;
   merge: (lookup: ReadModelLookup, fieldsToMerge: any) => Promise<void>;
-  update: (id: string, data: any) => Promise<void>;
-  createOrMerge: (id: string, data: any) => Promise<void>;
-  createOrReplace: (id: string, data: any) => Promise<void>;
   delete: (lookup: ReadModelLookup) => Promise<void>;
 };
 
@@ -21,6 +18,9 @@ export type ReadModelsConfig = {
   eventStore: EventStore;
   models: {
     [key: string]: ReadModelConfig;
+  };
+  options: {
+    rebuildOnStart?: boolean
   };
 };
 
@@ -39,10 +39,19 @@ type EventHandlerMapMap = {
 
 type ReadModelEventConfig = EventHandler | EventHandlerMapMap;
 
+type ReadModelField = {
+  type: string,
+  primaryKey?: boolean
+}
+
+type ReadModelFields = {
+  [name: string]: ReadModelField
+}
+
 export type ReadModelConfig = {
   name: string,
   version: number,
-  fields: any,
+  fields: ReadModelFields,
   defaultValue?: any,
   events: ReadModelEventConfig
 };
@@ -53,7 +62,10 @@ export type ReadModels = {
   applyEvents: (events: Event[], context: any) => Promise<void>,
   get: (name: string) => ReadModel,
   update: (name: string) => Promise<void>,
-  query: (query: DatabaseQuery) => Promise<ResultSet>
+  query: (query: DatabaseQuery) => Promise<ResultSet>,
+  rebuildAll: () => Promise<void>
 };
 
 export type DatabaseContext = any;
+
+export type EventApplier = (e: Event) => Promise<Event | undefined>

@@ -1,9 +1,11 @@
 import { Event } from 'estk-events';
+import { ReadModelConfig } from '../types';
 
-export default ({handlers}: any, event: Event): Function | undefined => {
-  if (typeof handlers === 'function') return handlers;
+export default ({events}: ReadModelConfig, event: Event): Function | undefined => {
+  if (typeof events === 'undefined') return;
+  if (typeof events === 'function') return events;
 
-  const typeHandler = handlers[event.targetType];
+  const typeHandler = events[event.targetType];
 
   if (!typeHandler) return;
 

@@ -9,11 +9,13 @@ import {
   buildInsert
 } from '../queries';
 
-export default ((config: ReadModelConfig, {
-  query
-}: QueryContext): ReadModelActions => {
-
-  const doQuery = (q: DatabaseQuery): Promise<any[]> => query(q);
+export default (
+  config: ReadModelConfig,
+  { query }: QueryContext
+): ReadModelActions => {
+  const doQuery = async (q: DatabaseQuery): Promise<any[]> => {
+    return await query(q);
+  }
 
   return {
     get: async (lookup: ReadModelLookup) => {
@@ -32,14 +34,5 @@ export default ((config: ReadModelConfig, {
     delete: async (lookup: ReadModelLookup) => {
       await doQuery(buildDelete(config, lookup));
     },
-    update: (id: string, data: any): Promise<void> => {
-      throw new Error('not implemented');
-    },
-    createOrMerge: (id: string, data: any) => {
-      throw new Error('not implemented');
-    },
-    createOrReplace: (id: string, data: any) => {
-      throw new Error('not implemented');
-    }
   };
-});
+};
