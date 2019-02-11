@@ -1,5 +1,9 @@
+import Debug from 'debug';
 import { DatabaseTransaction, DatabaseQuery, ResultSet } from './types';
 import { Pool, PoolClient, QueryResult, QueryArrayResult } from 'pg';
+import wrapQuery from './wrap_query';
+
+const debug = Debug('estk-pg.transaction');
 
 export default function PostgresTransaction(txPool: Pool): Promise<DatabaseTransaction> {
   const buildQueryResult = (pgResult: QueryResult): ResultSet => {
@@ -16,39 +20,35 @@ export default function PostgresTransaction(txPool: Pool): Promise<DatabaseTrans
         return reject(err);
       }
 
+      const wrappedQuery = wrapQuery(client.query.bind(client), debug);
+
       function commit(): Promise<any> {
-        return client.query('COMMIT;');
+        return wrappedQuery({ sql: 'COMMIT;' });
       }
 
       function rollback(): Promise<any> {
-        return client.query('ROLLBACK;');
+        return wrappedQuery({ sql: 'ROLLBACK;' });
       }
 
       function query({
         sql,
         params = []
       }: DatabaseQuery): Promise<ResultSet> {
-        return client.query(sql, params).then(
-          buildQueryResult,
+        return wrappedQuery({sql, params}).catch(
           (err: Error) => {
           return rollback().then(() => {
-            throw err;
+            throw new Error(`SQL Error in transaction: ${err.message}\n${sql}`);
           });
         });
       }
 
-      client.query('BEGIN;', function (err) {
-        if (err) {
-          done(err);
-          return reject(err);
-        }
-
+      wrappedQuery({ sql: 'BEGIN;'}).then(() => (
         resolve({
           query,
           commit,
           rollback
-        });
-      });
+        })
+      ), reject);
     });
   });
 }

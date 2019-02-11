@@ -3,7 +3,9 @@ import Debug from 'debug';
 import pg, { Pool, QueryResult } from 'pg';
 import PostgresTransaction from './transaction';
 import { ResultSet, DatabaseClient, DatabaseQuery } from './types';
-const debug = Debug('Postgres');
+import wrapQuery from './wrap_query';
+
+const debug = Debug('estk-pg.client');
 
 type PostgresConfig = {
   url: string;
@@ -30,20 +32,7 @@ export default function init(dbConfig: PostgresConfig): Promise<DatabaseClient> 
 
 function wrap(client: any): DatabaseClient {
   return {
-    query: ({ sql, params = [] }: DatabaseQuery): Promise<ResultSet> => {
-      params = params || [];
-      let start = Date.now()
-      return client.query(sql, params).then(
-        (result: QueryResult) => {
-          const elapsed = Date.now() - start;
-          debug(sql, elapsed + 'ms', 'success', result.rowCount, 'rows');
-          return result.rows;
-        }, (err: Error) => {
-          var elapsed = Date.now() - start;
-          debug(sql, elapsed + 'ms', 'error', err.message);
-          throw err;
-        });
-    },
+    query: wrapQuery(client.query.bind(client), debug),
     transaction: () => PostgresTransaction(txPool)
   };
 }
