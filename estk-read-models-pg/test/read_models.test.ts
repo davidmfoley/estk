@@ -1,4 +1,5 @@
-import { describe, beforeEach, it } from 'mocha'; import { expect } from 'chai';
+import { describe, beforeEach, it } from 'mocha';
+import { expect } from 'chai';
 import { createEventStore, EventStore } from 'estk-events';
 import { PostgresClient, DatabaseClient } from 'estk-pg';
 import { cleanDatabase } from './helpers';
@@ -77,7 +78,7 @@ describe('PG read models with PG event store', () => {
         expect(result.bread).to.eq('rye');
       });
 
-      it(' sets up a queryable table', async () => {
+      it('sets up a queryable table', async () => {
         const result = await readModels.query({ sql: 'select * from sandwich_0'});
         expect(result.length).to.eql(1);
       });

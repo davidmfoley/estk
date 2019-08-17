@@ -45,6 +45,6 @@ export default ((config: ReadModelConfig) => (client: DatabaseClient) => {
     get,
     getAll,
     count,
-    rebuild: (eventStore: EventStore) => rebuild(config, client, eventStore)
+    rebuild: (eventStore: EventStore) => rebuild({ model: config, client, eventStore })
   };
 });

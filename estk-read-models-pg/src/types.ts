@@ -49,11 +49,11 @@ type ReadModelFields = {
 }
 
 export type ReadModelConfig = {
-  name: string,
-  version: number,
-  fields: ReadModelFields,
-  defaultValue?: any,
-  events: ReadModelEventConfig
+  name: string;
+  version: number;
+  fields: ReadModelFields;
+  defaultValue?: any;
+  events: ReadModelEventConfig;
 };
 
 export type ReadModel = any;

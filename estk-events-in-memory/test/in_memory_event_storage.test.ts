@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { createEventStore } from 'estk-events';
+import { createEventStore, EventStore, EventStream } from 'estk-events';
 import InMemoryStorage from '../src';
 import { TestSuites } from 'estk-events';
 
@@ -14,7 +14,7 @@ describe('with in-memory storage', () => {
   TestSuites.storage(startStore);
 
   it('can reduce', async () => {
-    const store = await startStore();
+    const store: EventStore = await startStore();
     await store.publish({
       action: '',
       targetType: 'number',
@@ -42,7 +42,7 @@ describe('with in-memory storage', () => {
       }
     });
 
-    const stream = await store.getEventStream({});
+    const stream: EventStream = await store.getEventStream({});
 
     const sum = await stream.reduce((sum: any, {
       data

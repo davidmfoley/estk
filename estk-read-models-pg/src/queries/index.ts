@@ -31,6 +31,25 @@ export const buildCreateTables = ({
     `
 });
 
+export const buildEmptyTables = ({
+  name,
+  version,
+  fields
+}: ReadModelConfig): {
+  sql: string;
+} => ({
+  sql: `
+      delete from "${tableName({
+        name,
+        version
+      })}";
+      delete from "${metaTableName({
+        name,
+        version
+      })}";
+    `
+});
+
 export const buildCreateTempTable = ({
   fields
 }: ReadModelConfig, name: string): {
@@ -38,6 +57,12 @@ export const buildCreateTempTable = ({
 } => ({
   sql: `
       create table if not exists "${name}" (${buildFields(fields)});
+    `
+});
+
+export const copyFromTempTable = (config: ReadModelConfig, sourceTableName: string): DatabaseQuery => ({
+  sql: `
+      insert into ${tableName(config)} select * from ${sourceTableName};
     `
 });
 

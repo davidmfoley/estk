@@ -83,8 +83,8 @@ export type EventLookup = {
 
 export type EventsPublishedHandler = (event: Event[]) => Promise<void> | void;
 
-export type EventStore = {
-  publish: (event: EventPublishRequest) => Promise<Event[]>;
+export interface EventStore {
+  publish: (event: EventsPublishRequest) => Promise<Event[]>;
   onPublished: (handler: EventsPublishedHandler) => void;
   getEventStream: (lookup: EventLookup) => Promise<EventStream>;
   close: () => Promise<void>;
