@@ -14,13 +14,9 @@
   ],
   "devDependencies": {
     "@types/sinon-chai": "^3.2.2",
-    "babel-eslint": "7",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-flow-strip-types": "^6.21.0",
-    "babel-register": "^6.18.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "chai": "^4.1.2",
-    "eslint": "^3.12.2",
-    "eslint-plugin-flowtype": "^2.42.0",
+    "eslint": "^6.0.0",
     "flow-bin": "^0.81.0",
     "flow-copy-source": "^1.1.0",
     "flow-typed": "^2.2.3",
@@ -32,12 +28,6 @@
     "watchr": "^4.0.1"
   },
   "dependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "@babel/preset-typescript": "^7.1.0",
-    "@typescript-eslint/parser": "^1.11.0",
-    "babel-plugin-flow-to-typescript": "^0.3.0",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.2"
   },
