@@ -20,7 +20,7 @@
     "flow-bin": "^0.81.0",
     "flow-copy-source": "^1.1.0",
     "flow-typed": "^2.2.3",
-    "mocha": "^3.2.0",
+    "mocha": "6.2.0",
     "nyc": "14.1.1",
     "rimraf": "^2.5.4",
     "sinon": "^4.5.0",
