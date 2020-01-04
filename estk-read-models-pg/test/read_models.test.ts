@@ -8,13 +8,12 @@ import sandwich from './models/sandwich';
 import PostgresEventStorage from 'estk-events-pg/src/event_storage';
 
 describe('PG read models with PG event store', () => {
-
   let client: DatabaseClient, readModels: any, eventStore: EventStore;
 
   beforeEach(async () => {
     await cleanDatabase();
     client = await PostgresClient({
-      url: process.env.DATABASE_URL_TEST || ''
+      url: process.env.DATABASE_URL_TEST || '',
     });
   });
 
@@ -24,18 +23,18 @@ describe('PG read models with PG event store', () => {
       eventStorage = await PostgresEventStorage(client);
 
       eventStore = await createEventStore({
-        storage: eventStorage
+        storage: eventStorage,
       });
 
       readModels = await ReadModels({
         eventStore,
         client,
         models: {
-          sandwich
+          sandwich,
         },
         options: {
-          rebuildOnStart: true
-        }
+          rebuildOnStart: true,
+        },
       });
 
       //await readModels.rebuildAll();
@@ -45,7 +44,9 @@ describe('PG read models with PG event store', () => {
 
     describe('when empty', () => {
       it('sets up a queryable table', async () => {
-        const result = await readModels.query({ sql: 'select * from sandwich'});
+        const result = await readModels.query({
+          sql: 'select * from sandwich',
+        });
         expect(result).to.eql([]);
       });
 
@@ -66,7 +67,7 @@ describe('PG read models with PG event store', () => {
           targetType: 'sandwich',
           targetId: '42',
           action: 'make',
-          data: { meat: 'roast beast', bread: 'rye' }
+          data: { meat: 'roast beast', bread: 'rye' },
         });
       });
 
@@ -79,7 +80,9 @@ describe('PG read models with PG event store', () => {
       });
 
       it('sets up a queryable table', async () => {
-        const result = await readModels.query({ sql: 'select * from sandwich_0'});
+        const result = await readModels.query({
+          sql: 'select * from sandwich_0',
+        });
         expect(result.length).to.eql(1);
       });
 

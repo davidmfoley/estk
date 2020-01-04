@@ -1,5 +1,5 @@
-import { DatabaseClient } from "estk-pg/lib";
-import { ReadModelConfig } from "../types";
+import { DatabaseClient } from 'estk-pg/lib';
+import { ReadModelConfig } from '../types';
 
 import {
   buildCreateTables,

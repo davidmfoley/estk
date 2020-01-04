@@ -1,6 +1,6 @@
-import { DatabaseClient } from "estk-pg";
-import { ReadModelConfig } from "../types";
-import { buildCreateTempTable } from "../queries";
+import { DatabaseClient } from 'estk-pg';
+import { ReadModelConfig } from '../types';
+import { buildCreateTempTable } from '../queries';
 import uuidv4 from 'uuid/v4';
 
 const createTempTable = async (

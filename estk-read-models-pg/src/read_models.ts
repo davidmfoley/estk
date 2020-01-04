@@ -1,4 +1,9 @@
-import { ReadModel, ReadModels, ReadModelsConfig, ReadModelConfig } from './types';
+import {
+  ReadModel,
+  ReadModels,
+  ReadModelsConfig,
+  ReadModelConfig,
+} from './types';
 import readModel from './read_model';
 import { buildCreateTables } from './queries';
 import { ResultSet, DatabaseQuery } from 'estk-pg';
@@ -6,10 +11,10 @@ import { Event } from 'estk-events';
 
 type Context = any;
 
-async function PostgresReadModels(config: ReadModelsConfig): Promise<ReadModels> {
-  const {
-    client
-  } = config;
+async function PostgresReadModels(
+  config: ReadModelsConfig
+): Promise<ReadModels> {
+  const { client } = config;
   let models: {
     [name: string]: any;
   } = {};
@@ -22,13 +27,12 @@ async function PostgresReadModels(config: ReadModelsConfig): Promise<ReadModels>
     get: getModel,
     update,
     query,
-    rebuildAll
+    rebuildAll,
   };
 
   function getModel(name: string): ReadModel {
     return models[name](client);
   }
-
 
   async function applyEvents(events: Event[], context: Context): Promise<void> {
     const asArray: any[] = Object.keys(models).map(k => models[k]);

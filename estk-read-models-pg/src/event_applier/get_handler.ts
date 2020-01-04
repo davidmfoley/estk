@@ -1,7 +1,10 @@
 import { Event } from 'estk-events';
 import { ReadModelConfig } from '../types';
 
-export default ({events}: ReadModelConfig, event: Event): Function | undefined => {
+export default (
+  { events }: ReadModelConfig,
+  event: Event
+): Function | undefined => {
   if (typeof events === 'undefined') return;
   if (typeof events === 'function') return events;
 

@@ -8,7 +8,7 @@ const buildWhere = (config: ReadModelConfig, where: any = {}): any => {
   if (!keys.length) {
     return {
       sql: '',
-      params: []
+      params: [],
     };
   }
 
@@ -31,7 +31,7 @@ function combinePieces(pieces: DatabaseQuery[]) {
 
   return {
     sql: `where ${sqlPieces.join(' and ')}`,
-    params
+    params,
   };
 }
 
@@ -47,10 +47,14 @@ function offsetParameterIndexes(clause: string, offset: number, count: number) {
   return clause;
 }
 
-function buildWherePiece(config: ReadModelConfig, field: string, value: any): DatabaseQuery {
+function buildWherePiece(
+  config: ReadModelConfig,
+  field: string,
+  value: any
+): DatabaseQuery {
   return {
     sql: `${escapeFieldName(config, field)}=$1`,
-    params: [value]
+    params: [value],
   };
 }
 

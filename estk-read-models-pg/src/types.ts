@@ -20,33 +20,30 @@ export type ReadModelsConfig = {
     [key: string]: ReadModelConfig;
   };
   options: {
-    rebuildOnStart?: boolean
+    rebuildOnStart?: boolean;
   };
 };
 
-type EventHandler = (
-  event: Event,
-  actions: ReadModelActions
-) => Promise<void>;
+type EventHandler = (event: Event, actions: ReadModelActions) => Promise<void>;
 
 type EventHandlerMap = {
-  [x: string]: EventHandler
+  [x: string]: EventHandler;
 };
 
 type EventHandlerMapMap = {
-  [x: string]: EventHandler | EventHandlerMap
-}
+  [x: string]: EventHandler | EventHandlerMap;
+};
 
 type ReadModelEventConfig = EventHandler | EventHandlerMapMap;
 
 type ReadModelField = {
-  type: string,
-  primaryKey?: boolean
-}
+  type: string;
+  primaryKey?: boolean;
+};
 
 type ReadModelFields = {
-  [name: string]: ReadModelField
-}
+  [name: string]: ReadModelField;
+};
 
 export type ReadModelConfig = {
   name: string;
@@ -59,13 +56,13 @@ export type ReadModelConfig = {
 export type ReadModel = any;
 
 export type ReadModels = {
-  applyEvents: (events: Event[], context: any) => Promise<void>,
-  get: (name: string) => ReadModel,
-  update: (name: string) => Promise<void>,
-  query: (query: DatabaseQuery) => Promise<ResultSet>,
-  rebuildAll: () => Promise<void>
+  applyEvents: (events: Event[], context: any) => Promise<void>;
+  get: (name: string) => ReadModel;
+  update: (name: string) => Promise<void>;
+  query: (query: DatabaseQuery) => Promise<ResultSet>;
+  rebuildAll: () => Promise<void>;
 };
 
 export type DatabaseContext = any;
 
-export type EventApplier = (e: Event) => Promise<Event | undefined>
+export type EventApplier = (e: Event) => Promise<Event | undefined>;

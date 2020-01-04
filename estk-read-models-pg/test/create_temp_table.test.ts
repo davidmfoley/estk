@@ -6,18 +6,16 @@ import { expect } from 'chai';
 describe('createTempTable', () => {
   it('creates a temp table', async () => {
     const client = await PostgresClient({
-      url: process.env.DATABASE_URL_TEST || ''
+      url: process.env.DATABASE_URL_TEST || '',
     });
 
-    const tempTable = await createTempTable(
-      client,
-      sandwich
-    );
+    const tempTable = await createTempTable(client, sandwich);
 
     const result = await client.query({
-       sql: `select from ${tempTable}`
+      sql: `select from ${tempTable}`,
     });
 
     expect(result.length).to.eq(0);
+    await client.close();
   });
 });

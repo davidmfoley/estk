@@ -1,13 +1,13 @@
 export const tableName = ({
   name,
-  version = 0
+  version = 0,
 }: {
   name: string;
   version?: number;
 }) => `${name}_${version}`;
 export const metaTableName = ({
   name,
-  version = 0
+  version = 0,
 }: {
   name: string;
   version?: number;

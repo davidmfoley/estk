@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import buildWhere from "../src/queries/build_where";
+import buildWhere from '../src/queries/build_where';
 import Sandwich from './models/sandwich';
 
 describe('buildWhere', () => {
@@ -12,7 +12,7 @@ describe('buildWhere', () => {
 
   it('handles a basic lookup', () => {
     const result = buildWhere(Sandwich, {
-      id: '12345'
+      id: '12345',
     });
     expect(result.sql).to.eql('where "sandwich_0"."id"=$1');
     expect(result.params).to.eql(['12345']);
@@ -21,9 +21,11 @@ describe('buildWhere', () => {
   it('handles lookup with two fields', () => {
     const result = buildWhere(Sandwich, {
       meat: 'beast',
-      bread: 'rye'
+      bread: 'rye',
     });
-    expect(result.sql).to.eql('where "sandwich_0"."meat"=$1 and "sandwich_0"."bread"=$2');
+    expect(result.sql).to.eql(
+      'where "sandwich_0"."meat"=$1 and "sandwich_0"."bread"=$2'
+    );
     expect(result.params).to.eql(['beast', 'rye']);
   });
 });

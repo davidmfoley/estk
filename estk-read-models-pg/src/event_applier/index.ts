@@ -4,7 +4,6 @@ import { QueryContext } from 'estk-pg';
 import Actions from './actions';
 import getHandler from './get_handler';
 
-
 const getEventApplier = (
   config: ReadModelConfig,
   context: QueryContext

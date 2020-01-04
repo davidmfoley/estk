@@ -7,7 +7,7 @@ import { DatabaseClient } from 'estk-pg';
 import rebuild from './rebuild';
 import { buildSelect, buildSelectOne, buildSelectCount } from './queries';
 
-export default ((config: ReadModelConfig) => (client: DatabaseClient) => {
+export default (config: ReadModelConfig) => (client: DatabaseClient) => {
   const get = async (lookup?: ReadModelLookup): Promise<any> => {
     const query = buildSelectOne(config, lookup || {});
     const results = await client.query(query);
@@ -26,7 +26,10 @@ export default ((config: ReadModelConfig) => (client: DatabaseClient) => {
     return results[0].count;
   };
 
-  const applyEvents = async (events: Event[], context: DatabaseContext): Promise<void> => {
+  const applyEvents = async (
+    events: Event[],
+    context: DatabaseContext
+  ): Promise<void> => {
     let lastEvent: Event | undefined | null;
     const applier = EventApplier(config, client);
 
@@ -45,6 +48,7 @@ export default ((config: ReadModelConfig) => (client: DatabaseClient) => {
     get,
     getAll,
     count,
-    rebuild: (eventStore: EventStore) => rebuild({ model: config, client, eventStore })
+    rebuild: (eventStore: EventStore) =>
+      rebuild({ model: config, client, eventStore }),
   };
-});
+};

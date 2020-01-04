@@ -6,7 +6,7 @@ import {
   buildSelect,
   buildDelete,
   buildUpdate,
-  buildInsert
+  buildInsert,
 } from '../queries';
 
 export default (
@@ -15,7 +15,7 @@ export default (
 ): ReadModelActions => {
   const doQuery = async (q: DatabaseQuery): Promise<any[]> => {
     return await query(q);
-  }
+  };
 
   return {
     get: async (lookup: ReadModelLookup) => {
