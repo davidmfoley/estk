@@ -6,7 +6,7 @@ import {
   EventStreamBookmark,
   StorageEventStream,
   BeforeAllEvent,
-  EventStreamItem
+  EventStreamItem,
 } from 'estk-events';
 
 import rowToEvent from './row_to_event';
@@ -14,10 +14,13 @@ import buildEventQuery from './build_event_query';
 
 const beginningBookmark: EventStreamBookmark = {
   timestamp: '0001-01-01',
-  id: '0'
+  id: '0',
 };
 
-export default function PostgresEventStream(client: DatabaseClient, lookup: EventLookup = {}): StorageEventStream {
+export default function PostgresEventStream(
+  client: DatabaseClient,
+  lookup: EventLookup = {}
+): StorageEventStream {
   const debug = require('debug')('PostgresEventStream');
 
   debug('created event stream', lookup);
@@ -33,13 +36,19 @@ export default function PostgresEventStream(client: DatabaseClient, lookup: Even
   return {
     next,
     getBookmark: () => bookmark,
-    seek
+    seek,
   };
 
   function seek(bookmark: EventStreamBookmark) {
     debug('seeking to ', bookmark);
 
-    while (localBuffer.length && (bookmark.timestamp > localBuffer[0].timestamp || bookmark.timestamp === localBuffer[0].timestamp && bookmark.id && bookmark.id > localBuffer[0].id)) {
+    while (
+      localBuffer.length &&
+      (bookmark.timestamp > localBuffer[0].timestamp ||
+        (bookmark.timestamp === localBuffer[0].timestamp &&
+          bookmark.id &&
+          bookmark.id > localBuffer[0].id))
+    ) {
       localBuffer.shift();
     }
   }
@@ -47,7 +56,7 @@ export default function PostgresEventStream(client: DatabaseClient, lookup: Even
   function endedEvent(): EventStreamItem {
     return {
       ended: true,
-      bookmark
+      bookmark,
     } as EventStreamItem;
   }
 
@@ -81,7 +90,7 @@ export default function PostgresEventStream(client: DatabaseClient, lookup: Even
     var last = rows[rows.length - 1];
     bookmark = {
       timestamp: last.timestamp,
-      id: last.id
+      id: last.id,
     };
     return rows;
   }
@@ -93,7 +102,7 @@ export default function PostgresEventStream(client: DatabaseClient, lookup: Even
     if (nextEvent) {
       bookmark = {
         timestamp: nextEvent.timestamp,
-        id: nextEvent.id
+        id: nextEvent.id,
       };
     }
 
@@ -107,17 +116,29 @@ export default function PostgresEventStream(client: DatabaseClient, lookup: Even
   function refillLocalBuffer(): Promise<void> {
     const config = {
       eventCountMin: 2000,
-      eventCountMax: 3000
+      eventCountMax: 3000,
     };
-    const CHUNK_SIZE = Math.floor(Math.random() * (config.eventCountMax - config.eventCountMin) + config.eventCountMin);
-    debug('refilling local event stream buffer', count, 'processed so far... from event', bookmark);
+    const CHUNK_SIZE = Math.floor(
+      Math.random() * (config.eventCountMax - config.eventCountMin) +
+        config.eventCountMin
+    );
+    debug(
+      'refilling local event stream buffer',
+      count,
+      'processed so far... from event',
+      bookmark
+    );
     let query = buildEventQuery(lookup.filter, bookmark, CHUNK_SIZE);
 
     return client.query(query).then(rows => {
       localBuffer = rows.map(rowToEvent);
 
       if (localBuffer.length === 0) {
-        debug('event stream has been drained - total count was ', count, 'events');
+        debug(
+          'event stream has been drained - total count was ',
+          count,
+          'events'
+        );
         drained = true;
       } else {
         debug('refilled local event stream buffer with', rows.length, 'events');

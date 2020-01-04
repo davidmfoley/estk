@@ -1,15 +1,7 @@
 import { Event } from 'estk-events';
 
 export default function rowToEvent(row: any): Event {
-  const {
-    id,
-    timestamp,
-    target_type,
-    target_id,
-    action,
-    data,
-    meta
-  } = row;
+  const { id, timestamp, target_type, target_id, action, data, meta } = row;
   return {
     id,
     timestamp,
@@ -17,6 +9,6 @@ export default function rowToEvent(row: any): Event {
     targetId: target_id,
     action,
     data,
-    meta
+    meta,
   };
 }

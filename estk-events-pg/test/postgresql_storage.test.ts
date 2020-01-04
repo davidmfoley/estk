@@ -7,7 +7,7 @@ import { TestSuites } from 'estk-events';
 describe('with postgresql storage', () => {
   const config = {
     url: process.env.DATABASE_URL_TEST || '',
-    poolSize: 10
+    poolSize: 10,
   };
 
   const startStore = async () => {
@@ -16,7 +16,7 @@ describe('with postgresql storage', () => {
     await storage.createSchema();
     await storage.deleteAll();
     return createEventStore({
-      storage
+      storage,
     });
   };
 

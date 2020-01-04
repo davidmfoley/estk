@@ -1,6 +1,11 @@
 import { Timestamps } from 'estk-events';
 import { DatabaseClient, DatabaseQuery } from 'estk-pg';
-import { Event, EventPublishRequest, EventLookup, EventStorage } from 'estk-events';
+import {
+  Event,
+  EventPublishRequest,
+  EventLookup,
+  EventStorage,
+} from 'estk-events';
 import PostgresEventStream from './event_stream';
 import rowToEvent from './row_to_event';
 
@@ -10,52 +15,57 @@ type PostgresStorage = {
   createSchema: Function;
   deleteAll: Function;
 } & EventStorage;
-export default function PostgresEventStorage(client: DatabaseClient): Promise<PostgresStorage> {
-  return Promise.resolve({
+export default async function PostgresEventStorage(
+  client: DatabaseClient
+): Promise<PostgresStorage> {
+  return {
     publish,
-    getEventStream: (lookup: EventLookup) => Promise.resolve(PostgresEventStream(client, lookup)),
+    getEventStream: (lookup: EventLookup) =>
+      Promise.resolve(PostgresEventStream(client, lookup)),
     close: () => client.close(),
     createSchema,
-    deleteAll
-  });
+    deleteAll,
+  };
 
-  function deleteAll(): Promise<void> {
+  async function deleteAll(): Promise<void> {
     debug('delete all events');
-    return client.query({
-      sql: 'delete from events;'
-    }).then(() => undefined);
+    await client.query({
+      sql: 'delete from events;',
+    });
   }
 
-  function createSchema(): Promise<void> {
+  async function createSchema(): Promise<void> {
     debug('create event table');
-    return client.query({
+    await client.query({
       sql: `
-      CREATE TABLE IF NOT EXISTS events (
-        id serial primary key,
-        target_type character varying NOT NULL,
-        target_id character varying,
-        action character varying NOT NULL,
-        data jsonb,
-        meta jsonb,
-        "timestamp" timestamp without time zone default (now() at time zone 'utc')
-      );`
-    }).then(() => undefined);
+        CREATE TABLE IF NOT EXISTS events (
+          id serial primary key,
+          target_type character varying NOT NULL,
+          target_id character varying,
+          action character varying NOT NULL,
+          data jsonb,
+          meta jsonb,
+          "timestamp" timestamp without time zone default (now() at time zone 'utc')
+      );`,
+    });
   }
 
-  async function publish(events: EventPublishRequest[], onPublished: Function): Promise<Event[]> {
+  type OnPublished = (events: Event[], context: any) => {};
+
+  async function publish(
+    events: EventPublishRequest[],
+    onPublished: OnPublished
+  ): Promise<Event[]> {
     const transaction = await client.transaction();
 
     try {
       const published = [];
 
       for (let event of events) {
-        const {
-          sql,
-          params
-        } = buildQuery(event);
+        const { sql, params } = buildQuery(event);
         const rows = await transaction.query({
           sql,
-          params
+          params,
         });
         const {
           id,
@@ -64,15 +74,17 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
           target_id,
           action,
           data,
-          meta
+          meta,
         } = rows[0];
-        debug(`inserted ${id} ${timestamp} ${target_type} ${target_id} ${action} ${data} ${meta}`);
+        debug(
+          `inserted ${id} ${timestamp} ${target_type} ${target_id} ${action} ${data} ${meta}`
+        );
         published.push(rowToEvent(rows[0]));
       }
 
-      onPublished(published, {
+      await onPublished(published, {
         client,
-        transaction
+        transaction,
       });
       await transaction.commit();
       return published;
@@ -85,7 +97,14 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
 
 function buildQuery(event: EventPublishRequest): DatabaseQuery {
   return {
-    params: [event.targetType, event.targetId, event.action, event.meta, event.data, Timestamps.now()],
+    params: [
+      event.targetType,
+      event.targetId,
+      event.action,
+      event.meta,
+      event.data,
+      Timestamps.now(),
+    ],
     sql: `
       INSERT INTO events (
         target_type,
@@ -94,7 +113,7 @@ function buildQuery(event: EventPublishRequest): DatabaseQuery {
         meta,
         data,
         timestamp
-      ) values ( $1, $2, $3, $4, $5, $6 ) 
-      RETURNING *;`
+      ) values ( $1, $2, $3, $4, $5, $6 )
+      RETURNING *;`,
   };
 }
