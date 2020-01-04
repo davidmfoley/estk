@@ -18,6 +18,8 @@ describe('postgres client', () => {
     client = await getClient();
   });
 
+  afterEach(() => client.close());
+
   it('can do queries and stuff', async () => {
     await client.query({
       sql: 'drop table if exists client_test',
