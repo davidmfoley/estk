@@ -6,7 +6,10 @@ export type EventStreamBookmark = {
 type PublishedHandler = (events: Event[], context: Object) => Promise<void>;
 
 export type EventStorage = {
-  publish: (request: EventPublishRequest[], onPublished: PublishedHandler) => Promise<Event[]>;
+  publish: (
+    request: EventPublishRequest[],
+    onPublished: PublishedHandler
+  ) => Promise<Event[]>;
   getEventStream: (lookup: EventLookup) => Promise<StorageEventStream>;
   close: () => Promise<void>;
 };
@@ -46,8 +49,8 @@ export type StorageEventStream = {
 };
 
 type EventStreamReduceResult = {
-  state: any,
-  bookmark: EventStreamBookmark
+  state: any;
+  bookmark: EventStreamBookmark;
 };
 
 export type EventStream = StorageEventStream & {
@@ -63,11 +66,14 @@ export type EventStoreSettings = {
   storage: EventStorage;
 };
 
-type EventFilterSpec = string | {
-  id: any;
-} | {
-  action: any;
-};
+type EventFilterSpec =
+  | string
+  | {
+      id: any;
+    }
+  | {
+      action: any;
+    };
 
 export type EventFilter = {
   [targetType: string]: EventFilterSpec;
@@ -88,4 +94,4 @@ export interface EventStore {
   onPublished: (handler: EventsPublishedHandler) => void;
   getEventStream: (lookup: EventLookup) => Promise<EventStream>;
   close: () => Promise<void>;
-};
+}

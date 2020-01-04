@@ -1,14 +1,14 @@
 import microtime from 'microtime';
 
 export default {
-  now: function () {
+  now: function() {
     var microNow = microtime.now();
     var now = new Date(microNow / 1000);
     return now.toISOString().replace('Z', ('' + microNow).slice(-3) + 'Z');
   },
 
   // turns a postgres date string into a JS date
-  parse: function (s: string) {
+  parse: function(s: string) {
     if (!s) return '';
     let dateAndTimeToSecond: string;
     let fraction = '000';
@@ -39,5 +39,5 @@ export default {
     dateAndTimeToSecond = dateAndTimeToSecond.replace(' ', 'T');
     var dateString = dateAndTimeToSecond + '.' + fraction + tzIndicator + tz;
     return new Date(dateString);
-  }
+  },
 };

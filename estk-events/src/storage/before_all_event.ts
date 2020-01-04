@@ -6,7 +6,7 @@ const beforeAll: Event = {
   action: '$before',
   data: {},
   meta: {},
-  timestamp: '1970-01-01'
+  timestamp: '1970-01-01',
 };
 
 export default beforeAll;

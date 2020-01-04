@@ -4,11 +4,11 @@ const expect: any = require('chai').expect;
 const COUNT = 5;
 
 export default (startStore: any) => {
-   let store: any;
+  let store: any;
 
   describe(`reading back ${COUNT} events`, () => {
     beforeEach(() => {
-      return startStore().then((store_: any)=> {
+      return startStore().then((store_: any) => {
         store = store_;
         let promise = Promise.resolve();
         for (let i = 0; i < COUNT; i++) {
@@ -18,8 +18,8 @@ export default (startStore: any) => {
               targetId: '' + i,
               action: 'create',
               data: {
-                index: i
-              }
+                index: i,
+              },
             });
           });
         }

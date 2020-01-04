@@ -13,7 +13,7 @@ export default (startStore: any) => {
         targetType: 'book',
         action: 'create',
         targetId: '42',
-        data: {name: 'foo'}
+        data: { name: 'foo' },
       };
 
       store = await startStore();
@@ -22,13 +22,14 @@ export default (startStore: any) => {
     });
 
     afterEach(() => store.close());
+
     it('yields the events', () => {
       const [event] = published;
 
       expect(event.targetType).to.eq('book');
       expect(event.action).to.eq('create');
       expect(event.targetId).to.eq('42');
-      expect(event.data).to.eql({name: 'foo'});
+      expect(event.data).to.eql({ name: 'foo' });
     });
 
     it('can stream the event', async () => {
@@ -42,7 +43,7 @@ export default (startStore: any) => {
       expect(event.targetType).to.eq('book');
       expect(event.action).to.eq('create');
       expect(event.targetId).to.eq('42');
-      expect(event.data).to.eql({name: 'foo'});
+      expect(event.data).to.eql({ name: 'foo' });
 
       let eof = await stream.next();
       expect(eof.ended).to.eq(true);

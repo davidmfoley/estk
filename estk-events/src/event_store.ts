@@ -1,9 +1,16 @@
-import { EventLookup } from "estk-events/src/types";
+import { EventLookup } from 'estk-events/src/types';
 import createEventStream from './event_stream';
-import { Event, EventStream, EventStore, EventStoreSettings, EventsPublishedHandler, EventsPublishRequest } from './types';
+import {
+  Event,
+  EventStream,
+  EventStore,
+  EventStoreSettings,
+  EventsPublishedHandler,
+  EventsPublishRequest,
+} from './types';
 
 export default function init({
-  storage
+  storage,
 }: EventStoreSettings): Promise<EventStore> {
   let publishHandlers: Function[] = [];
 
@@ -11,7 +18,7 @@ export default function init({
     publish,
     onPublished,
     getEventStream,
-    close
+    close,
   };
 
   return Promise.resolve(eventStore);
@@ -23,7 +30,6 @@ export default function init({
   }
 
   async function publish(event: EventsPublishRequest): Promise<Event[]> {
-
     const onEventPublished = async (published: Event[], context: any = {}) => {
       for (let handler of publishHandlers) {
         const result: any = handler(published, context);
