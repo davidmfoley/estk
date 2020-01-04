@@ -34,6 +34,10 @@ function wrap(client: any): DatabaseClient {
   return {
     query: wrapQuery(client.query.bind(client), debug),
     transaction: () => PostgresTransaction(txPool)
+    transaction: () => PostgresTransaction(txPool),
+    close: async () => {
+      client.release();
+    },
   };
 }
 
