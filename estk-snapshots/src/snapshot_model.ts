@@ -7,25 +7,19 @@ type SnapshotModelConfig = {
 
 import { SnapshotModel } from './types';
 
-export default (({
-  storage,
-  model
-}: SnapshotModelConfig): SnapshotModel => {
+export default ({ storage, model }: SnapshotModelConfig): SnapshotModel => {
   return {
-    get
+    get,
   };
 
   async function get(id: any): Promise<any> {
     const existing = await storage.get(id);
 
     if (existing.notFound) {
-      const {
-        state,
-        bookmark
-      } = await model.get(id);
+      const { state, bookmark } = await model.get(id);
       await storage.put(id, {
         state,
-        bookmark
+        bookmark,
       });
       return state;
     }
@@ -33,9 +27,9 @@ export default (({
     const updated = await model.update({
       id,
       state: existing.state,
-      bookmark: existing.bookmark
+      bookmark: existing.bookmark,
     });
     await storage.put(id, updated);
     return updated.state;
   }
-});
+};

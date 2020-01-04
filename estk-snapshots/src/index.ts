@@ -5,5 +5,5 @@ export * from './types';
 
 export default {
   OnDemandModel,
-  SnapshotModel
+  SnapshotModel,
 };

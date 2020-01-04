@@ -6,9 +6,9 @@ export type OnDemandModelState = {
 };
 
 export type OnDemandModelUpdate = {
-  id: string,
-  state: any,
-  bookmark: EventStreamBookmark
+  id: string;
+  state: any;
+  bookmark: EventStreamBookmark;
 };
 
 export type OnDemandModel = {
@@ -23,7 +23,7 @@ export type SnapshotModel = {
 export type Snapshot = {
   state: any;
   bookmark: EventStreamBookmark;
-  notFound?: any
+  notFound?: any;
 };
 
 type NoSnapshot = {

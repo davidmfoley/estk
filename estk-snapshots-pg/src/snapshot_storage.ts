@@ -6,13 +6,13 @@ type PostgresqlSnapshotConfig = {
   tableName: string;
 };
 
-export default (({
+export default ({
   client,
-  tableName
+  tableName,
 }: PostgresqlSnapshotConfig): SnapshotStorage => {
   return {
     get,
-    put
+    put,
   };
 
   async function get(id: any): Promise<SnapshotState> {
@@ -22,7 +22,7 @@ export default (({
         select id, state, bookmark
         from "${tableName}"
         where id=$1`,
-      params: [id]
+      params: [id],
     });
 
     if (result.length) {
@@ -32,21 +32,21 @@ export default (({
     return {
       notFound: true,
       state: {},
-      bookmark: {}
+      bookmark: {},
     };
   }
 
-  async function put(id: any, {
-    state,
-    bookmark
-  }: SnapshotState): Promise<void> {
+  async function put(
+    id: any,
+    { state, bookmark }: SnapshotState
+  ): Promise<void> {
     await ensureTableExists();
     await client.query({
       sql: `
         insert into "${tableName}" (id, state, bookmark)
         values ($1, $2, $3)
         on conflict (id) do update set state=EXCLUDED.state, bookmark=EXCLUDED.bookmark `,
-      params: [id, state, bookmark]
+      params: [id, state, bookmark],
     });
   }
 
@@ -56,7 +56,7 @@ export default (({
         id varchar PRIMARY KEY,
         state jsonb,
         bookmark jsonb
-      )`
+      )`,
     });
   }
-});
+};

@@ -1,4 +1,9 @@
-import { Event, EventFilter, EventStore, EventStreamBookmark } from 'estk-events';
+import {
+  Event,
+  EventFilter,
+  EventStore,
+  EventStreamBookmark,
+} from 'estk-events';
 
 type EventHandler = (state: any, event: Event) => any;
 
@@ -9,32 +14,33 @@ type EventHandlerMap = {
 type OnDemandReadModelConfig = {
   eventFilter: (id: any) => EventFilter;
   initialState?: any;
-  reducer: EventHandler | {
-    [targetType: string]: EventHandler | EventHandlerMap;
-  };
+  reducer:
+    | EventHandler
+    | {
+        [targetType: string]: EventHandler | EventHandlerMap;
+      };
 };
-
 
 import {
   OnDemandModel,
   OnDemandModelUpdate,
-  OnDemandModelState
+  OnDemandModelState,
 } from './types';
 
-export default (({
+export default ({
   eventFilter,
   initialState,
-  reducer
+  reducer,
 }: OnDemandReadModelConfig) => (store: EventStore): OnDemandModel => {
   return {
     get,
-    update
+    update,
   };
 
   async function get(id: any): Promise<OnDemandModelState> {
     const filter = eventFilter(id);
     const stream = await store.getEventStream({
-      filter
+      filter,
     });
 
     return await stream.reduce(streamReducer, initialState);
@@ -43,12 +49,12 @@ export default (({
   async function update({
     id,
     state,
-    bookmark
+    bookmark,
   }: OnDemandModelUpdate): Promise<OnDemandModelState> {
     const filter = eventFilter(id);
     const stream = await store.getEventStream({
       filter,
-      bookmark
+      bookmark,
     });
 
     return await stream.reduce(streamReducer, state);
@@ -58,12 +64,12 @@ export default (({
     const handler = getHandler(nextEvent, reducer);
     return handler ? handler(state, nextEvent) : state;
   }
-});
+};
 
-function getHandler({
-  targetType,
-  action
-}: Event, handlers: any): EventHandler | undefined | null {
+function getHandler(
+  { targetType, action }: Event,
+  handlers: any
+): EventHandler | undefined | null {
   if (typeof handlers === 'function') return handlers;
   const handler = handlers[targetType];
   if (!handler) return;
