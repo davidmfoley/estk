@@ -14,7 +14,7 @@ export default function PostgresEventStorage(client: DatabaseClient): Promise<Po
   return Promise.resolve({
     publish,
     getEventStream: (lookup: EventLookup) => Promise.resolve(PostgresEventStream(client, lookup)),
-    close: () => Promise.resolve(),
+    close: () => client.close(),
     createSchema,
     deleteAll
   });
