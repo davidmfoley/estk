@@ -29,7 +29,7 @@ export default async (
   channel.consume(queue.queue, onAmqpMessage);
 
   store.onPublished((events: Event[]) => {
-    const message = new Buffer(JSON.stringify(events));
+    const message = Buffer.from(JSON.stringify(events));
     channel.publish(exchange, 'estk-event', message);
   });
 
