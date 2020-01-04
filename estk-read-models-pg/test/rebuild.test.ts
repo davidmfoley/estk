@@ -13,6 +13,8 @@ describe('rebuild', () => {
     });
   });
 
+  afterEach(() => client.close());
+
   describe('with no existing state', () => {
     describe('with no events', () => {
       it('results in an empty table', async () => {

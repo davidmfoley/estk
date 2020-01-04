@@ -17,6 +17,10 @@ describe('PG read models with PG event store', () => {
     });
   });
 
+  afterEach(async () => {
+    await client.close();
+  });
+
   describe('transactional', () => {
     let eventStorage;
     beforeEach(async () => {

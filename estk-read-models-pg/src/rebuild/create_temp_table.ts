@@ -9,7 +9,7 @@ const createTempTable = async (
 ) => {
   const uniqueId = uuidv4().replace(/\-/g, '');
   const tableName = `${config.name}_${config.version}_${uniqueId}`;
-  const query = await buildCreateTempTable(config, tableName);
+  const query = buildCreateTempTable(config, tableName);
   await client.query(query);
   return tableName;
 };
