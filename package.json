@@ -25,6 +25,7 @@
     "watchr": "^4.0.1"
   },
   "dependencies": {
+    "prettier": "^1.18.2",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.2"
   },
