@@ -21,4 +21,5 @@ export type DatabaseTransaction = {
 export type DatabaseClient = {
   query: QueryAction;
   transaction: () => Promise<DatabaseTransaction>;
+  close: () => Promise<void>;
 };
