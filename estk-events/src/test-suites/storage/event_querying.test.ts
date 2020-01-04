@@ -18,6 +18,8 @@ export default (startStore: any) => {
       ]);
     });
 
+    afterEach(() => store.close());
+
     it('can get a stream of events filtered by type and action', async () => {
       const stream = await store.getEventStream({
         filter: {

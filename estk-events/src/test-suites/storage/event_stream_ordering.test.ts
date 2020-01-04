@@ -27,6 +27,8 @@ export default (startStore: any) => {
       });
     });
 
+    afterEach(() => store.close());
+
     it('can stream back all of the events', async () => {
       let stream = await store.getEventStream();
 

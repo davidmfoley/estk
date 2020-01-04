@@ -21,6 +21,7 @@ export default (startStore: any) => {
       published = await store.publish(publishRequest);
     });
 
+    afterEach(() => store.close());
     it('yields the events', () => {
       const [event] = published;
 
