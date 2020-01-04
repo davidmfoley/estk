@@ -11,13 +11,15 @@ describe('pg snapshot storage', () => {
 
   beforeEach(async () => {
     client = await PostgresClient({
-      url: process.env.DATABASE_URL_TEST || ''
+      url: process.env.DATABASE_URL_TEST || '',
     });
     snapshotStorage = PostgresSnapshotStorage({
       client,
-      tableName: 'snapshot_test_' + Date.now()
+      tableName: 'snapshot_test_' + Date.now(),
     });
   });
+
+  afterEach(() => client.close());
 
   it('can get on an empty stomach', async () => {
     const result = await snapshotStorage.get('42');
@@ -28,15 +30,15 @@ describe('pg snapshot storage', () => {
     const state = {
       id: '42',
       name: 'Arthur',
-      occupation: 'sandwich artisan'
+      occupation: 'sandwich artisan',
     };
     const bookmark: EventStreamBookmark = {
       id: 'example',
-      timestamp: '122345'
+      timestamp: '122345',
     };
     await snapshotStorage.put('42', {
       state,
-      bookmark
+      bookmark,
     });
     const fetched = await snapshotStorage.get('42');
     expect(fetched.notFound).not.to.be.ok;
@@ -48,24 +50,24 @@ describe('pg snapshot storage', () => {
     await snapshotStorage.put('42', {
       state: {
         name: 'Arthur',
-        occupation: 'Earthling'
+        occupation: 'Earthling',
       },
       bookmark: {
         id: '1',
-        timestamp: '123'
-      }
+        timestamp: '123',
+      },
     });
     const state = {
       name: 'Arthur',
-      occupation: 'Space Traveler'
+      occupation: 'Space Traveler',
     };
     const bookmark: EventStreamBookmark = {
       id: '4',
-      timestamp: '343439'
+      timestamp: '343439',
     };
     await snapshotStorage.put('42', {
       state,
-      bookmark
+      bookmark,
     });
     const fetched = await snapshotStorage.get('42');
     expect(fetched.notFound).not.to.be.ok;
