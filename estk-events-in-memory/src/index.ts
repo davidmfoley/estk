@@ -7,7 +7,7 @@ import {
   StorageEventStream,
   EventStreamItem,
   EventStreamBookmark,
-  EventPublishRequest
+  EventPublishRequest,
 } from 'estk-events';
 
 import { BeforeAllEvent } from 'estk-events';
@@ -19,16 +19,10 @@ export function InMemoryStorage(): EventStorage {
 
   function publish(
     request: EventPublishRequest[],
-     onPublished: Function
+    onPublished: Function
   ): Promise<Event[]> {
     const published = request.map(toPublish => {
-      const {
-        data,
-        meta,
-        targetId,
-        targetType,
-        action
-      } = toPublish;
+      const { data, meta, targetId, targetType, action } = toPublish;
       nextId++;
       const event: Event = {
         id: nextId,
@@ -37,7 +31,7 @@ export function InMemoryStorage(): EventStorage {
         data,
         meta: meta || {},
         targetId,
-        targetType
+        targetType,
       };
       events.push(event);
       return event;
@@ -64,10 +58,12 @@ export function InMemoryStorage(): EventStorage {
         index++;
       }
 
-      const resolved = Promise.resolve(events[index] || {
-        ended: true,
-        bookmark: getBookmark()
-      });
+      const resolved = Promise.resolve(
+        events[index] || {
+          ended: true,
+          bookmark: getBookmark(),
+        }
+      );
       index++;
       return resolved;
     }
@@ -85,32 +81,37 @@ export function InMemoryStorage(): EventStorage {
         const last = events[events.length - 1];
         return {
           id: last.id,
-          timestamp: last.timestamp
+          timestamp: last.timestamp,
         };
       }
 
-      return soughtBookmark || lookup.bookmark || {
-        id: '',
-        timestamp: ''
-      };
+      return (
+        soughtBookmark ||
+        lookup.bookmark || {
+          id: '',
+          timestamp: '',
+        }
+      );
     }
 
     return Promise.resolve({
       getBookmark,
       next,
-      seek
+      seek,
     });
   }
 
   function isBeforeBookmark(bookmark: EventStreamBookmark, event: Event) {
-    return bookmark.timestamp > event.timestamp || bookmark.id && bookmark.timestamp === event.timestamp && bookmark.id <= event.id;
+    return (
+      bookmark.timestamp > event.timestamp ||
+      (bookmark.id &&
+        bookmark.timestamp === event.timestamp &&
+        bookmark.id <= event.id)
+    );
   }
 
   function filterEvents(lookup: EventLookup, event: Event) {
-    const {
-      filter,
-      bookmark
-    } = lookup;
+    const { filter, bookmark } = lookup;
     if (!filter) return true;
     const timestamp = bookmark ? bookmark.timestamp : null;
     if (bookmark && isBeforeBookmark(bookmark, event)) return true;
@@ -146,8 +147,8 @@ export function InMemoryStorage(): EventStorage {
   return {
     publish,
     getEventStream,
-    close
+    close,
   };
-};
+}
 
 export default InMemoryStorage;

@@ -20,7 +20,7 @@ export default async (
 
   const opts = {
     autoDelete: true,
-    durable: false
+    durable: false,
   };
   const queue = await channel.assertQueue('', opts);
 
@@ -35,7 +35,7 @@ export default async (
 
   return {
     onPublished,
-    close
+    close,
   };
 
   function onAmqpMessage(message: any) {
