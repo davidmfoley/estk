@@ -8,7 +8,7 @@ describe('amqp connector', () => {
   const exampleEvent = {
     targetType: 'test-type',
     targetId: 'test-id',
-    action: 'test-action'
+    action: 'test-action',
   };
 
   beforeEach(async () => {
@@ -38,13 +38,16 @@ describe('amqp connector', () => {
   async function connect() {
     const storage = InMemoryEventStorage();
     const eventStore = await createEventStore({
-      storage
+      storage,
     });
-    const bus = await AmqpMessageBus(eventStore);
+    const bus = await AmqpMessageBus(eventStore, {
+      url: process.env.AMQP_URL_TEST,
+      exchange: 'estk-amqp-connector-test',
+    });
     return {
       close: bus.close,
       publish: eventStore.publish,
-      onPublished: bus.onPublished
+      onPublished: bus.onPublished,
     };
   }
 });

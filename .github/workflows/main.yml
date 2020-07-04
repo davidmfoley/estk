@@ -1,0 +1,27 @@
+name: Client Apps Check
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ubuntu-18.04
+
+    services:
+      rabbitmq:
+        image: rabbitmq:3
+        ports:
+          - 5672/tcp
+        options: --health-cmd "rabbitmqctl node_health_check" --health-interval 10s --health-timeout 5s --health-retries 5
+
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - run: npm install -g yarn
+      - run: yarn
+      - name: yarn-ci
+        run: yarn ci
+        env:
+          AMQP_URL_TEST: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
