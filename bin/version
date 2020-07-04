@@ -2,9 +2,14 @@
 DIR=$( cd "$( dirname "$0" )" &&  pwd )
 cd $DIR/..
 
-yarn version
+yarn version --no-git-tag-version
 CURRENT_VERSION=`cat package.json | grep '"version":' | cut -d':' -f 2 | cut -d "\"" -f 2`
 echo $CURRENT_VERSION
 bin/run-for-all "yarn version --no-git-tag-version --new-version $CURRENT_VERSION"
 
-sed -i -E "s/(\"estk-[a-z\-]*\": \")(.+)(\".*)/\1${CURRENT_VERSION}\3/g" estk-*/package.json
+sed -i '' -E " s/(\"estk-[a-z\-]*\": \")(.+)(\".*)/\1${CURRENT_VERSION}\3/g" estk-*/package.json
+yarn version --new-version $CURRENT_VERSION
+git add .
+git ci -m "v$CURRENT_VERSION"
+git tag v$CURRENT_VERSION
+
