@@ -14,7 +14,7 @@
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {
-    "estk-events": "0.0.3"
+    "estk-events": "0.0.4"
   },
   "devDependencies": {},
   "author": "Dave Foley",

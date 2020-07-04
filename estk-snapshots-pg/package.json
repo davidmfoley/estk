@@ -15,13 +15,13 @@
   "dependencies": {
     "babel-plugin-flow-to-typescript": "^0.3.0",
     "debug": "^2.6.4",
-    "estk-events": "0.0.3",
-    "estk-snapshots": "0.0.3",
+    "estk-events": "0.0.4",
+    "estk-snapshots": "0.0.4",
     "pg": "^7.4.1",
     "pg-pool": "^2.0.3"
   },
   "devDependencies": {
-    "estk-events-in-memory": "0.0.3"
+    "estk-events-in-memory": "0.0.4"
   },
   "author": "Dave Foley",
   "license": "MIT"
