@@ -6,6 +6,19 @@ jobs:
     runs-on: ubuntu-18.04
 
     services:
+      postgres:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD=estk
+          POSTGRES_USER=estk
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
       rabbitmq:
         image: rabbitmq:3
         ports:
@@ -24,4 +37,5 @@ jobs:
       - name: yarn-ci
         run: yarn ci
         env:
+          DATABASE_URL_TEST: postgres://estk:estk@localhost:5432/postgres
           AMQP_URL_TEST: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
