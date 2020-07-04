@@ -41,8 +41,6 @@ describe('PG read models with PG event store', () => {
         },
       });
 
-      //await readModels.rebuildAll();
-
       eventStore.onPublished(readModels.applyEvents);
     });
 

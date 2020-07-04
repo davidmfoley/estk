@@ -1,42 +1,36 @@
 import { Event } from 'estk-events';
-import {
-  ReadModelConfig,
-  ReadModelActions
-} from '../../src/types';
+import { ReadModelConfig, ReadModelActions } from '../../src/types';
 
 const Sandwich: ReadModelConfig = {
   name: 'sandwich',
   version: 0,
   fields: {
-    id : {
+    id: {
       type: 'text',
-      primaryKey: true
+      primaryKey: true,
     },
     meat: {
-      type: 'text'
+      type: 'text',
     },
     bread: {
-      type: 'text'
+      type: 'text',
     },
     hitPoints: {
-      type: 'int'
-    }
+      type: 'int',
+    },
   },
   events: {
     sandwich: {
-      'make': async (event: Event, actions: ReadModelActions) => {
-        const {
-          meat,
-          bread
-        } = event.data;
+      make: async (event: Event, actions: ReadModelActions) => {
+        const { meat, bread } = event.data;
         await actions.create({
           id: '42',
           meat,
           bread,
-          hitPoints: 4
+          hitPoints: 4,
         });
       },
-      'bite': async (event: Event, actions: ReadModelActions) => {
+      bite: async (event: Event, actions: ReadModelActions) => {
         const sandwich = await actions.get(event.targetId);
 
         if (!sandwich) return;
@@ -45,12 +39,12 @@ const Sandwich: ReadModelConfig = {
           await actions.delete(event.targetId);
         } else {
           await actions.merge(event.targetId, {
-            hitPoints: sandwich.hitPoints - 1
+            hitPoints: sandwich.hitPoints - 1,
           });
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export default Sandwich;

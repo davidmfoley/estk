@@ -28,15 +28,29 @@ describe('rebuild', () => {
     });
 
     describe('with some events', () => {
-      it('results in an empty table', async () => {
+      it('results in a table with data', async () => {
         const eventStore = await createEventStore({
           storage: InMemoryEventStorage(),
         });
-        await eventStore.publish([]);
+
+        await eventStore.publish([
+          {
+            targetType: 'sandwich',
+            targetId: '42',
+            action: 'make',
+            data: { meat: 'roast beast', bread: 'rye' },
+          },
+          {
+            targetType: 'sandwich',
+            targetId: '77',
+            action: 'make',
+            data: { meat: 'roast beast', bread: 'rye' },
+          },
+        ]);
 
         await rebuild({ model: sandwich, client, eventStore });
         const result = await client.query({ sql: 'select * from sandwich_0' });
-        expect(result.length).to.eq(0);
+        expect(result.length).to.eq(2);
       });
     });
   });

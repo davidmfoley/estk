@@ -1,10 +1,12 @@
 export const tableName = ({
   name,
   version = 0,
+  tableName,
 }: {
   name: string;
   version?: number;
-}) => `${name}_${version}`;
+  tableName?: string;
+}) => tableName || `${name}_${version}`;
 export const metaTableName = ({
   name,
   version = 0,

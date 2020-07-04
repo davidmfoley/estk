@@ -49,6 +49,7 @@ export type ReadModelConfig = {
   name: string;
   version: number;
   fields: ReadModelFields;
+  tableName?: string;
   defaultValue?: any;
   events: ReadModelEventConfig;
 };
