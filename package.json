@@ -31,7 +31,7 @@
   "dependencies": {
     "prettier": "^1.18.2",
     "ts-node": "^7.0.1",
-    "typescript": "^3.7.4"
+    "typescript": "^3.9.6"
   },
-  "version": "0.0.3"
+  "version": "0.0.4"
 }
