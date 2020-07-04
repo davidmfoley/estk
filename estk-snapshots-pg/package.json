@@ -13,7 +13,6 @@
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {
-    "babel-plugin-flow-to-typescript": "^0.3.0",
     "debug": "^2.6.4",
     "estk-events": "0.0.4",
     "estk-snapshots": "0.0.4",
