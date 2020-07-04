@@ -7,10 +7,9 @@ postgresql storage for estk events
 Event storage backed by a postgres database.
 
 
-usage: 
+usage:
 
 ```javascript
-
   const { createEventStore } = require('estk-events');
   const { PostgresClient } = require('estk-pg');
   const { PostgresEventStorage } = require('estk-events-pg');
@@ -22,10 +21,10 @@ usage:
     poolSize: 10
   };
 
-  const storage: any = await PostgresEventStorage(client);
+  const storage = await PostgresEventStorage(client);
   const store = await createEventStore({ storage });
 
-  store.publish({
+  await store.publish({
     targetType: 'sandwich',
     targetId: '42',
     action: 'make',
