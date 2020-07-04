@@ -1,6 +1,6 @@
 {
   "name": "estk-events-pg",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "./lib",
   "directories": {
@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "debug": "^2.6.4",
-    "estk-events": "0.0.4",
-    "estk-pg": "0.0.4",
+    "estk-events": "0.0.5",
+    "estk-pg": "0.0.5",
     "pg": "^7.4.1",
     "pg-pool": "^2.0.3"
   },

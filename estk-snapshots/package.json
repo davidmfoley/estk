@@ -1,6 +1,6 @@
 {
   "name": "estk-snapshots",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "lib",
   "directories": {
@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "debug": "^2.6.4",
-    "estk-events": "0.0.4",
+    "estk-events": "0.0.5",
     "microtime": "^2.1.5"
   },
   "devDependencies": {
-    "estk-events-in-memory": "0.0.4"
+    "estk-events-in-memory": "0.0.5"
   },
   "author": "Dave Foley",
   "license": "MIT"
