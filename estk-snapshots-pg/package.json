@@ -1,6 +1,6 @@
 {
   "name": "estk-snapshots-pg",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "debug": "^2.6.4",
-    "estk-events": "0.0.6",
-    "estk-snapshots": "0.0.6",
+    "estk-events": "0.0.7",
+    "estk-snapshots": "0.0.7",
     "pg": "^7.4.1",
     "pg-pool": "^2.0.3"
   },
   "devDependencies": {
-    "estk-events-in-memory": "0.0.6"
+    "estk-events-in-memory": "0.0.7"
   },
   "author": "Dave Foley",
   "license": "MIT"

@@ -1,6 +1,6 @@
 {
   "name": "estk-events-in-memory",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "lib",
   "files": [
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "debug": "^2.6.4",
-    "estk-events": "0.0.6"
+    "estk-events": "0.0.7"
   },
   "devDependencies": {},
   "author": "Dave Foley",

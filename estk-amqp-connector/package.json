@@ -1,6 +1,6 @@
 {
   "name": "estk-amqp-connector",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "lib",
   "files": [
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "amqplib": "^0.5.2",
-    "estk-events": "0.0.6"
+    "estk-events": "0.0.7"
   },
   "devDependencies": {
     "@types/amqplib": "^0.5.9"
