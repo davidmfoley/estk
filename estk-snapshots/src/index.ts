@@ -3,7 +3,4 @@ import SnapshotModel from './snapshot_model';
 
 export * from './types';
 
-export default {
-  OnDemandModel,
-  SnapshotModel,
-};
+export { OnDemandModel, SnapshotModel };

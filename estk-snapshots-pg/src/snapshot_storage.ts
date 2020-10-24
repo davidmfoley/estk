@@ -1,7 +1,7 @@
 import { DatabaseClient } from 'estk-pg';
 import { SnapshotStorage, SnapshotState } from 'estk-snapshots';
 
-type PostgresqlSnapshotConfig = {
+export type PostgresqlSnapshotConfig = {
   client: DatabaseClient;
   tableName: string;
 };

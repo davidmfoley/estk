@@ -1,5 +1,5 @@
 ```
-  import PostgresSnapshotStorage from '../src/snapshot_storage';
+  import { PostgresSnapshotStorage } from 'estk-snapshots-pg';
   import { PostgresClient } from 'estk-pg';
 
   const client = await PostgresClient({
