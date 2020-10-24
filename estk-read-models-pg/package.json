@@ -1,6 +1,6 @@
 {
   "name": "estk-read-models-pg",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -18,13 +18,13 @@
   "dependencies": {
     "@types/uuid": "^3.4.4",
     "debug": "^2.6.4",
-    "estk-events": "0.0.7",
-    "estk-pg": "0.0.7",
+    "estk-events": "0.0.8",
+    "estk-pg": "0.0.8",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "estk-events-in-memory": "0.0.7",
-    "estk-events-pg": "0.0.7"
+    "estk-events-in-memory": "0.0.8",
+    "estk-events-pg": "0.0.8"
   },
   "author": "Dave Foley",
   "license": "MIT"
