@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "debug": "^2.6.4",
-    "microtime": "^2.1.5"
+    "microtime": "^3.0.0"
   },
   "devDependencies": {
     "@types/microtime": "^2.1.0"
