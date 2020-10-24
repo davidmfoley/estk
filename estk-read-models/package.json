@@ -7,6 +7,9 @@
   "directories": {
     "test": "test"
   },
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "test": "echo 'no tests here'",
     "build": "../bin/ts-build",

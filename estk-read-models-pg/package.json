@@ -6,6 +6,9 @@
   "directories": {
     "test": "test"
   },
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "test": "../bin/ts-mocha test/**/*.test.ts",
     "build": "../bin/ts-build",

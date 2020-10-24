@@ -3,6 +3,9 @@
   "version": "0.0.6",
   "description": "",
   "main": "lib",
+  "files": [
+    "lib/"
+  ],
   "directories": {
     "test": "test"
   },
