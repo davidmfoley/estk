@@ -18,7 +18,7 @@
   "dependencies": {
     "debug": "^2.6.4",
     "estk-events": "0.0.7",
-    "microtime": "^2.1.5"
+    "microtime": "^3.0.0"
   },
   "devDependencies": {
     "estk-events-in-memory": "0.0.7"

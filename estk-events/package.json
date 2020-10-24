@@ -16,6 +16,7 @@
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {
+    "@types/microtime": "^2.1.0",
     "debug": "^2.6.4",
     "microtime": "^3.0.0"
   },
