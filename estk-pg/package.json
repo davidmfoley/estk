@@ -20,10 +20,8 @@
     "@types/pg": "^7.4.11",
     "debug": "^2.6.4",
     "pg": "^7.4.1",
-    "pg-native": "^3.0.0",
     "pg-pool": "^2.0.3"
   },
-  "devDependencies": {},
   "author": "Dave Foley",
   "license": "MIT"
 }
