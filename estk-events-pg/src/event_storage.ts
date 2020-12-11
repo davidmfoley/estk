@@ -10,18 +10,45 @@ import PostgresEventStream from './event_stream';
 import rowToEvent from './row_to_event';
 
 const debug = require('debug')('PostgresEventStorage');
+interface PostgresStorageConfig {
+  schema?: string;
+}
 
 type PostgresStorage = {
   createSchema: Function;
   deleteAll: Function;
 } & EventStorage;
 export default async function PostgresEventStorage(
-  client: DatabaseClient
+  client: DatabaseClient,
+  config: PostgresStorageConfig = {}
 ): Promise<PostgresStorage> {
+  const tableName = config.schema ? `"${config.schema}".events` : 'events';
+
+  const buildQuery = (event: EventPublishRequest): DatabaseQuery => ({
+    params: [
+      event.targetType,
+      event.targetId,
+      event.action,
+      event.meta,
+      event.data,
+      Timestamps.now(),
+    ],
+    sql: `
+      INSERT INTO ${tableName} (
+        target_type,
+        target_id,
+        action,
+        meta,
+        data,
+        timestamp
+      ) values ( $1, $2, $3, $4, $5, $6 )
+      RETURNING *;`,
+  });
+
   return {
     publish,
     getEventStream: (lookup: EventLookup) =>
-      Promise.resolve(PostgresEventStream(client, lookup)),
+      Promise.resolve(PostgresEventStream(client, tableName, lookup)),
     close: () => client.close(),
     createSchema,
     deleteAll,
@@ -30,15 +57,22 @@ export default async function PostgresEventStorage(
   async function deleteAll(): Promise<void> {
     debug('delete all events');
     await client.query({
-      sql: 'delete from events;',
+      sql: `delete from ${tableName};`,
     });
   }
 
   async function createSchema(): Promise<void> {
+    if (config.schema) {
+      debug(`create schema ${config.schema}`);
+      await client.query({
+        sql: `create schema if not exists "${config.schema}";`,
+      });
+    }
+
     debug('create event table');
     await client.query({
       sql: `
-        CREATE TABLE IF NOT EXISTS events (
+        CREATE TABLE IF NOT EXISTS ${tableName} (
           id serial primary key,
           target_type character varying NOT NULL,
           target_id character varying,
@@ -93,27 +127,4 @@ export default async function PostgresEventStorage(
       throw e;
     }
   }
-}
-
-function buildQuery(event: EventPublishRequest): DatabaseQuery {
-  return {
-    params: [
-      event.targetType,
-      event.targetId,
-      event.action,
-      event.meta,
-      event.data,
-      Timestamps.now(),
-    ],
-    sql: `
-      INSERT INTO events (
-        target_type,
-        target_id,
-        action,
-        meta,
-        data,
-        timestamp
-      ) values ( $1, $2, $3, $4, $5, $6 )
-      RETURNING *;`,
-  };
 }

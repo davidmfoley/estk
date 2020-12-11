@@ -10,7 +10,7 @@ import {
 } from 'estk-events';
 
 import rowToEvent from './row_to_event';
-import buildEventQuery from './build_event_query';
+import { eventQueryBuilder } from './build_event_query';
 
 const beginningBookmark: EventStreamBookmark = {
   timestamp: '0001-01-01',
@@ -19,6 +19,7 @@ const beginningBookmark: EventStreamBookmark = {
 
 export default function PostgresEventStream(
   client: DatabaseClient,
+  tableName: string,
   lookup: EventLookup = {}
 ): StorageEventStream {
   const debug = require('debug')('PostgresEventStream');
@@ -128,7 +129,9 @@ export default function PostgresEventStream(
       'processed so far... from event',
       bookmark
     );
-    let query = buildEventQuery(lookup.filter, bookmark, CHUNK_SIZE);
+
+    const buildEventQuery = eventQueryBuilder(tableName, CHUNK_SIZE);
+    let query = buildEventQuery(lookup.filter, bookmark);
 
     return client.query(query).then(rows => {
       localBuffer = rows.map(rowToEvent);

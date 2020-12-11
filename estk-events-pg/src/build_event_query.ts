@@ -6,11 +6,10 @@ type QueryPiece = {
   params: any[];
 };
 
-export default function buildEventQuery(
+export const eventQueryBuilder = (tableName: string, chunkSize: number) => (
   filter: any,
-  bookmark: EventStreamBookmark | null | undefined,
-  chunkSize: number = 2500
-): DatabaseQuery {
+  bookmark: EventStreamBookmark | null | undefined
+) => {
   let where = buildWhere(filter);
   let { sql, params } = where;
 
@@ -36,7 +35,15 @@ export default function buildEventQuery(
       return buildEventSelect('', [], chunkSize);
     }
   }
-}
+  function buildEventSelect(where: string, params: any[], chunkSize: number) {
+    return {
+      sql: `SELECT * FROM ${tableName}${
+        where ? ' ' + where : ''
+      } ORDER BY timestamp, id LIMIT $${params.length + 1}`,
+      params: params.concat([chunkSize]),
+    };
+  }
+};
 
 function buildWhere(filter: any): QueryPiece {
   if (!filter)
@@ -107,13 +114,4 @@ function buildTargetTypeClause(
   }
 
   return { sql: '', params: [] };
-}
-
-function buildEventSelect(where: string, params: any[], chunkSize: number) {
-  return {
-    sql: `SELECT * FROM events${
-      where ? ' ' + where : ''
-    } ORDER BY timestamp, id LIMIT $${params.length + 1}`,
-    params: params.concat([chunkSize]),
-  };
 }
