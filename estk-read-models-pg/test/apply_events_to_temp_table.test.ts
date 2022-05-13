@@ -7,7 +7,7 @@ import InMemoryEventStorage from 'estk-events-in-memory';
 import { expect } from 'chai';
 import { EventStore } from '../../estk-events/lib';
 
-describe('apply_events_to_temp_table', () => {
+describe('applyEventsToTempTable', () => {
   let client: DatabaseClient;
   let tempTable: string;
   let eventStore: EventStore;
@@ -22,6 +22,8 @@ describe('apply_events_to_temp_table', () => {
       storage: InMemoryEventStorage(),
     });
   });
+
+  afterEach(() => client.close());
 
   it('handles no events', async () => {
     const stream = await eventStore.getEventStream({});

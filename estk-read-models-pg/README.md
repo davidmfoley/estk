@@ -5,3 +5,4 @@
 Project events into postgresql tables
 
 ### createPostgresReadModels(config: PostgresReadModelConfig)
+
