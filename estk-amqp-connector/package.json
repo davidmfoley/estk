@@ -16,7 +16,7 @@
     "prepublishOnly": "npm run -s build"
   },
   "dependencies": {
-    "amqplib": "^0.5.2",
+    "amqplib": "^0.9.0",
     "estk-events": "0.0.8"
   },
   "devDependencies": {
