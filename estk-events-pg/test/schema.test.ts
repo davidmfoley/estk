@@ -3,8 +3,6 @@ import { expect } from 'chai';
 import { createEventStore } from 'estk-events';
 import { PostgresClient } from 'estk-pg';
 import PostgresEventStorage from '../src/event_storage';
-import { TestSuites } from 'estk-events';
-import { start } from 'repl';
 
 describe('with a schema setting', () => {
   const config = {
@@ -25,7 +23,7 @@ describe('with a schema setting', () => {
   };
 
   it('creates the events table in the specified schema', async () => {
-    await startStore();
+    const store = await startStore();
 
     const client = await PostgresClient(config);
     const count = await client.query({
@@ -33,7 +31,7 @@ describe('with a schema setting', () => {
     });
 
     expect(count[0].eventCount).to.eq(0);
+    await client.close();
+    await store.close();
   });
-
-  TestSuites.storage(startStore);
 });
