@@ -1,8 +1,8 @@
 import url from 'url';
 import Debug from 'debug';
-import pg, { Pool, QueryResult } from 'pg';
+import pg, { Pool } from 'pg';
 import PostgresTransaction from './transaction';
-import { ResultSet, DatabaseClient, DatabaseQuery } from './types';
+import { DatabaseClient } from './types';
 import wrapQuery from './wrap_query';
 
 const debug = Debug('estk-pg.client');
@@ -10,11 +10,6 @@ const debug = Debug('estk-pg.client');
 type PostgresConfig = {
   url: string;
   poolSize?: number;
-};
-
-type Connection = {
-  client: DatabaseClient;
-  done: Function;
 };
 
 export default function init(
@@ -34,16 +29,6 @@ export default function init(
   }
 }
 
-function wrap(client: pg.PoolClient, txPool: pg.Pool): DatabaseClient {
-  return {
-    query: wrapQuery(client.query.bind(client), debug),
-    transaction: () => PostgresTransaction(txPool),
-    close: async () => {
-      client.release();
-    },
-  };
-}
-
 function parseUrl(databaseUrl: string) {
   var settings: any = {};
   var dbUrl = url.parse(databaseUrl);
@@ -60,12 +45,12 @@ function parseUrl(databaseUrl: string) {
   return settings;
 }
 
-function createPool(name: string, url: string) {
+function createPool(_name: string, url: string) {
   var settings = parseUrl(url);
   return new Pool(settings);
 }
 
-function db(dbConfig: PostgresConfig): Promise<DatabaseClient> {
+async function db(dbConfig: PostgresConfig): Promise<DatabaseClient> {
   const txPool = createPool('tx', dbConfig.url);
   const nontxPool = createPool('nontx', dbConfig.url);
   pg.types.setTypeParser(1184, stringValue => stringValue);
@@ -86,7 +71,8 @@ function db(dbConfig: PostgresConfig): Promise<DatabaseClient> {
     },
   };
 
-  return query({
+  await query({
     sql: 'select 1',
-  }).then(() => database);
+  });
+  return database;
 }
