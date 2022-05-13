@@ -1,5 +1,5 @@
-import { ReadModelConfig, ReadModelActions, ReadModelLookup } from '../types';
-import { QueryContext, DatabaseQuery } from 'estk-pg';
+import { ReadModelConfig, ReadModelActions, ReadModelLookup } from '../types'
+import { QueryContext, DatabaseQuery } from 'estk-pg'
 
 import {
   buildSelectOne,
@@ -7,32 +7,32 @@ import {
   buildDelete,
   buildUpdate,
   buildInsert,
-} from '../queries';
+} from '../queries'
 
 export default (
   config: ReadModelConfig,
   { query }: QueryContext
 ): ReadModelActions => {
   const doQuery = async (q: DatabaseQuery): Promise<any[]> => {
-    return await query(q);
-  };
+    return await query(q)
+  }
 
   return {
     get: async (lookup: ReadModelLookup) => {
-      const result = await doQuery(buildSelectOne(config, lookup));
-      return result.length ? result[0] : config.defaultValue;
+      const result = await doQuery(buildSelectOne(config, lookup))
+      return result.length ? result[0] : config.defaultValue
     },
     getAll: async (lookup: ReadModelLookup) => {
-      return await doQuery(buildSelect(config, lookup));
+      return await doQuery(buildSelect(config, lookup))
     },
     create: async (data: Object) => {
-      await doQuery(buildInsert(config, data));
+      await doQuery(buildInsert(config, data))
     },
     merge: async (lookup: ReadModelLookup, fieldsToMerge: Object) => {
-      await doQuery(buildUpdate(config, lookup, fieldsToMerge));
+      await doQuery(buildUpdate(config, lookup, fieldsToMerge))
     },
     delete: async (lookup: ReadModelLookup) => {
-      await doQuery(buildDelete(config, lookup));
+      await doQuery(buildDelete(config, lookup))
     },
-  };
-};
+  }
+}

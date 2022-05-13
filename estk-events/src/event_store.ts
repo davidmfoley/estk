@@ -1,5 +1,5 @@
-import { EventLookup } from 'estk-events/src/types';
-import createEventStream from './event_stream';
+import { EventLookup } from 'estk-events/src/types'
+import createEventStream from './event_stream'
 import {
   Event,
   EventStream,
@@ -7,46 +7,46 @@ import {
   EventStoreSettings,
   EventsPublishedHandler,
   EventsPublishRequest,
-} from './types';
+} from './types'
 
 export default function createEventStore({
   storage,
 }: EventStoreSettings): Promise<EventStore> {
-  let publishHandlers: Function[] = [];
+  let publishHandlers: Function[] = []
 
   const eventStore: EventStore = {
     publish,
     onPublished,
     getEventStream,
     close,
-  };
+  }
 
-  return Promise.resolve(eventStore);
+  return Promise.resolve(eventStore)
 
   async function getEventStream(lookup: EventLookup): Promise<EventStream> {
-    const storageEventStream = await storage.getEventStream(lookup);
+    const storageEventStream = await storage.getEventStream(lookup)
 
-    return createEventStream(storageEventStream);
+    return createEventStream(storageEventStream)
   }
 
   async function publish(event: EventsPublishRequest): Promise<Event[]> {
     const onEventPublished = async (published: Event[], context: any = {}) => {
       for (let handler of publishHandlers) {
-        const result: any = handler(published, context);
-        if (result && result.then) await result;
+        const result: any = handler(published, context)
+        if (result && result.then) await result
       }
-    };
+    }
 
-    if (!Array.isArray(event)) event = [event];
-    const published = await storage.publish(event, onEventPublished);
-    return published;
+    if (!Array.isArray(event)) event = [event]
+    const published = await storage.publish(event, onEventPublished)
+    return published
   }
 
   function onPublished(handler: EventsPublishedHandler) {
-    publishHandlers.push(handler);
+    publishHandlers.push(handler)
   }
 
   function close(): Promise<void> {
-    return storage.close();
+    return storage.close()
   }
 }

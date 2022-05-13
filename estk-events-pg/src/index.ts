@@ -1,2 +1,2 @@
-import PostgresEventStorage from './event_storage';
-export { PostgresEventStorage };
+import PostgresEventStorage from './event_storage'
+export { PostgresEventStorage }

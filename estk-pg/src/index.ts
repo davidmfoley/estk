@@ -1,3 +1,3 @@
-export { default as PostgresClient } from './client';
+export { default as PostgresClient } from './client'
 
-export * from './types';
+export * from './types'

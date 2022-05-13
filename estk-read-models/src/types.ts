@@ -1,3 +1,3 @@
-export type ReadModel = {};
-export type ReadModelConfig = {};
-export type ReadModelActions = {};
+export type ReadModel = {}
+export type ReadModelConfig = {}
+export type ReadModelActions = {}

@@ -1,5 +1,5 @@
 import PostgresSnapshotStorage, {
   PostgresqlSnapshotConfig,
-} from './snapshot_storage';
+} from './snapshot_storage'
 
-export { PostgresSnapshotStorage, PostgresqlSnapshotConfig };
+export { PostgresSnapshotStorage, PostgresqlSnapshotConfig }

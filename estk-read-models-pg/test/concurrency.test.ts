@@ -1,34 +1,34 @@
-import { describe, beforeEach, it } from 'mocha';
-import { expect } from 'chai';
-import { createEventStore, EventStore } from 'estk-events';
-import { PostgresClient, DatabaseClient } from 'estk-pg';
-import { cleanDatabase } from './helpers';
-import ReadModels from '../src/read_models';
-import sandwich from './models/sandwich';
-import PostgresEventStorage from 'estk-events-pg/src/event_storage';
+import { describe, beforeEach, it } from 'mocha'
+import { expect } from 'chai'
+import { createEventStore, EventStore } from 'estk-events'
+import { PostgresClient, DatabaseClient } from 'estk-pg'
+import { cleanDatabase } from './helpers'
+import ReadModels from '../src/read_models'
+import sandwich from './models/sandwich'
+import PostgresEventStorage from 'estk-events-pg/src/event_storage'
 
 describe('PG read models with PG event store', () => {
-  let client: DatabaseClient, readModels: any, eventStore: EventStore;
+  let client: DatabaseClient, readModels: any, eventStore: EventStore
 
   beforeEach(async () => {
-    await cleanDatabase();
+    await cleanDatabase()
     client = await PostgresClient({
       url: process.env.DATABASE_URL_TEST || '',
-    });
-  });
+    })
+  })
 
   afterEach(async () => {
-    await client.close();
-  });
+    await client.close()
+  })
 
   describe('transactional', () => {
-    let eventStorage;
+    let eventStorage
     beforeEach(async () => {
-      eventStorage = await PostgresEventStorage(client);
+      eventStorage = await PostgresEventStorage(client)
 
       eventStore = await createEventStore({
         storage: eventStorage,
-      });
+      })
 
       readModels = await ReadModels({
         eventStore,
@@ -39,11 +39,11 @@ describe('PG read models with PG event store', () => {
         options: {
           rebuildOnStart: true,
         },
-      });
+      })
 
       //await readModels.rebuildAll();
 
-      eventStore.onPublished(readModels.applyEvents);
-    });
-  });
-});
+      eventStore.onPublished(readModels.applyEvents)
+    })
+  })
+})
