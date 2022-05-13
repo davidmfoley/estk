@@ -12,7 +12,7 @@ describe('with postgresql storage', () => {
 
   const startStore = async () => {
     const client = await PostgresClient(config);
-    const storage: any = await PostgresEventStorage(client);
+    const storage = await PostgresEventStorage(client);
     await storage.createSchema();
     await storage.deleteAll();
     return createEventStore({
