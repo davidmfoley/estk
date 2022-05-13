@@ -9,7 +9,7 @@ import {
   EventsPublishRequest,
 } from './types';
 
-export default function init({
+export default function createEventStore({
   storage,
 }: EventStoreSettings): Promise<EventStore> {
   let publishHandlers: Function[] = [];
