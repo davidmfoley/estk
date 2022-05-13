@@ -1,5 +1,5 @@
 import { PostgresClient } from 'estk-pg';
-import PostgresEventStorage from 'estk-events-pg/src/event_storage';
+import PostgresEventStorage from 'estk-events-pg';
 
 export async function cleanDatabase() {
   const client = await PostgresClient({
