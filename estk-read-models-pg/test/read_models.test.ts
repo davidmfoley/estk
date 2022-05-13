@@ -5,7 +5,7 @@ import { PostgresClient, DatabaseClient } from 'estk-pg';
 import { cleanDatabase } from './helpers';
 import ReadModels from '../src/read_models';
 import sandwich from './models/sandwich';
-import PostgresEventStorage from 'estk-events-pg/src/event_storage';
+import { PostgresEventStorage } from 'estk-events-pg';
 
 describe('PG read models with PG event store', () => {
   let client: DatabaseClient, readModels: any, eventStore: EventStore;
