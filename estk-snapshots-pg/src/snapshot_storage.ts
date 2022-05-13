@@ -6,16 +6,16 @@ export type PostgresqlSnapshotConfig = {
   tableName: string;
 };
 
-export default ({
+export default <State>({
   client,
   tableName,
-}: PostgresqlSnapshotConfig): SnapshotStorage => {
+}: PostgresqlSnapshotConfig): SnapshotStorage<State> => {
   return {
     get,
     put,
   };
 
-  async function get(id: any): Promise<SnapshotState> {
+  async function get(id: any): Promise<SnapshotState<State>> {
     await ensureTableExists();
     const result = await client.query({
       sql: `
@@ -31,14 +31,14 @@ export default ({
 
     return {
       notFound: true,
-      state: {},
-      bookmark: {},
+      state: null,
+      bookmark: null,
     };
   }
 
   async function put(
     id: any,
-    { state, bookmark }: SnapshotState
+    { state, bookmark }: SnapshotState<State>
   ): Promise<void> {
     await ensureTableExists();
     await client.query({
