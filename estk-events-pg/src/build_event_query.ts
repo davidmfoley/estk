@@ -1,5 +1,4 @@
-import { EventStreamBookmark } from 'estk-events/lib';
-import { DatabaseQuery } from 'estk-pg/lib';
+import { EventStreamBookmark } from 'estk-events';
 
 type QueryPiece = {
   sql: string;
