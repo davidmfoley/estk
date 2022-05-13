@@ -1,18 +1,17 @@
 import { OnDemandModel, SnapshotStorage } from './types';
 
-type SnapshotModelConfig = {
-  storage: SnapshotStorage;
-  model: OnDemandModel;
+type SnapshotModelConfig<Shape> = {
+  storage: SnapshotStorage<Shape>;
+  model: OnDemandModel<Shape>;
 };
 
 import { SnapshotModel } from './types';
 
-export default ({ storage, model }: SnapshotModelConfig): SnapshotModel => {
-  return {
-    get,
-  };
-
-  async function get(id: any): Promise<any> {
+export default <Shape>({
+  storage,
+  model,
+}: SnapshotModelConfig<Shape>): SnapshotModel<Shape> => ({
+  get: async (id: any): Promise<Shape | null> => {
     const existing = await storage.get(id);
 
     if (existing.notFound) {
@@ -31,5 +30,5 @@ export default ({ storage, model }: SnapshotModelConfig): SnapshotModel => {
     });
     await storage.put(id, updated);
     return updated.state;
-  }
-};
+  },
+});

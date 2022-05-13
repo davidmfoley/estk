@@ -1,9 +1,4 @@
-import {
-  Event,
-  EventFilter,
-  EventStore,
-  EventStreamBookmark,
-} from 'estk-events';
+import { Event, EventFilter, EventStore } from 'estk-events';
 
 type EventHandler = (state: any, event: Event) => any;
 
@@ -11,9 +6,9 @@ type EventHandlerMap = {
   [action: string]: EventHandler;
 };
 
-type OnDemandReadModelConfig = {
+type OnDemandReadModelConfig<Shape> = {
   eventFilter: (id: any) => EventFilter;
-  initialState?: any;
+  initialState?: Shape;
   reducer:
     | EventHandler
     | {
@@ -27,17 +22,14 @@ import {
   OnDemandModelState,
 } from './types';
 
-export default ({
+const onDemandModel = <Shape>({
   eventFilter,
   initialState,
   reducer,
-}: OnDemandReadModelConfig) => (store: EventStore): OnDemandModel => {
-  return {
-    get,
-    update,
-  };
-
-  async function get(id: any): Promise<OnDemandModelState> {
+}: OnDemandReadModelConfig<Shape>) => (
+  store: EventStore
+): OnDemandModel<Shape> => {
+  async function get(id: any): Promise<OnDemandModelState<Shape>> {
     const filter = eventFilter(id);
     const stream = await store.getEventStream({
       filter,
@@ -46,11 +38,11 @@ export default ({
     return await stream.reduce(streamReducer, initialState);
   }
 
-  async function update({
+  const update = async <Shape>({
     id,
     state,
     bookmark,
-  }: OnDemandModelUpdate): Promise<OnDemandModelState> {
+  }: OnDemandModelUpdate<Shape>): Promise<OnDemandModelState<Shape>> => {
     const filter = eventFilter(id);
     const stream = await store.getEventStream({
       filter,
@@ -58,12 +50,17 @@ export default ({
     });
 
     return await stream.reduce(streamReducer, state);
-  }
+  };
 
   function streamReducer(state: any = null, nextEvent: Event): any {
     const handler = getHandler(nextEvent, reducer);
     return handler ? handler(state, nextEvent) : state;
   }
+
+  return {
+    get,
+    update,
+  };
 };
 
 function getHandler(
@@ -76,3 +73,5 @@ function getHandler(
   if (typeof handler == 'function') return handler;
   return handler[action] || handler['*'];
 }
+
+export default onDemandModel;

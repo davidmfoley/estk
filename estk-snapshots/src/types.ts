@@ -1,40 +1,42 @@
 import { EventStreamBookmark } from 'estk-events';
 
-export type OnDemandModelState = {
-  state: any;
+export type OnDemandModelState<Shape> = {
+  state: Shape;
   bookmark: EventStreamBookmark;
 };
 
-export type OnDemandModelUpdate = {
+export type OnDemandModelUpdate<Shape> = {
   id: string;
-  state: any;
+  state: Shape;
   bookmark: EventStreamBookmark;
 };
 
-export type OnDemandModel = {
-  get: (id: string) => Promise<OnDemandModelState>;
-  update: (req: OnDemandModelUpdate) => Promise<OnDemandModelState>;
+export type OnDemandModel<Shape> = {
+  get: (id: string) => Promise<OnDemandModelState<Shape>>;
+  update: (
+    req: OnDemandModelUpdate<Shape>
+  ) => Promise<OnDemandModelState<Shape>>;
 };
 
-export type SnapshotModel = {
-  get: (id: any) => Promise<any>;
+export type SnapshotModel<Shape> = {
+  get: (id: any) => Promise<Shape | null>;
 };
 
-export type Snapshot = {
-  state: any;
+export type Snapshot<Shape> = {
+  state: Shape;
   bookmark: EventStreamBookmark;
-  notFound?: any;
+  notFound?: false;
 };
 
 type NoSnapshot = {
-  state: any;
-  bookmark: any;
+  state: null;
+  bookmark: null;
   notFound: true;
 };
 
-export type SnapshotState = Snapshot | NoSnapshot;
+export type SnapshotState<Shape> = Snapshot<Shape> | NoSnapshot;
 
-export type SnapshotStorage = {
-  get: (id: any) => Promise<SnapshotState>;
-  put: (id: any, snapshot: Snapshot) => Promise<void>;
+export type SnapshotStorage<Shape> = {
+  get: (id: any) => Promise<SnapshotState<Shape>>;
+  put: (id: any, snapshot: Snapshot<Shape>) => Promise<void>;
 };
