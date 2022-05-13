@@ -2,7 +2,19 @@
 DIR=$( cd "$( dirname "$0" )" &&  pwd )
 cd $DIR/..
 
-for dir in `ls -d estk-*`
+DIRS=(
+  estk-pg \
+  estk-events \
+  estk-events-in-memory \
+  estk-events-pg \
+  estk-snapshots \
+  estk-snapshots-pg \
+  estk-read-models \
+  estk-read-models-pg \
+  estk-amqp-connector \
+)
+
+for dir in ${DIRS[@]}
 do
   echo
   echo "**** $dir"
