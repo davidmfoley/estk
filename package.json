@@ -2,13 +2,14 @@
   "name": "estk",
   "private": true,
   "scripts": {
-    "test": "bin/run-for-all 'yarn test'",
+    "build": "bin/run-for-all 'yarn build'",
+    "ci": "npm run -s build && npm run -s test",
+    "clean": "rm -rf estk-*/lib",
     "cover": "bin/run-for-all '../node_modules/.bin/nyc yarn test'",
-    "build": "bin/run-for-all 'yarn run build'",
     "link-all": "bin/run-for-all 'yarn link'",
+    "test": "bin/run-for-all 'yarn test'",
     "unlink-all": "bin/run-for-all 'yarn unlink'",
-    "watch": "bin/watch",
-    "ci": "npm run -s build && npm run -s test"
+    "watch": "bin/watch"
   },
   "workspaces": [
     "estk-*"
