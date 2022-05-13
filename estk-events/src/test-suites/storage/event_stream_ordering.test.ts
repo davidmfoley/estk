@@ -7,24 +7,19 @@ export default (startStore: any) => {
   let store: any;
 
   describe(`reading back ${COUNT} events`, () => {
-    beforeEach(() => {
-      return startStore().then((store_: any) => {
-        store = store_;
-        let promise = Promise.resolve();
-        for (let i = 0; i < COUNT; i++) {
-          promise = promise.then(() => {
-            return store.publish({
-              targetType: 'robot',
-              targetId: '' + i,
-              action: 'create',
-              data: {
-                index: i,
-              },
-            });
-          });
-        }
-        return promise;
-      });
+    beforeEach(async () => {
+      store = await startStore();
+
+      for (let i = 0; i < COUNT; i++) {
+        await store.publish({
+          targetType: 'robot',
+          targetId: '' + i,
+          action: 'create',
+          data: {
+            index: i,
+          },
+        });
+      }
     });
 
     afterEach(() => store.close());
